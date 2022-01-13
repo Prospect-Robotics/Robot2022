@@ -23,13 +23,13 @@ public class Looper {
     public RobotMode mode;
 
     private final Notifier notifier; // from WPILib
-    private final List<Loop> loops;
+    private final List<Loop> loops; //
     private final List<Action> actions;
     private final Object taskRunningLock = new Object();
     private double timestamp = 0;
     private double dt = 0;
 
-    private double worstTime = 0; // the biggest time gap between iterations
+    private double worstTime = 0; // the biggest lag between iterations (improve this comment)
 
     private final CrashTrackingRunnable runnable_ = new CrashTrackingRunnable() {
         @Override
@@ -37,9 +37,10 @@ public class Looper {
             synchronized (taskRunningLock) {
                 if (running) {
                     double now = Timer.getFPGATimestamp();
+                    ;
                     Action.updateActions(actions, mode, now);
 
-                    // Go through each of the subsystem loops and run appropriate
+                    // Go thru each of the subsystem loops and run appropriate
                     // enabled or disabled loop
                     for (Loop loop : loops) {
                         double start = Timer.getFPGATimestamp();
@@ -85,6 +86,7 @@ public class Looper {
 
             //Run the start method of each loop.
             for (Loop loop : loops) {
+                // System.out.println("Stopping " + loop);
                 if(mode == RobotMode.ENABLED) loop.onEnabledStart(timestamp);
                 else if(mode == RobotMode.DISABLED) loop.onDisabledStart(timestamp);
             }
@@ -121,6 +123,7 @@ public class Looper {
 
     public synchronized void start() {
         if (!running) {
+            // System.out.println("Starting loops");
             notifier.startPeriodic(period);
             running = true;
         }
@@ -128,6 +131,7 @@ public class Looper {
 
     public synchronized void stop() {
         if (running) {
+            // System.out.println("Stopping loops");
             notifier.stop();
             running = false;
         }
