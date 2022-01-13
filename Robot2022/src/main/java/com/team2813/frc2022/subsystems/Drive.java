@@ -52,7 +52,9 @@ public class Drive extends Subsystem {
     // Gyro
     private final int pigeonID = 13;
     private PigeonWrapper pigeon = new PigeonWrapper(pigeonID, "Drive");
-    public PigeonWrapper getPigeon() {return pigeon;}
+    public PigeonWrapper getPigeon() {
+        return pigeon;
+    }
 
     // Autonomous
     public static final double GEAR_RATIO = 1 / 7.64;
@@ -79,7 +81,9 @@ public class Drive extends Subsystem {
     public CurvatureDrive curvatureDrive = new CurvatureDrive(TELEOP_DEAD_ZONE);
     ArcadeDrive arcadeDrive = curvatureDrive.getArcadeDrive();
     DriveDemand driveDemand = new DriveDemand(0, 0);
-    public DriveDemand getDriveDemand() {return driveDemand;}
+    public DriveDemand getDriveDemand() {
+        return driveDemand;
+    }
 
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0); // gains in meters
 
