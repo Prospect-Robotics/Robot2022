@@ -5,11 +5,11 @@ import com.team2813.lib.drive.DriveDemand;
 
 public final class Units2813 {
     // ticks to motor revolutions
-    public static double ticksToMotorRevs(int ticks, int cpr) {
-        return (double) ticks / (double) cpr;
+    public static double ticksToMotorRevs(double ticks, int cpr) {
+        return ticks / (double) cpr;
     }
 
-    public static double ticksToMotorRevs(int ticks) {
+    public static double ticksToMotorRevs(double ticks) {
         return ticksToMotorRevs(ticks, 2048); // cause falcons
     }
 

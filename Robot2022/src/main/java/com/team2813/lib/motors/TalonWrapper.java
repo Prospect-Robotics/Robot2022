@@ -46,7 +46,7 @@ public abstract class TalonWrapper<Controller extends BaseTalon> implements Moto
 
     @Override
     public double getEncoderPosition() { // returns revolutions
-        return Units2813.ticksToMotorRevs((int)controller.getSelectedSensorPosition());
+        return Units2813.ticksToMotorRevs(controller.getSelectedSensorPosition());
     }
 
     @Override
@@ -179,7 +179,7 @@ public abstract class TalonWrapper<Controller extends BaseTalon> implements Moto
     }
 
     public double getVelocity() { // returns in rpm
-        return Units2813.ticksToMotorRevs((int)controller.getSelectedSensorVelocity()) * 10 * 60; // from ticks/100ms to rpm
+        return Units2813.ticksToMotorRevs(controller.getSelectedSensorVelocity()) * 10 * 60; // from ticks/100ms to rpm
     }
 
     public static double convertRPM(double rpm) {
