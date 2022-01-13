@@ -30,7 +30,7 @@ public class Subsystems {
 
         public static void initializeSubsystems() {
             DRIVE = new Drive();
-            //allSubsystems = List.of(DRIVE);
+            allSubsystems = List.of(DRIVE);
             LOOPER.addLoop(new SmartDashboardLoop());
         }
 

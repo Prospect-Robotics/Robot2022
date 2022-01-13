@@ -1,6 +1,7 @@
 package com.team2813.frc2022.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.team2813.frc2022.util.Limelight;
 import com.team2813.frc2022.util.ShuffleboardData;
 import com.team2813.frc2022.util.Units2813;
 import com.team2813.lib.config.MotorConfigs;
@@ -55,6 +56,7 @@ public class Drive extends Subsystem {
 
     // Autonomous
     public static final double GEAR_RATIO = 1 / 7.64;
+    private Limelight limelight = Limelight.getInstance();
 
     // Odometry
     private static DifferentialDriveOdometry odometry;
@@ -100,6 +102,7 @@ public class Drive extends Subsystem {
     }
 
     private void teleopDrive(TeleopDriveType driveType) {
+        limelight.setLights(true); // permanently on because it's outside
         if (driveType == TeleopDriveType.ARCADE) {
             driveDemand = arcadeDrive.getDemand(arcade_x.get(), arcade_y.get());
         }

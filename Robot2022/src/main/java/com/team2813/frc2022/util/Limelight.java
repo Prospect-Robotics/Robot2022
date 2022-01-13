@@ -19,7 +19,7 @@ public class Limelight {
 
     private static Limelight instance = new Limelight();
 
-    private Limelight getInstance() {
+    public static Limelight getInstance() {
         return instance;
     }
 
