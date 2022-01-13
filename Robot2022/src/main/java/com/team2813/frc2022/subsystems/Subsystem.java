@@ -12,7 +12,7 @@ import com.team2813.frc2022.loops.Loop;
  *     the start of the match.
  * </p>
  */
-abstract class Subsystem implements Loop {
+public abstract class Subsystem implements Loop {
 
     public void writeToLog() {
     }

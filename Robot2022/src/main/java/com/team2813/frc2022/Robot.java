@@ -5,10 +5,22 @@
 
 package com.team2813.frc2022;
 
+import com.team2813.frc2022.subsystems.Subsystem;
+import com.team2813.frc2022.subsystems.Subsystems;
+import com.team2813.frc2022.util.Limelight;
+import com.team2813.frc2022.util.ShuffleboardData;
+import com.team2813.lib.config.MotorConfigs;
+import com.team2813.lib.drive.DriveDemand;
+import com.team2813.lib.util.CrashTracker;
+import com.team2813.lib.util.LimelightValues;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.io.IOException;
+
+import static com.team2813.frc2022.subsystems.Subsystems.*;
 
 
 /**
@@ -19,12 +31,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot
 {
-    private static final String DEFAULT_AUTO = "Default";
-    private static final String CUSTOM_AUTO = "My Auto";
-    private String autoSelected;
-    private final SendableChooser<String> chooser = new SendableChooser<>();
-    
-    
+
+    private static final double MIN_IDLE_VOLTAGE = 11.7;
+    private static final double MIN_DISABLED_VOLTAGE = 12;
+    private static boolean BATTERY_TOO_LOW = false;
+    private final double WHEEL_DIAMETER = 4; // inches
+
+    public final LimelightValues limelightValues = new LimelightValues();
+    private Limelight limelight = Limelight.getInstance();
+
     /**
      * This method is run when the robot is first started up and should be used for any
      * initialization code.
@@ -32,9 +47,36 @@ public class Robot extends TimedRobot
     @Override
     public void robotInit()
     {
-        chooser.setDefaultOption("Default Auto", DEFAULT_AUTO);
-        chooser.addOption("My Auto", CUSTOM_AUTO);
-        SmartDashboard.putData("Auto choices", chooser);
+        try {
+            CrashTracker.logRobotInit();
+            MotorConfigs.read();
+            System.out.println("Motor Config Successful");
+            Subsystems.initializeSubsystems();
+            System.out.println("Subsystem Initialization Successful");
+            System.out.println("Auto Constructed");
+            System.out.println("AutoRoutine Initialization Successful");
+            ShuffleboardData.init();
+
+            DriveDemand.circumference = Math.PI * WHEEL_DIAMETER;
+            for (Subsystem subsystem : allSubsystems) {
+                LOOPER.addLoop(subsystem);
+                subsystem.zeroSensors();
+            }
+            limelight.setLights(false);
+
+
+        }
+        catch (IOException e) {
+            System.out.println("Something went wrong while reading config files!");
+            CrashTracker.logThrowableCrash(e);
+            e.printStackTrace();
+            System.out.println("ERROR WHEN READING CONFIG");
+            e.printStackTrace();
+        }
+        catch (Throwable t) {
+            CrashTracker.logThrowableCrash(t);
+            throw t;
+        }
     }
     
     
@@ -46,7 +88,17 @@ public class Robot extends TimedRobot
      * SmartDashboard integrated updating.
      */
     @Override
-    public void robotPeriodic() {}
+    public void robotPeriodic() {
+        boolean disabled = DriverStation.getInstance().isDisabled();
+        double voltage = RobotController.getBatteryVoltage();
+        SmartDashboard.putBoolean("Replace Battery if Red", disabled ? voltage > MIN_DISABLED_VOLTAGE : voltage > MIN_IDLE_VOLTAGE);
+
+        Subsystems.outputTelemetry();
+        BATTERY_TOO_LOW = disabled && voltage > MIN_DISABLED_VOLTAGE;
+        SmartDashboard.putBoolean("Replace Battery if Red", disabled ? voltage > MIN_DISABLED_VOLTAGE : voltage > MIN_IDLE_VOLTAGE);
+
+        limelightValues.update();
+    }
     
     
     /**
@@ -62,9 +114,7 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit()
     {
-        autoSelected = chooser.getSelected();
-        // autoSelected = SmartDashboard.getString("Auto Selector", DEFAULT_AUTO);
-        System.out.println("Auto selected: " + autoSelected);
+
     }
     
     
@@ -72,32 +122,54 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousPeriodic()
     {
-        switch (autoSelected)
-        {
-            case CUSTOM_AUTO:
-                // Put custom auto code here
-                break;
-            case DEFAULT_AUTO:
-            default:
-                // Put default auto code here
-                break;
-        }
+
     }
     
     
     /** This method is called once when teleop is enabled. */
     @Override
-    public void teleopInit() {}
+    public void teleopInit() {
+        try {
+            System.out.println("teleopInit");
+
+            CrashTracker.logTeleopInit();
+            LOOPER.setMode(RobotMode.ENABLED);
+            LOOPER.start();
+            limelight.setLights(false);
+            limelight.setStream(2);
+        }
+        catch (Throwable t) {
+            CrashTracker.logThrowableCrash(t);
+            try {
+                throw t;
+            }
+            catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+    }
     
     
     /** This method is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() {}
+    public void teleopPeriodic() {
+        Subsystems.teleopControls();
+    }
     
     
     /** This method is called once when the robot is disabled. */
     @Override
-    public void disabledInit() {}
+    public void disabledInit() {
+        try {
+            CrashTracker.logDisabledInit();
+            LOOPER.setMode(RobotMode.DISABLED);
+            LOOPER.start();
+        }
+        catch (Throwable t) {
+            CrashTracker.logThrowableCrash(t);
+            throw t;
+        }
+    }
     
     
     /** This method is called periodically when disabled. */

@@ -27,26 +27,26 @@ public class Subsystems {
             allSubsystems.get(currentSubsystem).outputTelemetry();
             currentSubsystem++;
         }
+    }
 
-        public static void initializeSubsystems() {
-            DRIVE = new Drive();
-            allSubsystems = List.of(DRIVE);
-            LOOPER.addLoop(new SmartDashboardLoop());
+    public static void initializeSubsystems() {
+        DRIVE = new Drive();
+        allSubsystems = List.of(DRIVE);
+        LOOPER.addLoop(new SmartDashboardLoop());
+    }
+
+    /**
+     * Calls each subsystem's teleopControls()
+     */
+    public static void teleopControls() {
+        for (Subsystem subsystem : allSubsystems) {
+            subsystem.teleopControls();
         }
+    }
 
-        /**
-         * Calls each subsystem's teleopControls()
-         */
-        public static void teleopControls() {
-            for (Subsystem subsystem : allSubsystems) {
-                subsystem.teleopControls();
-            }
-        }
-
-        public static void outputTelemetry() {
-            for (Subsystem subsystem : allSubsystems) {
-                subsystem.outputTelemetry();
-            }
+    public static void outputTelemetry() {
+        for (Subsystem subsystem : allSubsystems) {
+            subsystem.outputTelemetry();
         }
     }
 }
