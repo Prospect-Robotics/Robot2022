@@ -27,6 +27,8 @@ public class SubsystemControlsConfig {
 
     // operator
     private static Controller operatorJoystick = new Controller(1);
+    private static Button intakeInButton = operatorJoystick.button(5);
+    private static Button intakeOutButton = operatorJoystick.button(6);
 
     static Button getPivotButton() {
         return pivotButton;
@@ -50,5 +52,13 @@ public class SubsystemControlsConfig {
 
     static Axis getDriveReverse() {
         return driveReverse;
+    }
+
+    static Button getIntakeInButton() {
+        return intakeInButton;
+    }
+
+    static Button getIntakeOutButton() {
+        return intakeOutButton;
     }
 }
