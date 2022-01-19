@@ -18,7 +18,6 @@ public class CurvatureDrive {
 
         if (!pivot) steer *= 1.3;
 
-        steer = -steer;
         return arcadeDrive.getDemand(pivot ? steer : throttle * steer, throttle);
     }
 
