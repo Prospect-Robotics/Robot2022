@@ -1,6 +1,7 @@
 package com.team2813.frc2022.util;
 
 import com.team2813.lib.util.LimelightValues;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
@@ -32,6 +33,16 @@ public class Limelight {
             return (((values.getTx()) / 29.8) * kP * MAX_CORRECTION_STEER_SPEED + (sign * MIN_CORRECTION_STEER_SPEED));
         }
         return 0;
+    }
+
+    private double calculateHorizontalDistance() {
+        double angle = Math.toRadians(MOUNT_ANGLE - values.getTy());
+        return (Units.inchesToMeters(TARGET_HEIGHT - MOUNT_HEIGHT) / Math.tan(angle)) + Units.inchesToMeters(24);
+    }
+
+    public double getShooterDemand() {
+        double distance = calculateHorizontalDistance();
+        return Math.sqrt(Units.inchesToMeters(TARGET_HEIGHT - MOUNT_HEIGHT) / ((distance * Math.sqrt(3)) - (19.6 * Math.pow(distance, 2))));
     }
 
     public void setLights(boolean enable) {
