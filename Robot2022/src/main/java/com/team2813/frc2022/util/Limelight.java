@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 public class Limelight {
 
     private LimelightValues values = new LimelightValues();
+    private final double kP = 0.2; // TODO: tune kP
+    private static final double MAX_CORRECTION_STEER_SPEED = 0.7;
+    private static final double MIN_CORRECTION_STEER_SPEED = 0.05;
     private static final double MOUNT_ANGLE = 52; // degrees
     private static final double MOUNT_HEIGHT = 27.6; // inches
     private static final double TARGET_HEIGHT = 104; // inches
@@ -21,6 +24,14 @@ public class Limelight {
 
     public static Limelight getInstance() {
         return instance;
+    }
+
+    public double getSteer() {
+        if (Math.abs(values.getTx()) > 0.5) {
+            double sign = Math.abs(values.getTx()) / values.getTx();
+            return (((values.getTx()) / 29.8) * kP * MAX_CORRECTION_STEER_SPEED + (sign * MIN_CORRECTION_STEER_SPEED));
+        }
+        return 0;
     }
 
     public void setLights(boolean enable) {
