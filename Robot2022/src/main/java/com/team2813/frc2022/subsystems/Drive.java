@@ -38,6 +38,7 @@ public class Drive extends Subsystem {
     private static final Axis CURVATURE_FORWARD = SubsystemControlsConfig.getDriveForward();
     private static final Axis CURVATURE_REVERSE = SubsystemControlsConfig.getDriveReverse();
     private static final Button PIVOT_BUTTON = SubsystemControlsConfig.getPivotButton();
+    private static final Button AUTO_BUTTON = SubsystemControlsConfig.getAutoButton();
     private ControlInput arcade_x;
     private ControlInput arcade_y;
 
@@ -107,7 +108,10 @@ public class Drive extends Subsystem {
 
     private void teleopDrive(TeleopDriveType driveType) {
         limelight.setLights(true); // permanently on because it's outside
-        if (driveType == TeleopDriveType.ARCADE) {
+        if (AUTO_BUTTON.get()) {
+            driveDemand = curvatureDrive.getDemand(0, 0, limelight.getSteer(), true);
+        }
+        else if (driveType == TeleopDriveType.ARCADE) {
             driveDemand = arcadeDrive.getDemand(arcade_x.get(), arcade_y.get());
         }
         else {
@@ -135,6 +139,7 @@ public class Drive extends Subsystem {
         SmartDashboard.putString("Control Drive Mode", driveMode.toString());
 //        SmartDashboard.putNumber("Gyro", pigeon.getHeading());
 //        SmartDashboard.putString("Odometry", odometry.getPoseMeters().toString());
+        SmartDashboard.putNumber("Limelight Angle", limelight.getValues().getTx());
 
         SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
         SmartDashboard.putNumber("Right Demand", driveDemand.getRight());

@@ -19,6 +19,7 @@ public class SubsystemControlsConfig {
     // drive
     private static Controller driveJoystick = new Controller(0);
     private static Button pivotButton = driveJoystick.button(1);
+    private static Button autoButton = driveJoystick.button(2);
     private static Axis driveX = driveJoystick.axis(0);
     private static Axis driveY = driveJoystick.axis(3);
     private static Axis driveSteer = driveJoystick.axis(0);
@@ -30,6 +31,10 @@ public class SubsystemControlsConfig {
 
     static Button getPivotButton() {
         return pivotButton;
+    }
+
+    static Button getAutoButton() {
+        return autoButton;
     }
 
     static Axis getDriveX() {
