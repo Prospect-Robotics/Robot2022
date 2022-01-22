@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 public class Limelight {
 
     private LimelightValues values = new LimelightValues();
-    private static final double MOUNT_ANGLE = 0; // degrees
-    private static final double MOUNT_HEIGHT = 0; // inches
+    private static final double MOUNT_ANGLE = 52; // degrees
+    private static final double MOUNT_HEIGHT = 27.6; // inches
     private static final double TARGET_HEIGHT = 104; // inches
 
     private static NetworkTableEntry trimEntry = Shuffleboard.getTab("Tuning").addPersistent("Trim", 0).getEntry();
