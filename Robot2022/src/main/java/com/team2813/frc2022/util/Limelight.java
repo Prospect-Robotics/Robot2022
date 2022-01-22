@@ -40,9 +40,9 @@ public class Limelight {
         return (Units.inchesToMeters(TARGET_HEIGHT - MOUNT_HEIGHT) / Math.tan(angle)) + Units.inchesToMeters(24);
     }
 
-    public double getShooterDemand() {
+    public double getShooterDemand() { // returns in m/s
         double distance = calculateHorizontalDistance();
-        return Math.sqrt(Units.inchesToMeters(TARGET_HEIGHT - MOUNT_HEIGHT) / ((distance * Math.sqrt(3)) - (19.6 * Math.pow(distance, 2))));
+        return 2 * Math.sqrt(4.9) * distance / Math.sqrt((distance * Math.sqrt(3)) - Units.inchesToMeters(TARGET_HEIGHT - MOUNT_HEIGHT));
     }
 
     public void setLights(boolean enable) {
