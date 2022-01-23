@@ -1,6 +1,7 @@
 package com.team2813.frc2022.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.team2813.frc2022.Robot;
 import com.team2813.frc2022.util.Limelight;
 import com.team2813.frc2022.util.ShuffleboardData;
 import com.team2813.frc2022.util.Units2813;
@@ -16,6 +17,7 @@ import com.team2813.lib.motors.interfaces.ControlMode;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -50,23 +52,25 @@ public class Drive extends Subsystem {
     private static TeleopDriveType teleopDriveType = TeleopDriveType.CURVATURE;
 
     // Gyro
-//    private final int pigeonID = 13;
-//    private PigeonWrapper pigeon = new PigeonWrapper(pigeonID, "Drive");
-//    public PigeonWrapper getPigeon() {
-//        return pigeon;
-//    }
+    private final int pigeonID = 13;
+    private PigeonWrapper pigeon = new PigeonWrapper(pigeonID, "Drive");
+    public PigeonWrapper getPigeon() {
+        return pigeon;
+    }
 
     // Autonomous
+    private final double TRACK_WIDTH = 28.5; // inches
     public static final double GEAR_RATIO = 1 / 7.64;
+    public DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(TRACK_WIDTH));
     private Limelight limelight = Limelight.getInstance();
 
     // Odometry
-//    private static DifferentialDriveOdometry odometry;
-//    public Pose2d robotPosition;
-//
-//    public static DifferentialDriveOdometry getOdometry() {
-//        return odometry;
-//    }
+    private static DifferentialDriveOdometry odometry;
+    public Pose2d robotPosition;
+
+    public static DifferentialDriveOdometry getOdometry() {
+        return odometry;
+    }
 
     public enum TeleopDriveType {
         ARCADE, CURVATURE
@@ -100,9 +104,9 @@ public class Drive extends Subsystem {
 
         DriveDemand.circumference = WHEEL_CIRCUMFERENCE;
 
-//        pigeon.setYawToCompass();
-//        pigeon.setHeading(0);
-//        odometry = new DifferentialDriveOdometry(new Rotation2d(pigeon.getHeading()));
+        pigeon.setYawToCompass();
+        pigeon.setHeading(0);
+        odometry = new DifferentialDriveOdometry(new Rotation2d(pigeon.getHeading()));
     }
 
     private void teleopDrive(TeleopDriveType driveType) {
@@ -133,8 +137,8 @@ public class Drive extends Subsystem {
         SmartDashboard.putNumber("Left Velocity", leftVelocity);
         SmartDashboard.putNumber("Right Velocity", rightVelocity);
         SmartDashboard.putString("Control Drive Mode", driveMode.toString());
-//        SmartDashboard.putNumber("Gyro", pigeon.getHeading());
-//        SmartDashboard.putString("Odometry", odometry.getPoseMeters().toString());
+        SmartDashboard.putNumber("Gyro", pigeon.getHeading());
+        SmartDashboard.putString("Odometry", odometry.getPoseMeters().toString());
 
         SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
         SmartDashboard.putNumber("Right Demand", driveDemand.getRight());
@@ -173,13 +177,13 @@ public class Drive extends Subsystem {
     public void zeroSensors() {
         LEFT.setEncoderPosition(0);
         RIGHT.setEncoderPosition(0);
-        //pigeon.setHeading(0);
+        pigeon.setHeading(0);
     }
 
     @Override
     protected void writePeriodicOutputs() {
 
-        if (driveMode == DriveMode.VELOCITY) {
+        if (driveMode == DriveMode.VELOCITY || Robot.isAuto) {
             DriveDemand demand = Units2813.dtDemandToMotorDemand(driveDemand); // converts m/s to rpm
             LEFT.set(ControlMode.VELOCITY, demand.getLeft(), feedforward.calculate(driveDemand.getLeft()) / 12);
             RIGHT.set(ControlMode.VELOCITY, demand.getRight(), feedforward.calculate(driveDemand.getRight()) / 12);
@@ -192,9 +196,9 @@ public class Drive extends Subsystem {
 
     @Override
     protected void readPeriodicInputs() {
-//        double leftDistance = Units2813.motorRevsToWheelRevs(LEFT.getEncoderPosition()) * WHEEL_CIRCUMFERENCE;
-//        double rightDistance = Units2813.motorRevsToWheelRevs(RIGHT.getEncoderPosition()) * WHEEL_CIRCUMFERENCE;
-//        robotPosition = odometry.update(Rotation2d.fromDegrees(pigeon.getHeading()), leftDistance, rightDistance);
+        double leftDistance = Units2813.motorRevsToWheelRevs(LEFT.getEncoderPosition()) * WHEEL_CIRCUMFERENCE;
+        double rightDistance = Units2813.motorRevsToWheelRevs(RIGHT.getEncoderPosition()) * WHEEL_CIRCUMFERENCE;
+        robotPosition = odometry.update(Rotation2d.fromDegrees(pigeon.getHeading()), leftDistance, rightDistance);
     }
 
     public synchronized void setBrakeMode(boolean brake) {
@@ -202,6 +206,12 @@ public class Drive extends Subsystem {
         RIGHT.setNeutralMode(mode);
         LEFT.setNeutralMode(mode);
         System.out.println("Setting Brake Mode:" + brake);
+    }
+
+    public void initAutonomous(Pose2d initialPose) {
+        System.out.println("Autonomous Initial Pose" + initialPose.toString());
+        pigeon.setHeading(initialPose.getRotation().getDegrees());
+        odometry.resetPosition(initialPose, initialPose.getRotation());
     }
 
     public void setDemand(DriveDemand demand) {
