@@ -11,8 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter extends Subsystem {
 
     // Physical Constants
-    private static final double FLYWHEEL_DIAMETER = Units.inchesToMeters(0);
+    private static final double FLYWHEEL_DIAMETER = Units.inchesToMeters(4);
     private static final double FLYWHEEL_CIRCUMFERENCE = Math.PI * FLYWHEEL_DIAMETER;
+    public static final double FLYWHEEL_UPDUCTION = 3.0 / 2.0;
 
     // Motor Controllers
     private final TalonFXWrapper FLYWHEEL;
@@ -28,7 +29,7 @@ public class Shooter extends Subsystem {
     }
 
     public boolean isFlywheelReady() {
-        return Math.abs(FLYWHEEL.getVelocity() - Units2813.velocityToRpm(demand, FLYWHEEL_CIRCUMFERENCE)) < 500;
+        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - demand) < 500;
     }
 
     boolean isFullyRevvedUp() {
@@ -37,7 +38,7 @@ public class Shooter extends Subsystem {
 
     @Override
     public void outputTelemetry() {
-        double flywheelVelocity = Units2813.rpmToVelocity(FLYWHEEL.getVelocity(), FLYWHEEL_CIRCUMFERENCE);
+        double flywheelVelocity = Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION);
         SmartDashboard.putNumber("Flywheel Demand", demand);
         SmartDashboard.putNumber("Flywheel Velocity", flywheelVelocity);
     }
@@ -46,7 +47,7 @@ public class Shooter extends Subsystem {
     public void teleopControls() {
         SHOOTER_BUTTON.whenPressedReleased(() -> setFlywheel(0.5), () -> setFlywheel(0));
 
-        isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.velocityToRpm(demand, FLYWHEEL_CIRCUMFERENCE);
+        isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
     }
 
     @Override
