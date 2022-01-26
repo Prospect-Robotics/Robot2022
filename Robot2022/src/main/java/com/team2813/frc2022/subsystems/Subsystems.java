@@ -14,6 +14,7 @@ public class Subsystems {
 
     public static List<Subsystem> allSubsystems;
     public static Drive DRIVE;
+    public static Shooter SHOOTER;
 
     public static final Looper LOOPER = new Looper(RobotMode.DISABLED);
 
@@ -31,7 +32,8 @@ public class Subsystems {
 
     public static void initializeSubsystems() {
         DRIVE = new Drive();
-        allSubsystems = List.of(DRIVE);
+        SHOOTER = new Shooter();
+        allSubsystems = List.of(DRIVE, SHOOTER);
         LOOPER.addLoop(new SmartDashboardLoop());
     }
 
