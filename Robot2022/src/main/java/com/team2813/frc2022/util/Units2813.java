@@ -40,6 +40,15 @@ public final class Units2813 {
         return wheelRevsToMotorRevs(revolutions, Drive.GEAR_RATIO);
     }
 
+    // basic velocity to rpm and vice versa (not just for drivetrain)
+    public static double rpmToVelocity(double rpm, double circumference) { // rpm to m/s
+        return rpm * circumference / 60;
+    }
+
+    public static double velocityToRpm(double velocity, double circumference) { // m/s to rpm
+        return (60 / circumference) * velocity;
+    }
+
     // drivetrain velocity to motor rpms
     public static double dtVelocityToMotorRpm(double speed) { // input m/s
         return wheelRevsToMotorRevs(speed / Drive.WHEEL_CIRCUMFERENCE) * 60;
