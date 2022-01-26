@@ -52,4 +52,8 @@ public class SubsystemControlsConfig {
     static Axis getDriveReverse() {
         return driveReverse;
     }
+
+    static Button getShooterButton() {
+        return shooterButton;
+    }
 }
