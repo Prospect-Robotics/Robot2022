@@ -39,13 +39,15 @@ public class Shooter extends Subsystem {
     @Override
     public void outputTelemetry() {
         double flywheelVelocity = Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION);
+        double error = demand - flywheelVelocity;
         SmartDashboard.putNumber("Flywheel Demand", demand);
         SmartDashboard.putNumber("Flywheel Velocity", flywheelVelocity);
+        SmartDashboard.putNumber("Error", error);
     }
 
     @Override
     public void teleopControls() {
-        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(0.7), () -> setShooter(0));
+        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(5000), () -> setShooter(0));
 
         isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
     }
@@ -67,7 +69,8 @@ public class Shooter extends Subsystem {
 
     @Override
     protected void writePeriodicOutputs() {
-        FLYWHEEL.set(ControlMode.DUTY_CYCLE, demand);
+        double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
+        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
     }
 
     public void setShooter(double demand) {
