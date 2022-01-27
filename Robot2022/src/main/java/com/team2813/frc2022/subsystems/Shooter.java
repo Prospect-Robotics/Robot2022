@@ -45,7 +45,7 @@ public class Shooter extends Subsystem {
 
     @Override
     public void teleopControls() {
-        SHOOTER_BUTTON.whenPressedReleased(() -> setFlywheel(0.5), () -> setFlywheel(0));
+        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(0.7), () -> setShooter(0));
 
         isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
     }
@@ -70,7 +70,7 @@ public class Shooter extends Subsystem {
         FLYWHEEL.set(ControlMode.DUTY_CYCLE, demand);
     }
 
-    public void setFlywheel(double demand) {
+    public void setShooter(double demand) {
         this.demand = demand;
     }
 }

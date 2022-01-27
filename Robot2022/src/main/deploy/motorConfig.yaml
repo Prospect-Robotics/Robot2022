@@ -49,13 +49,13 @@ talons:
     motorControllerType: TALON_FX
     type: BRUSHLESS
     subsystemName: Shooter
-    inverted: NONINVERTED
+    inverted: INVERTED
     statusFrame: STATUS_2
     followers:
       - id: 7
         motorControllerType: TALON_FX
         type: BRUSHLESS
-        inverted: FollowMaster
+        inverted: OpposeMaster
     pidControllers:
       - p: 0
         i: 0
