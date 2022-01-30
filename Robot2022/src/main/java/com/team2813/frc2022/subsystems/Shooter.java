@@ -40,9 +40,11 @@ public class Shooter extends Subsystem {
     public void outputTelemetry() {
         double flywheelVelocity = Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION);
         double error = demand - flywheelVelocity;
+        double flywheelEncoder = FLYWHEEL.getEncoderPosition();
         SmartDashboard.putNumber("Flywheel Demand", demand);
         SmartDashboard.putNumber("Flywheel Velocity", flywheelVelocity);
-        SmartDashboard.putNumber("Error", error);
+        SmartDashboard.putNumber("Flywheel Error", error);
+        SmartDashboard.putNumber("Flywheel Encoder", flywheelEncoder);
     }
 
     @Override
