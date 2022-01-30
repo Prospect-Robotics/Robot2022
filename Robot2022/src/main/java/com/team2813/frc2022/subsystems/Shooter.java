@@ -5,6 +5,7 @@ import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,6 +24,8 @@ public class Shooter extends Subsystem {
 
     private double demand = 0;
     private boolean isFullyRevvedUp;
+
+    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.6233, 0.16311, 0.037633); // gains in rotations
 
     public Shooter() {
         FLYWHEEL = (TalonFXWrapper) MotorConfigs.talons.get("flywheel");
@@ -72,7 +75,7 @@ public class Shooter extends Subsystem {
     @Override
     protected void writePeriodicOutputs() {
         double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
-        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
+        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand, feedforward.calculate(motorDemand));
     }
 
     public void setShooter(double demand) {
