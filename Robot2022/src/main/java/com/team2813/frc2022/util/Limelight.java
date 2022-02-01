@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 public class Limelight {
 
     private LimelightValues values = new LimelightValues();
-    private final double kP = 0.2; // TODO: tune kP
+    private final double kP = 0.875;
     private static final double MAX_CORRECTION_STEER_SPEED = 0.7;
     private static final double MIN_CORRECTION_STEER_SPEED = 0.05;
     private static final double MOUNT_ANGLE = 52; // degrees
