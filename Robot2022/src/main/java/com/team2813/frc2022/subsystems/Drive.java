@@ -38,7 +38,7 @@ public class Drive extends Subsystem {
     private static final Axis CURVATURE_FORWARD = SubsystemControlsConfig.getDriveForward();
     private static final Axis CURVATURE_REVERSE = SubsystemControlsConfig.getDriveReverse();
     private static final Button PIVOT_BUTTON = SubsystemControlsConfig.getPivotButton();
-    private static final Button AUTO_BUTTON = SubsystemControlsConfig.getAutoButton();
+    private static final Button SHOOTER_BUTTON = SubsystemControlsConfig.getShooterButton();
     private ControlInput arcade_x;
     private ControlInput arcade_y;
 
@@ -108,7 +108,7 @@ public class Drive extends Subsystem {
 
     private void teleopDrive(TeleopDriveType driveType) {
         limelight.setLights(true); // permanently on because it's outside
-        if (AUTO_BUTTON.get()) {
+        if (SHOOTER_BUTTON.get()) {
             driveDemand = curvatureDrive.getDemand(0, 0, limelight.getSteer(), true);
         }
         else if (driveType == TeleopDriveType.ARCADE) {
