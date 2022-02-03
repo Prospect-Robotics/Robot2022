@@ -6,6 +6,7 @@ import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
 import com.team2813.lib.solenoid.PistonSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends Subsystem {
 
@@ -18,6 +19,7 @@ public class Intake extends Subsystem {
     private static final Button INTAKE_OUT_BUTTON = SubsystemControlsConfig.getIntakeOutButton();
 
     private final PistonSolenoid PISTONS;
+    private boolean deployed = false;
 
     private Demand demand = Demand.OFF;
 
@@ -28,12 +30,13 @@ public class Intake extends Subsystem {
 
     @Override
     public void outputTelemetry() {
-
+        SmartDashboard.putBoolean("Intake Deployed", deployed);
     }
 
     @Override
     public void teleopControls() {
         INTAKE_PISTONS_BUTTON.whenPressed(PISTONS::toggle);
+        deployed = !deployed;
 
         INTAKE_IN_BUTTON.whenPressedReleased(() -> setIntake(Demand.IN), () -> setIntake(Demand.OFF));
         INTAKE_OUT_BUTTON.whenPressedReleased(() -> setIntake(Demand.OUT), () -> setIntake(Demand.OFF));
