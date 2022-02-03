@@ -89,7 +89,7 @@ public class Robot extends TimedRobot
      */
     @Override
     public void robotPeriodic() {
-        boolean disabled = DriverStation.getInstance().isDisabled();
+        boolean disabled = DriverStation.isDisabled();
         double voltage = RobotController.getBatteryVoltage();
         SmartDashboard.putBoolean("Replace Battery if Red", disabled ? voltage > MIN_DISABLED_VOLTAGE : voltage > MIN_IDLE_VOLTAGE);
 

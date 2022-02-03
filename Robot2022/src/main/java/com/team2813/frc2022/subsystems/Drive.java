@@ -60,6 +60,11 @@ public class Drive extends Subsystem {
     // Autonomous
     public static final double GEAR_RATIO = 1 / 7.64;
     private Limelight limelight = Limelight.getInstance();
+    private boolean isAimed = false;
+
+    public boolean getIsAimed() {
+        return isAimed;
+    }
 
     // Odometry
 //    private static DifferentialDriveOdometry odometry;
@@ -109,16 +114,29 @@ public class Drive extends Subsystem {
     private void teleopDrive(TeleopDriveType driveType) {
         limelight.setLights(true); // permanently on because it's outside
         if (SHOOTER_BUTTON.get()) {
-            driveDemand = curvatureDrive.getDemand(0, 0, limelight.getSteer(), true);
-        }
-        else if (driveType == TeleopDriveType.ARCADE) {
-            driveDemand = arcadeDrive.getDemand(arcade_x.get(), arcade_y.get());
-        }
-        else {
-            double steer = CURVATURE_STEER.get();
-            if (PIVOT_BUTTON.get()) steer *= .8; // cap it so it's not too sensitive
+            if (limelight.getSteer() == 0) {
+                isAimed = true;
+            }
 
-            driveDemand = curvatureDrive.getDemand(CURVATURE_FORWARD.get(), CURVATURE_REVERSE.get(), steer, PIVOT_BUTTON.get());
+            if (isAimed) {
+                driveDemand = new DriveDemand(0, 0); // if the bot is already aimed, do nothing
+            }
+            else {
+                driveDemand = curvatureDrive.getDemand(0, 0, limelight.getSteer(), true);
+            }
+        }
+        else if (!SHOOTER_BUTTON.get()) {
+            isAimed = false;
+
+            if (driveType == TeleopDriveType.ARCADE) {
+                driveDemand = arcadeDrive.getDemand(arcade_x.get(), arcade_y.get());
+            }
+            else {
+                double steer = CURVATURE_STEER.get();
+                if (PIVOT_BUTTON.get()) steer *= .8; // cap it so it's not too sensitive
+
+                driveDemand = curvatureDrive.getDemand(CURVATURE_FORWARD.get(), CURVATURE_REVERSE.get(), steer, PIVOT_BUTTON.get());
+            }
         }
 
         if (driveMode == DriveMode.VELOCITY) {
@@ -140,6 +158,7 @@ public class Drive extends Subsystem {
 //        SmartDashboard.putNumber("Gyro", pigeon.getHeading());
 //        SmartDashboard.putString("Odometry", odometry.getPoseMeters().toString());
         SmartDashboard.putNumber("Limelight Angle", limelight.getValues().getTx());
+        SmartDashboard.putNumber("Limelight steer", limelight.getSteer());
 
         SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
         SmartDashboard.putNumber("Right Demand", driveDemand.getRight());
