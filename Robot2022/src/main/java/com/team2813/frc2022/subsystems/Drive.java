@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends Subsystem {
@@ -60,6 +61,9 @@ public class Drive extends Subsystem {
     // Autonomous
     public static final double GEAR_RATIO = 1 / 7.64;
     private Limelight limelight = Limelight.getInstance();
+    private double aimStart;
+    private double aimingTime;
+    private boolean isAiming = false;
     private boolean isAimed = false;
 
     public boolean getIsAimed() {
@@ -114,18 +118,23 @@ public class Drive extends Subsystem {
     private void teleopDrive(TeleopDriveType driveType) {
         limelight.setLights(true); // permanently on because it's outside
         if (SHOOTER_BUTTON.get()) {
-            if (limelight.getSteer() == 0) {
-                isAimed = true;
+            if (!isAiming) {
+                isAiming = true;
+                aimingTime = (0.022 * Math.abs(limelight.getValues().getTx())) + 0.1;
+                aimStart = Timer.getFPGATimestamp();
             }
 
-            if (isAimed) {
-                driveDemand = new DriveDemand(0, 0); // if the bot is already aimed, do nothing
+            double dt = Timer.getFPGATimestamp() - aimStart;
+            if (dt <= aimingTime) {
+                driveDemand = curvatureDrive.getDemand(0, 0, limelight.getSteer(), true);
             }
             else {
-                driveDemand = curvatureDrive.getDemand(0, 0, limelight.getSteer(), true);
+                driveDemand = new DriveDemand(0, 0);
+                isAimed = true;
             }
         }
         else if (!SHOOTER_BUTTON.get()) {
+            isAiming = false;
             isAimed = false;
 
             if (driveType == TeleopDriveType.ARCADE) {
@@ -158,7 +167,6 @@ public class Drive extends Subsystem {
 //        SmartDashboard.putNumber("Gyro", pigeon.getHeading());
 //        SmartDashboard.putString("Odometry", odometry.getPoseMeters().toString());
         SmartDashboard.putNumber("Limelight Angle", limelight.getValues().getTx());
-        SmartDashboard.putNumber("Limelight steer", limelight.getSteer());
 
         SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
         SmartDashboard.putNumber("Right Demand", driveDemand.getRight());
