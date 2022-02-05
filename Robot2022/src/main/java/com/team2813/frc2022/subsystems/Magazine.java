@@ -17,12 +17,17 @@ public class Magazine extends Subsystem {
     private final TalonFXWrapper MAGAZINE;
 
     // controllers
+    private final CANifier INTAKE_COUNTER;
     private final Joystick OPERATOR_JOYSTICK = SubsystemControlsConfig.getOperatorJoystick();
     private final Button START_STOP_BUTTON = SubsystemControlsConfig.getMagButton();
     private final Button FORWARD_BUTTON = SubsystemControlsConfig.getMagForward();
     private final Button REVERSE_BUTTON = SubsystemControlsConfig.getMagReverse();
     private final Button AUTO_BUTTON = SubsystemControlsConfig.getAutoButton();
     private Demand demand;
+
+    public int ammo = 0;
+    public boolean triggered = false;
+    public boolean ballDetected = false;
 
     public Magazine() {
         MAGAZINE = (TalonFXWrapper) MotorConfigs.talons.get("magazine");
