@@ -20,10 +20,6 @@ public class SubsystemControlsConfig {
     // driver
 	private static Controller driveJoystick = new Controller(0);
 	private static Button pivotButton = driveJoystick.button(1);
-	private static Button autoButton = driveJoystick.button(2);
-	private static Button intakeDeployButton = driveJoystick.button(4);
-	private static Button intakeSpinButton = driveJoystick.button(3);
-	private static Button magButton = driveJoystick.button(5);
 	private static Axis driveX = driveJoystick.axis(0);
 	private static Axis driveY = driveJoystick.axis(3);
 	private static Axis driveSteer = driveJoystick.axis(0);
