@@ -18,9 +18,11 @@ public class Magazine extends Subsystem {
 
     // controllers
     private final Joystick OPERATOR_JOYSTICK = SubsystemControlsConfig.getOperatorJoystick();
-
     private final Button START_STOP_BUTTON = SubsystemControlsConfig.getMagButton();
-    private Magazine_old.Demand demand;
+    private final Button FORWARD_BUTTON = SubsystemControlsConfig.getMagForward();
+    private final Button REVERSE_BUTTON = SubsystemControlsConfig.getMagReverse();
+    private final Button AUTO_BUTTON = SubsystemControlsConfig.getAutoButton();
+    private Demand demand;
 
     public Magazine() {
         MAGAZINE = (TalonFXWrapper) MotorConfigs.talons.get("magazine");
