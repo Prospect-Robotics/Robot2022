@@ -5,7 +5,10 @@ import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 
 public class Magazine extends Subsystem {
+<<<<<<< HEAD
     // physical constants:
+=======
+>>>>>>> 667e601825a1c0ebf26763fac754c69ee56be5bf
 
     // mag should spin forward when shooter is being run, forward when intake is running forward, and backwards when intake is being run backwards.
     // motor controllers
