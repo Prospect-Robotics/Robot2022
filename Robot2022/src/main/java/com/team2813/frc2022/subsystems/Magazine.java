@@ -10,14 +10,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Magazine extends Subsystem {
-    // physical constants: TODO
 
     // mag should spin forward when shooter is being run, forward when intake is running forward, and backwards when intake is being run backwards.
     // motor controllers
     private final TalonFXWrapper MAGAZINE;
 
     // controllers
-    private final CANifier INTAKE_COUNTER;
     private final Joystick OPERATOR_JOYSTICK = SubsystemControlsConfig.getOperatorJoystick();
     private final Button START_STOP_BUTTON = SubsystemControlsConfig.getMagButton();
     private final Button FORWARD_BUTTON = SubsystemControlsConfig.getMagForward();
