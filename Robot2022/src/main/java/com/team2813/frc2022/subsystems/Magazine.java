@@ -1,41 +1,36 @@
 package com.team2813.frc2022.subsystems;
 
-import com.ctre.phoenix.CANifier;
-import com.team2813.frc2022.util.Units2813;
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Magazine extends Subsystem {
-    // physical constants: TODO
+    // physical constants:
 
     // mag should spin forward when shooter is being run, forward when intake is running forward, and backwards when intake is being run backwards.
     // motor controllers
     private final TalonFXWrapper MAGAZINE;
-
+    
     // controllers
-    private final Joystick OPERATOR_JOYSTICK = SubsystemControlsConfig.getOperatorJoystick();
-
-    private final Button START_STOP_BUTTON = SubsystemControlsConfig.getMagButton();
-    private Magazine_old.Demand demand;
-
+    
+    //Step 1: 
+    
+    private static final Button SHOOTER_BUTTON = SubsystemControlsConfig.getShooterButton();
+    private static final Button INTAKE_IN_BUTTON = SubsystemControlsConfig.getIntakeInButton();
+    private static final Button INTAKE_OUT_BUTTON = SubsystemControlsConfig.getIntakeOutButton();
+    
     public Magazine() {
         MAGAZINE = (TalonFXWrapper) MotorConfigs.talons.get("magazine");
     }
 
     @Override
     public void outputTelemetry() {
-        double magazineVelocity = Units2813.motorRevsToWheelRevs(MAGAZINE.getVelocity());
-        // SmartDashboard.putNumber("Magazine Demand", demand);
-        SmartDashboard.putNumber("Magazine Velocity", magazineVelocity);
+
     }
 
     @Override
     public void teleopControls() {
-        // INTAKE_BUTTON.whenPressedReleased(() >= Units2813.wheelRevsToMotorRevs(demand,)
+        
     }
 
     @Override
@@ -51,5 +46,20 @@ public class Magazine extends Subsystem {
     @Override
     public void onEnabledStop(double timestamp) {
 
+    }
+
+    public enum Demand {
+        IN(0.8), OFF(0), OUT(-0.8), SHOOT(0.8);
+
+
+        double percent;
+
+        Demand (double percent) {
+            this.percent = percent;
+        }
+    }
+
+    public void setDemand(Demand demand) {
+        this.demand = demand;
     }
 }

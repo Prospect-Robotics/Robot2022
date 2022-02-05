@@ -32,19 +32,9 @@ public class SubsystemControlsConfig {
 
 	// operator
 	private static Controller operatorJoystick = new Controller(1);
-	private static Button climberPiston = operatorJoystick.button(2);
-	private static Button intakePistons = operatorJoystick.button(3);
-	private static Button intakeIn = operatorJoystick.button(5);
-	private static Button intakeOut = operatorJoystick.button(6);
+	private static Button intakeInButton = operatorJoystick.button(6);
+	private static Button intakeOutButton = operatorJoystick.button(5);
 	private static Button shooterButton = operatorJoystick.button(4);
-	private static Button hoodZeroButton = operatorJoystick.button(9);
-	private static Button hoodKillButton = operatorJoystick.button(10);
-	private static Button hoodCloseButton = operatorJoystick.button(1);
-	private static Button climberButton = operatorJoystick.button(11);
-	private static Axis climberElevator = operatorJoystick.axis(1);
-	private static Button climberDisable = operatorJoystick.button(1);
-	private static Button magForward = operatorJoystick.button(7);
-	private static Button magReverse = operatorJoystick.button(8);
 
     static Button getPivotButton() {
         return pivotButton;
@@ -70,33 +60,15 @@ public class SubsystemControlsConfig {
         return driveReverse;
     }
 
-    /* define these methods:
+    static Button getIntakeInButton() {
+        return intakeInButton;
+    }
 
-    getOperatorJoystick
-    getMagButton
-    getMagForward
-    getMagReverse
-    getAutoButton
-    
-    */
+    static Button getIntakeOutButton() {
+        return intakeOutButton;
+    }
 
-    static Joystick getOperatorJoystick() {
-		return operatorJoystick;
-	}
-
-    static Button getMagButton() {
-		return magButton;
-	}
-
-    static Button getMagForward() {
-		return magForward;
-	}
-
-	static Button getMagReverse() {
-		return magReverse;
-	}
-
-    static Button getAutoButton() {
-		return autoButton;
-	}
+    static Button getShooterButton() {
+        return shooterButton; 
+    }
 }
