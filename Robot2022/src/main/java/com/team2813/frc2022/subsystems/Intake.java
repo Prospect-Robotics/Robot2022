@@ -19,9 +19,9 @@ public class Intake extends Subsystem {
     private static final Button INTAKE_OUT_BUTTON = SubsystemControlsConfig.getIntakeOutButton();
 
     private final PistonSolenoid PISTONS;
-    private boolean deployed = false;
 
     private Demand demand = Demand.OFF;
+    private boolean deployed;
 
     public Intake() {
         INTAKE_MOTOR = (TalonFXWrapper) MotorConfigs.talons.get("intake");
@@ -35,8 +35,7 @@ public class Intake extends Subsystem {
 
     @Override
     public void teleopControls() {
-        INTAKE_PISTONS_BUTTON.whenPressed(PISTONS::toggle);
-        deployed = !deployed;
+        INTAKE_PISTONS_BUTTON.whenPressed(this::togglePistons);
 
         INTAKE_IN_BUTTON.whenPressedReleased(() -> setIntake(Demand.IN), () -> setIntake(Demand.OFF));
         INTAKE_OUT_BUTTON.whenPressedReleased(() -> setIntake(Demand.OUT), () -> setIntake(Demand.OFF));
@@ -44,7 +43,7 @@ public class Intake extends Subsystem {
 
     @Override
     public void onEnabledStart(double timestamp) {
-
+        setDeployed(false);
     }
 
     @Override
@@ -54,7 +53,7 @@ public class Intake extends Subsystem {
 
     @Override
     public void onEnabledStop(double timestamp) {
-
+        setDeployed(false);
     }
 
     @Override
@@ -72,7 +71,20 @@ public class Intake extends Subsystem {
         }
     }
 
+    @Override
+    protected void readPeriodicInputs() {
+        deployed = !PISTONS.get().value;
+    }
+
     public void setIntake(Demand demand) {
         this.demand = demand;
+    }
+
+    public void togglePistons() {
+        PISTONS.toggle();
+    }
+
+    public void setDeployed(boolean deployed) {
+        PISTONS.set(!deployed ? PistonSolenoid.PistonState.EXTENDED : PistonSolenoid.PistonState.RETRACTED);
     }
 }

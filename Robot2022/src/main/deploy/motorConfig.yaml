@@ -1,14 +1,14 @@
 ---
 talons:
   driveLeft:
-    deviceNumber: 1
+    deviceNumber: 2
     motorControllerType: TALON_FX
     type: BRUSHLESS
     subsystemName: Drive
     inverted: INVERTED
     statusFrame: STATUS_2
     followers:
-      - id: 2
+      - id: 3
         motorControllerType: TALON_FX
         type: BRUSHLESS
         inverted: FollowMaster
@@ -23,14 +23,14 @@ talons:
         integralZone: 0
         allowableClosedLoopError: 0
   driveRight:
-    deviceNumber: 3
+    deviceNumber: 4
     motorControllerType: TALON_FX
     type: BRUSHLESS
     subsystemName: Drive
     inverted: NONINVERTED
     statusFrame: STATUS_2
     followers:
-      - id: 4
+      - id: 5
         motorControllerType: TALON_FX
         type: BRUSHLESS
         inverted: FollowMaster
@@ -45,7 +45,7 @@ talons:
         integralZone: 0
         allowableClosedLoopError: 0
   intake:
-    deviceNumber: 5
+    deviceNumber: 6
     motorControllerType: TALON_FX
     type: BRUSHLESS
     subsystemName: Intake
