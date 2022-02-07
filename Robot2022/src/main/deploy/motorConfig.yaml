@@ -66,3 +66,10 @@ talons:
         maxIntegralAccumulator: 0
         integralZone: 0
         allowableClosedLoopError: 0
+  kicker:
+    deviceNumber: 11
+    motorControllerType: TALON_FX
+    type: BRUSHLESS
+    subsystemName: Shooter
+    inverted: NONINVERTED
+    statusFrame: STATUS_2
