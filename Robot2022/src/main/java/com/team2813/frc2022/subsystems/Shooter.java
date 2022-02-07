@@ -17,19 +17,25 @@ public class Shooter extends Subsystem {
 
     // Motor Controllers
     private final TalonFXWrapper FLYWHEEL;
+    private final TalonFXWrapper KICKER_MOTOR;
 
     // Controllers
     private static final Button SHOOTER_BUTTON = SubsystemControlsConfig.getShooterButton();
+    private static final Button INTAKE_IN_BUTTON = SubsystemControlsConfig.getIntakeInButton();
+    private static final Button INTAKE_OUT_BUTTON = SubsystemControlsConfig.getIntakeOutButton();
+    
 
-    private double demand = 0;
+    private double flywheelDemand = 0;
+    private KickerDemand kickerDemand = KickerDemand.OFF;
     private boolean isFullyRevvedUp;
 
     public Shooter() {
         FLYWHEEL = (TalonFXWrapper) MotorConfigs.talons.get("flywheel");
+        KICKER_MOTOR = (TalonFXWrapper) MotorConfigs.talons.get("kicker");
     }
 
     public boolean isFlywheelReady() {
-        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - demand) < 500;
+        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - flywheelDemand) < 500;
     }
 
     boolean isFullyRevvedUp() {
@@ -39,15 +45,19 @@ public class Shooter extends Subsystem {
     @Override
     public void outputTelemetry() {
         double flywheelVelocity = Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION);
-        SmartDashboard.putNumber("Flywheel Demand", demand);
+        SmartDashboard.putNumber("Flywheel Demand", flywheelDemand);
         SmartDashboard.putNumber("Flywheel Velocity", flywheelVelocity);
     }
 
     @Override
     public void teleopControls() {
-        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(0.7), () -> setShooter(0));
+        SHOOTER_BUTTON.whenPressedReleased(() -> setFlywheel(0.7), () -> setFlywheel(0));
 
-        isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
+        SHOOTER_BUTTON.whenPressedReleased(() -> setKicker(KickerDemand.IN), () -> setKicker(KickerDemand.OFF));
+        INTAKE_IN_BUTTON.whenPressedReleased(() -> setKicker(KickerDemand.OUT), () -> setKicker(KickerDemand.OFF));
+        INTAKE_OUT_BUTTON.whenPressedReleased(() -> setKicker(KickerDemand.OUT), () -> setKicker(KickerDemand.OFF));
+
+        isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.wheelRevsToMotorRevs(flywheelDemand, FLYWHEEL_UPDUCTION);
     }
 
     @Override
@@ -67,10 +77,25 @@ public class Shooter extends Subsystem {
 
     @Override
     protected void writePeriodicOutputs() {
-        FLYWHEEL.set(ControlMode.DUTY_CYCLE, demand);
+        FLYWHEEL.set(ControlMode.DUTY_CYCLE, flywheelDemand);
+        KICKER_MOTOR.set(ControlMode.DUTY_CYCLE, kickerDemand.percent);
     }
 
-    public void setShooter(double demand) {
-        this.demand = demand;
+    public void setFlywheel(double demand) {
+        this.flywheelDemand = demand;
+    }
+
+    public enum KickerDemand {
+        IN(0.4), OFF(0), OUT(-0.8);
+
+        double percent;
+
+        KickerDemand(double percent) {
+            this.percent = percent;
+        }
+    }
+
+    public void setKicker(KickerDemand demand) {
+        this.kickerDemand = demand;
     }
 }

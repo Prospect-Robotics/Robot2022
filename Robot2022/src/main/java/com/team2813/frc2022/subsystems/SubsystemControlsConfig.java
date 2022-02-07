@@ -28,6 +28,8 @@ public class SubsystemControlsConfig {
     // operator
     private static Controller operatorJoystick = new Controller(1);
     private static Button shooterButton = operatorJoystick.button(4);
+    private static Button intakeInButton = operatorJoystick.button(6);
+    private static Button intakeOutButton = operatorJoystick.button(5);
 
     static Button getPivotButton() {
         return pivotButton;
@@ -55,5 +57,13 @@ public class SubsystemControlsConfig {
 
     static Button getShooterButton() {
         return shooterButton;
+    }
+
+    static Button getIntakeInButton() {
+        return intakeInButton;
+    }
+
+    static Button getIntakeOutButton() {
+        return intakeOutButton;
     }
 }
