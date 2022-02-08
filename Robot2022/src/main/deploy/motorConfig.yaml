@@ -45,7 +45,7 @@ talons:
         integralZone: 0
         allowableClosedLoopError: 0
   magazine:
-    device number: 9
+    deviceNumber: 9
     motorControllerType: TALON_FX
     type: BRUSHLESS
     subsystemName: Magazine
