@@ -49,7 +49,7 @@ talons:
     motorControllerType: TALON_FX
     type: BRUSHLESS
     subsystemName: Magazine
-    inverted: NONINVERTED
+    inverted: INVERTED
     statusFrame: STATUS_2
     followers:
       - id: 10
