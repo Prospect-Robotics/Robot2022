@@ -73,7 +73,7 @@ public class Intake extends Subsystem {
 
     @Override
     protected void readPeriodicInputs() {
-        deployed = !PISTONS.get().value;
+        deployed = PISTONS.get().value;
     }
 
     public void setIntake(Demand demand) {
@@ -85,6 +85,6 @@ public class Intake extends Subsystem {
     }
 
     public void setDeployed(boolean deployed) {
-        PISTONS.set(!deployed ? PistonSolenoid.PistonState.EXTENDED : PistonSolenoid.PistonState.RETRACTED);
+        PISTONS.set(deployed ? PistonSolenoid.PistonState.EXTENDED : PistonSolenoid.PistonState.RETRACTED);
     }
 }
