@@ -21,7 +21,7 @@ public class Magazine extends Subsystem {
     private static final Button INTAKE_IN_BUTTON = SubsystemControlsConfig.getIntakeInButton();
     private static final Button INTAKE_OUT_BUTTON = SubsystemControlsConfig.getIntakeOutButton();
 
-    private Demand demand;
+    private Demand demand = Demand.OFF;
     
     public Magazine() {
         MAGAZINE = (TalonFXWrapper) MotorConfigs.talons.get("magazine");
