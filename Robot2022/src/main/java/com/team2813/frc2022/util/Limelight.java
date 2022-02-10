@@ -16,10 +16,8 @@ public class Limelight {
     private static final double MOUNT_HEIGHT = 27.6; // inches
     private static final double TARGET_HEIGHT = 104; // inches
 
-    private static NetworkTableEntry trimEntry = Shuffleboard.getTab("Tuning").addPersistent("Trim", 0).getEntry();
-
     private Limelight() {
-        setStream(2);
+        setStream(0);
     }
 
     private static Limelight instance = new Limelight();
