@@ -39,10 +39,12 @@ public class Magazine extends Subsystem {
         if (SHOOTER_BUTTON.get() && SHOOTER.isFlywheelReady() && SHOOTER.isFullyRevvedUp()) {
             setDemand(Demand.SHOOT);
         }
-        else if (!SHOOTER_BUTTON.get()) {
-            INTAKE_IN_BUTTON.whenPressedReleased(() -> setDemand(Demand.IN), () -> setDemand(Demand.OFF));
-            INTAKE_OUT_BUTTON.whenPressedReleased(() -> setDemand(Demand.OUT), () -> setDemand(Demand.OFF));
+        else {
+            setDemand(Demand.OFF);
         }
+
+        INTAKE_IN_BUTTON.whenPressedReleased(() -> setDemand(Demand.IN), () -> setDemand(Demand.OFF));
+        INTAKE_OUT_BUTTON.whenPressedReleased(() -> setDemand(Demand.OUT), () -> setDemand(Demand.OFF));
     }
 
     @Override
