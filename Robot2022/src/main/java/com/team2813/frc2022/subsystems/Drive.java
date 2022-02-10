@@ -133,7 +133,7 @@ public class Drive extends Subsystem {
                 isAimed = true;
             }
         }
-        else if (!SHOOTER_BUTTON.get()) {
+        else {
             isAiming = false;
             isAimed = false;
 
