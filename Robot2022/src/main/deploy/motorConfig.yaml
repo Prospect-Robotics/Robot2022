@@ -56,3 +56,20 @@ talons:
         motorControllerType: TALON_FX
         type: BRUSHLESS
         inverted: OpposeMaster
+  climber:
+    deviceNumber: 14
+    motorControllerType: TALON_FX
+    type: BRUSHLESS
+    subsystemName: Magazine
+    inverted: NONINVERTED
+    statusFrame: STATUS_2
+    pidControllers:
+      - p: 0
+        i: 0
+        d: 0
+        f: 0
+        maxVelocity: 18000
+        maxAcceleration: 45000
+        maxIntegralAccumulator: 0
+        integralZone: 0
+        allowableClosedLoopError: 0
