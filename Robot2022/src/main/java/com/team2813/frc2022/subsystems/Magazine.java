@@ -5,6 +5,8 @@ import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
 
+import static com.team2813.frc2022.subsystems.Subsystems.SHOOTER;
+
 public class Magazine extends Subsystem {
 
     // mag should spin forward when shooter is being run, forward when intake is running forward, and backwards when intake is being run backwards.
@@ -34,12 +36,13 @@ public class Magazine extends Subsystem {
 
     @Override
     public void teleopControls() {
-        // here 
-        SHOOTER_BUTTON.whenPressedReleased(() -> setDemand(Demand.SHOOT), () -> setDemand(Demand.OFF));
-        INTAKE_IN_BUTTON.whenPressedReleased(() -> setDemand(Demand.IN), () -> setDemand(Demand.OFF));
-        INTAKE_OUT_BUTTON.whenPressedReleased(() -> setDemand(Demand.OUT), () -> setDemand(Demand.OFF));
-        
-
+        if (SHOOTER_BUTTON.get() && SHOOTER.isFlywheelReady() && SHOOTER.isFullyRevvedUp()) {
+            setDemand(Demand.SHOOT);
+        }
+        else if (!SHOOTER_BUTTON.get()) {
+            INTAKE_IN_BUTTON.whenPressedReleased(() -> setDemand(Demand.IN), () -> setDemand(Demand.OFF));
+            INTAKE_OUT_BUTTON.whenPressedReleased(() -> setDemand(Demand.OUT), () -> setDemand(Demand.OFF));
+        }
     }
 
     @Override
