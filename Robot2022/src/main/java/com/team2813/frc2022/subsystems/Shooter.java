@@ -43,16 +43,16 @@ public class Shooter extends Subsystem {
     public void outputTelemetry() {
         double flywheelVelocity = Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION);
         double error = demand - flywheelVelocity;
-        double flywheelEncoder = FLYWHEEL.getEncoderPosition();
+        SmartDashboard.putNumber("Flywheel Demand", demand);
         SmartDashboard.putNumber("Flywheel Demand", demand);
         SmartDashboard.putNumber("Flywheel Velocity", flywheelVelocity);
         SmartDashboard.putNumber("Flywheel Error", error);
-        SmartDashboard.putNumber("Flywheel Encoder", flywheelEncoder);
+        SmartDashboard.putNumber("Flywheel Encoder", FLYWHEEL.getEncoderPosition());
     }
 
     @Override
     public void teleopControls() {
-        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(5000), () -> setShooter(0));
+        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(3000), () -> setShooter(0));
 
         isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
     }
