@@ -51,3 +51,15 @@ talons:
     subsystemName: Intake
     inverted: NONINVERTED
     statusFrame: STATUS_2
+  magazine:
+    deviceNumber: 9
+    motorControllerType: TALON_FX
+    type: BRUSHLESS
+    subsystemName: Magazine
+    inverted: INVERTED
+    statusFrame: STATUS_2
+    followers:
+      - id: 10
+        motorControllerType: TALON_FX
+        type: BRUSHLESS
+        inverted: OpposeMaster
