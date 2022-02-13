@@ -8,6 +8,8 @@ import com.team2813.lib.solenoid.PistonSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import static com.team2813.frc2022.subsystems.Subsystems.MAGAZINE;
+
 public class Intake extends Subsystem {
 
     // Motor Controllers
@@ -37,8 +39,21 @@ public class Intake extends Subsystem {
     public void teleopControls() {
         INTAKE_PISTONS_BUTTON.whenPressed(this::togglePistons);
 
-        INTAKE_IN_BUTTON.whenPressedReleased(() -> setIntake(Demand.IN), () -> setIntake(Demand.OFF));
-        INTAKE_OUT_BUTTON.whenPressedReleased(() -> setIntake(Demand.OUT), () -> setIntake(Demand.OFF));
+        INTAKE_IN_BUTTON.whenPressedReleased(() -> {
+            setIntake(Demand.IN);
+            MAGAZINE.setDemand(Magazine.Demand.IN);
+        }, () -> {
+            setIntake(Demand.OFF);
+            MAGAZINE.setDemand(Magazine.Demand.OFF);
+        });
+
+        INTAKE_OUT_BUTTON.whenPressedReleased(() -> {
+            setIntake(Demand.OUT);
+            MAGAZINE.setDemand(Magazine.Demand.OUT);
+        }, () -> {
+            setIntake(Demand.OFF);
+            MAGAZINE.setDemand(Magazine.Demand.OFF);
+        });
     }
 
     @Override
