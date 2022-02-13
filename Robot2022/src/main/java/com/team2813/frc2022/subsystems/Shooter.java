@@ -1,5 +1,6 @@
 package com.team2813.frc2022.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.team2813.frc2022.util.Units2813;
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
@@ -32,6 +33,7 @@ public class Shooter extends Subsystem {
     public Shooter() {
         FLYWHEEL = (TalonFXWrapper) MotorConfigs.talons.get("flywheel");
         KICKER_MOTOR = (TalonFXWrapper) MotorConfigs.talons.get("kicker");
+        KICKER_MOTOR.setNeutralMode(NeutralMode.Brake);
     }
 
     public boolean isFlywheelReady() {
@@ -51,9 +53,14 @@ public class Shooter extends Subsystem {
 
     @Override
     public void teleopControls() {
-        SHOOTER_BUTTON.whenPressedReleased(() -> setFlywheel(0.7), () -> setFlywheel(0));
+        SHOOTER_BUTTON.whenPressedReleased(() -> {
+            setFlywheel(0.7);
+            setKicker(KickerDemand.IN);
+        }, () -> {
+            setFlywheel(0);
+            setKicker(KickerDemand.OFF);
+        });
 
-        SHOOTER_BUTTON.whenPressedReleased(() -> setKicker(KickerDemand.IN), () -> setKicker(KickerDemand.OFF));
         INTAKE_IN_BUTTON.whenPressedReleased(() -> setKicker(KickerDemand.OUT), () -> setKicker(KickerDemand.OFF));
         INTAKE_OUT_BUTTON.whenPressedReleased(() -> setKicker(KickerDemand.OUT), () -> setKicker(KickerDemand.OFF));
 
