@@ -167,7 +167,6 @@ public class Drive extends Subsystem {
 //        SmartDashboard.putNumber("Gyro", pigeon.getHeading());
 //        SmartDashboard.putString("Odometry", odometry.getPoseMeters().toString());
         SmartDashboard.putNumber("Limelight Angle", limelight.getValues().getTx());
-        SmartDashboard.putNumber("Limelight Stream Mode", limelight.getValues().getStream().getDouble(0));
 
         SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
         SmartDashboard.putNumber("Right Demand", driveDemand.getRight());
