@@ -81,7 +81,7 @@ public class Intake extends Subsystem {
     }
 
     public enum Demand {
-        IN(0.6), OFF(0), OUT(-0.6);
+        IN(0.45), OFF(0), OUT(-0.45);
 
         double percent;
 
