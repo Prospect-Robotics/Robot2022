@@ -44,6 +44,13 @@ talons:
         maxIntegralAccumulator: 0
         integralZone: 0
         allowableClosedLoopError: 0
+  intake:
+    deviceNumber: 6
+    motorControllerType: TALON_FX
+    type: BRUSHLESS
+    subsystemName: Intake
+    inverted: NONINVERTED
+    statusFrame: STATUS_2
   flywheel:
     deviceNumber: 7
     motorControllerType: TALON_FX
