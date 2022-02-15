@@ -9,6 +9,8 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import static com.team2813.frc2022.subsystems.Subsystems.MAGAZINE;
+
 public class Shooter extends Subsystem {
 
     // Physical Constants
@@ -52,7 +54,16 @@ public class Shooter extends Subsystem {
 
     @Override
     public void teleopControls() {
-        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(3000), () -> setShooter(0));
+        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(3000),() -> setShooter(0));
+
+        if (SHOOTER_BUTTON.get() && isFlywheelReady() && isFullyRevvedUp) {
+            MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+        }
+        else {
+            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+        }
 
         isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
     }
