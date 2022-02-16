@@ -2,6 +2,7 @@ package com.team2813.frc2022.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.team2813.lib.config.MotorConfigs;
+import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
 
@@ -17,6 +18,8 @@ public class Magazine extends Subsystem {
        Step 2: write the motors (make them do stuff)
        Step 3: 
     */
+
+    private static final Button SHOOTER_BUTTON = SubsystemControlsConfig.getShooterButton();
 
     private MagDemand magDemand = MagDemand.OFF;
     private KickerDemand kickerDemand = KickerDemand.OFF;
