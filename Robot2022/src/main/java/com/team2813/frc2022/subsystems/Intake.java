@@ -41,22 +41,18 @@ public class Intake extends Subsystem {
 
         INTAKE_IN_BUTTON.whenPressedReleased(() -> {
             setIntake(Demand.IN);
-            MAGAZINE.setMagDemand(Magazine.MagDemand.IN);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+            MAGAZINE.setDemand(Magazine.Demand.IN);
         }, () -> {
             setIntake(Demand.OFF);
-            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+            MAGAZINE.setDemand(Magazine.Demand.OFF);
         });
 
         INTAKE_OUT_BUTTON.whenPressedReleased(() -> {
             setIntake(Demand.OUT);
-            MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+            MAGAZINE.setDemand(Magazine.Demand.OUT);
         }, () -> {
             setIntake(Demand.OFF);
-            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+            MAGAZINE.setDemand(Magazine.Demand.OFF);
         });
     }
 
