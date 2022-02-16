@@ -54,15 +54,19 @@ public class Shooter extends Subsystem {
 
     @Override
     public void teleopControls() {
-        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(3000),() -> setShooter(0));
-
-        if (SHOOTER_BUTTON.get() && isFlywheelReady() && isFullyRevvedUp) {
-            MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+        if (SHOOTER_BUTTON.get()) {
+            setShooter(3000);
+            if (isFlywheelReady() && isFullyRevvedUp) {
+                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+            }
+            else {
+                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+            }
         }
         else {
-            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+            setShooter(0);
         }
 
         isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
