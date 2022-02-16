@@ -41,18 +41,22 @@ public class Intake extends Subsystem {
 
         INTAKE_IN_BUTTON.whenPressedReleased(() -> {
             setIntake(Demand.IN);
-            MAGAZINE.setDemand(Magazine.Demand.IN);
+            MAGAZINE.setMagDemand(Magazine.MagDemand.IN);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
         }, () -> {
             setIntake(Demand.OFF);
-            MAGAZINE.setDemand(Magazine.Demand.OFF);
+            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
         });
 
         INTAKE_OUT_BUTTON.whenPressedReleased(() -> {
             setIntake(Demand.OUT);
-            MAGAZINE.setDemand(Magazine.Demand.OUT);
+            MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
         }, () -> {
             setIntake(Demand.OFF);
-            MAGAZINE.setDemand(Magazine.Demand.OFF);
+            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
         });
     }
 
@@ -77,7 +81,7 @@ public class Intake extends Subsystem {
     }
 
     public enum Demand {
-        IN(0.6), OFF(0), OUT(-0.6);
+        IN(0.45), OFF(0), OUT(-0.45);
 
         double percent;
 

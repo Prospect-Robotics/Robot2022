@@ -63,3 +63,10 @@ talons:
         motorControllerType: TALON_FX
         type: BRUSHLESS
         inverted: OpposeMaster
+  kicker:
+    deviceNumber: 11
+    motorControllerType: TALON_FX
+    type: BRUSHLESS
+    subsystemName: Magazine
+    inverted: NONINVERTED
+    statusFrame: STATUS_2
