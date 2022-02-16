@@ -2,11 +2,8 @@ package com.team2813.frc2022.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.team2813.lib.config.MotorConfigs;
-import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
-
-import static com.team2813.frc2022.subsystems.Subsystems.SHOOTER;
 
 public class Magazine extends Subsystem {
 
@@ -20,10 +17,6 @@ public class Magazine extends Subsystem {
        Step 2: write the motors (make them do stuff)
        Step 3: 
     */
-
-    private static final Button SHOOTER_BUTTON = SubsystemControlsConfig.getShooterButton();
-    private static final Button INTAKE_IN_BUTTON = SubsystemControlsConfig.getIntakeInButton();
-    private static final Button INTAKE_OUT_BUTTON = SubsystemControlsConfig.getIntakeOutButton();
 
     private MagDemand magDemand = MagDemand.OFF;
     private KickerDemand kickerDemand = KickerDemand.OFF;
@@ -42,14 +35,7 @@ public class Magazine extends Subsystem {
 
     @Override
     public void teleopControls() {
-        if (SHOOTER_BUTTON.get() && SHOOTER.isFlywheelReady() && SHOOTER.isFullyRevvedUp()) {
-            setMagDemand(MagDemand.SHOOT);
-            setKickerDemand(KickerDemand.IN);
-        }
-        else {
-            setMagDemand(MagDemand.OFF);
-            setKickerDemand(KickerDemand.OFF);
-        }
+
     }
 
     @Override
