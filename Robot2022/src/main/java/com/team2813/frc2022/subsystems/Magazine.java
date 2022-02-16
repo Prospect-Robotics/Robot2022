@@ -6,6 +6,8 @@ import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
 
+import static com.team2813.frc2022.subsystems.Subsystems.SHOOTER;
+
 public class Magazine extends Subsystem {
 
     // mag should spin forward when shooter is being run, forward when intake is running forward, and backwards when intake is being run backwards.
@@ -20,6 +22,8 @@ public class Magazine extends Subsystem {
     */
 
     private static final Button SHOOTER_BUTTON = SubsystemControlsConfig.getShooterButton();
+    private static final Button INTAKE_IN_BUTTON = SubsystemControlsConfig.getIntakeInButton();
+    private static final Button INTAKE_OUT_BUTTON = SubsystemControlsConfig.getIntakeOutButton();
 
     private MagDemand magDemand = MagDemand.OFF;
     private KickerDemand kickerDemand = KickerDemand.OFF;
@@ -33,12 +37,35 @@ public class Magazine extends Subsystem {
 
     @Override
     public void outputTelemetry() {
-
+        
     }
 
     @Override
     public void teleopControls() {
+        if (SHOOTER_BUTTON.get() && SHOOTER.isFlywheelReady() && SHOOTER.isFullyRevvedUp()) {
+            setMagDemand(MagDemand.SHOOT);
+            setKickerDemand(KickerDemand.IN);
+        }
+        else {
+            setMagDemand(MagDemand.OFF);
+            setKickerDemand(KickerDemand.OFF);
+        }
 
+        INTAKE_IN_BUTTON.whenPressedReleased(() -> {
+            setMagDemand(MagDemand.IN);
+            setKickerDemand(KickerDemand.OUT);
+        }, () -> {
+            setMagDemand(MagDemand.OFF);
+            setKickerDemand(KickerDemand.OFF);
+        });
+
+        INTAKE_OUT_BUTTON.whenPressedReleased(() -> {
+            setMagDemand(MagDemand.OUT);
+            setKickerDemand(KickerDemand.OUT);
+        }, () -> {
+            setMagDemand(MagDemand.OFF);
+            setKickerDemand(KickerDemand.OFF);
+        });
     }
 
     @Override
