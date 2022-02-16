@@ -78,7 +78,7 @@ public class Magazine extends Subsystem {
     }
 
     public enum KickerDemand {
-        IN(0.4), OFF(0), OUT(-0.8);
+        IN(0.7), OFF(0), OUT(-0.4);
 
         double percent;
 
