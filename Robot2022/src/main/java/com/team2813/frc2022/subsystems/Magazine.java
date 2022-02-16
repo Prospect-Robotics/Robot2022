@@ -50,22 +50,6 @@ public class Magazine extends Subsystem {
             setMagDemand(MagDemand.OFF);
             setKickerDemand(KickerDemand.OFF);
         }
-
-        INTAKE_IN_BUTTON.whenPressedReleased(() -> {
-            setMagDemand(MagDemand.IN);
-            setKickerDemand(KickerDemand.OUT);
-        }, () -> {
-            setMagDemand(MagDemand.OFF);
-            setKickerDemand(KickerDemand.OFF);
-        });
-
-        INTAKE_OUT_BUTTON.whenPressedReleased(() -> {
-            setMagDemand(MagDemand.OUT);
-            setKickerDemand(KickerDemand.OUT);
-        }, () -> {
-            setMagDemand(MagDemand.OFF);
-            setKickerDemand(KickerDemand.OFF);
-        });
     }
 
     @Override
@@ -98,7 +82,7 @@ public class Magazine extends Subsystem {
     }
 
     public enum KickerDemand {
-        IN(0.4), OFF(0), OUT(-0.8);
+        IN(0.7), OFF(0), OUT(-0.4);
 
         double percent;
 

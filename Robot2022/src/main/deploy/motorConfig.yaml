@@ -82,6 +82,6 @@ talons:
     deviceNumber: 11
     motorControllerType: TALON_FX
     type: BRUSHLESS
-    subsystemName: Shooter
+    subsystemName: Magazine
     inverted: NONINVERTED
     statusFrame: STATUS_2
