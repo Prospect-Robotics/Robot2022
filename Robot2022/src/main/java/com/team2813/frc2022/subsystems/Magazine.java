@@ -1,17 +1,17 @@
 package com.team2813.frc2022.subsystems;
 
-import com.team2813.frc2022.util.ShuffleboardData;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Magazine extends Subsystem {
 
     // mag should spin forward when shooter is being run, forward when intake is running forward, and backwards when intake is being run backwards.
     // motor controllers
     private final TalonFXWrapper MAGAZINE;
+    private final TalonFXWrapper KICKER;
     
     // controllers
     /* Step 1: set the demand, teloep controls
@@ -21,10 +21,14 @@ public class Magazine extends Subsystem {
 
     private static final Button SHOOTER_BUTTON = SubsystemControlsConfig.getShooterButton();
 
-    private Demand demand = Demand.OFF;
+    private MagDemand magDemand = MagDemand.OFF;
+    private KickerDemand kickerDemand = KickerDemand.OFF;
     
     public Magazine() {
         MAGAZINE = (TalonFXWrapper) MotorConfigs.talons.get("magazine");
+
+        KICKER = (TalonFXWrapper) MotorConfigs.talons.get("kicker");
+        KICKER.setNeutralMode(NeutralMode.Brake);
     }
 
     @Override
@@ -35,7 +39,13 @@ public class Magazine extends Subsystem {
     @Override
     public void teleopControls() {
         // here 
-        SHOOTER_BUTTON.whenPressedReleased(() -> setDemand(Demand.SHOOT), () -> setDemand(Demand.OFF));
+        SHOOTER_BUTTON.whenPressedReleased(() -> {
+            setMagDemand(MagDemand.SHOOT);
+            setKickerDemand(KickerDemand.IN);
+        }, () -> {
+            setMagDemand(MagDemand.OFF);
+            setKickerDemand(KickerDemand.OFF);
+        });
     }
 
     @Override
@@ -53,22 +63,36 @@ public class Magazine extends Subsystem {
 
     }
 
-    public enum Demand {
+    public enum MagDemand {
         IN(0.25), OFF(0), OUT(-0.25), SHOOT(0.2);
-
 
         double percent;
 
-        Demand (double percent) {
+        MagDemand(double percent) {
             this.percent = percent;
         }
     }
 
-    public void setDemand(Demand demand) {
-        this.demand = demand;
+    public void setMagDemand(MagDemand magDemand) {
+        this.magDemand = magDemand;
+    }
+
+    public enum KickerDemand {
+        IN(0.4), OFF(0), OUT(-0.8);
+
+        double percent;
+
+        KickerDemand(double percent) {
+            this.percent = percent;
+        }
+    }
+
+    public void setKickerDemand(KickerDemand kickerDemand) {
+        this.kickerDemand = kickerDemand;
     }
 
     protected void writePeriodicOutputs() {
-        MAGAZINE.set(ControlMode.DUTY_CYCLE, demand.percent);
+        MAGAZINE.set(ControlMode.DUTY_CYCLE, magDemand.percent);
+        KICKER.set(ControlMode.DUTY_CYCLE, kickerDemand.percent);
     }
 }
