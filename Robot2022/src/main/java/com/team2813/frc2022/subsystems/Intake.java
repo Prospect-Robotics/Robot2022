@@ -39,25 +39,32 @@ public class Intake extends Subsystem {
     public void teleopControls() {
         INTAKE_PISTONS_BUTTON.whenPressed(this::togglePistons);
 
-        INTAKE_IN_BUTTON.whenPressedReleased(() -> {
-            setIntake(Demand.IN);
-            MAGAZINE.setMagDemand(Magazine.MagDemand.IN);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
-        }, () -> {
-            setIntake(Demand.OFF);
-            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-        });
+        if (deployed) {
+            INTAKE_IN_BUTTON.whenPressedReleased(() -> {
+                setIntake(Demand.IN);
+                MAGAZINE.setMagDemand(Magazine.MagDemand.IN);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+            }, () -> {
+                setIntake(Demand.OFF);
+                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+            });
 
-        INTAKE_OUT_BUTTON.whenPressedReleased(() -> {
-            setIntake(Demand.OUT);
-            MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
-        }, () -> {
+            INTAKE_OUT_BUTTON.whenPressedReleased(() -> {
+                setIntake(Demand.OUT);
+                MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+            }, () -> {
+                setIntake(Demand.OFF);
+                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+            });
+        }
+        else {
             setIntake(Demand.OFF);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-        });
+        }
     }
 
     @Override
@@ -81,7 +88,7 @@ public class Intake extends Subsystem {
     }
 
     public enum Demand {
-        IN(0.45), OFF(0), OUT(-0.45);
+        IN(0.85), OFF(0), OUT(-0.85);
 
         double percent;
 
