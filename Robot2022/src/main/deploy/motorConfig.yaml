@@ -60,7 +60,7 @@ talons:
     deviceNumber: 14
     motorControllerType: TALON_FX
     type: BRUSHLESS
-    subsystemName: Magazine
+    subsystemName: Climber
     inverted: NONINVERTED
     statusFrame: STATUS_2
     pidControllers:
