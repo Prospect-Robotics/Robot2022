@@ -17,6 +17,7 @@ public class Subsystems {
     public static Intake INTAKE;
     public static Shooter SHOOTER;
     public static Magazine MAGAZINE;
+    public static Climber CLIMBER;
 
     public static final Looper LOOPER = new Looper(RobotMode.DISABLED);
 
@@ -37,7 +38,8 @@ public class Subsystems {
         INTAKE = new Intake();
         SHOOTER = new Shooter();
         MAGAZINE = new Magazine();
-        allSubsystems = List.of(DRIVE, INTAKE, SHOOTER, MAGAZINE);
+        CLIMBER = new Climber();
+        allSubsystems = List.of(DRIVE, INTAKE, SHOOTER, MAGAZINE, CLIMBER);
         LOOPER.addLoop(new SmartDashboardLoop());
     }
 
