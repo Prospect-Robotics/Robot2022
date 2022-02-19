@@ -60,11 +60,6 @@ public class Intake extends Subsystem {
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
             });
         }
-        else {
-            setIntake(Demand.OFF);
-            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-        }
     }
 
     @Override

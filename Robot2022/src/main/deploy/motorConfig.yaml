@@ -51,28 +51,28 @@ talons:
     subsystemName: Intake
     inverted: NONINVERTED
     statusFrame: STATUS_2
-#  flywheel:
-#    deviceNumber: 7
-#    motorControllerType: TALON_FX
-#    type: BRUSHLESS
-#    subsystemName: Shooter
-#    inverted: INVERTED
-#    statusFrame: STATUS_2
-#    followers:
-#      - id: 8
-#        motorControllerType: TALON_FX
-#        type: BRUSHLESS
-#        inverted: OpposeMaster
-#    pidControllers:
-#      - p: 0.75
-#        i: 0.00015
-#        d: 2.83125
-#        f: 0
-#        maxVelocity: 18000
-#        maxAcceleration: 45000
-#        maxIntegralAccumulator: 0
-#        integralZone: 0
-#        allowableClosedLoopError: 0
+  flywheel:
+    deviceNumber: 7
+    motorControllerType: TALON_FX
+    type: BRUSHLESS
+    subsystemName: Shooter
+    inverted: INVERTED
+    statusFrame: STATUS_2
+    followers:
+      - id: 8
+        motorControllerType: TALON_FX
+        type: BRUSHLESS
+        inverted: OpposeMaster
+    pidControllers:
+      - p: 0.75
+        i: 0.00015
+        d: 2.83125
+        f: 0
+        maxVelocity: 18000
+        maxAcceleration: 45000
+        maxIntegralAccumulator: 0
+        integralZone: 0
+        allowableClosedLoopError: 0
   magazine:
     deviceNumber: 9
     motorControllerType: TALON_FX

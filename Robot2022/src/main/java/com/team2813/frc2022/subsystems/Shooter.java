@@ -89,8 +89,9 @@ public class Shooter extends Subsystem {
 
     @Override
     protected void writePeriodicOutputs() {
-        double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
-        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand, feedforward.calculate(motorDemand));
+//        double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
+//        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand, feedforward.calculate(motorDemand));
+        FLYWHEEL.set(ControlMode.DUTY_CYCLE, demand);
     }
 
     public void setShooter(double demand) {

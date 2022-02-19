@@ -35,9 +35,9 @@ public class Subsystems {
     public static void initializeSubsystems() {
         DRIVE = new Drive();
         INTAKE = new Intake();
-        //SHOOTER = new Shooter();
+        SHOOTER = new Shooter();
         MAGAZINE = new Magazine();
-        allSubsystems = List.of(DRIVE, INTAKE, MAGAZINE);
+        allSubsystems = List.of(DRIVE, INTAKE, SHOOTER, MAGAZINE);
         LOOPER.addLoop(new SmartDashboardLoop());
     }
 
