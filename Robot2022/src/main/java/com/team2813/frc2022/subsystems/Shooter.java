@@ -53,21 +53,22 @@ public class Shooter extends Subsystem {
     }
 
     public void teleopControls() {
-        if (SHOOTER_BUTTON.get()) {
-            setShooter(3000);
-
-            if (isFullyRevvedUp && isFlywheelReady()) {
-                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-            }
-            else {
-                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-            }
-        }
-        else {
-            setShooter(0);
-        }
+//        if (SHOOTER_BUTTON.get()) {
+//            setShooter(3000);
+//
+//            if (isFullyRevvedUp && isFlywheelReady()) {
+//                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+//                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+//            }
+//            else {
+//                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+//                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+//            }
+//        }
+//        else {
+//            setShooter(0);
+//        }
+        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(0.5), () -> setShooter(0));
 
         isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
     }
@@ -89,8 +90,9 @@ public class Shooter extends Subsystem {
 
     @Override
     protected void writePeriodicOutputs() {
-        double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
-        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand, feedforward.calculate(motorDemand));
+//        double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
+//        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand, feedforward.calculate(motorDemand));
+        FLYWHEEL.set(ControlMode.DUTY_CYCLE, demand);
     }
 
     public void setShooter(double demand) {
