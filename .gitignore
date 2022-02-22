@@ -12,13 +12,3 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
-PathWeaver/Paths/TwoBall.path
-PathWeaver/Paths/TwoBallMidpath
-PathWeaver/Paths/ZeroBall.path
-PathWeaver/Paths/ZeroBallLowTarmac.path
-Robot2022/gradlew
-Robot2022/src/main/deploy/paths/TwoBall.wpilib.json
-Robot2022/src/main/deploy/paths/TwoBallMidpath.wpilib.json
-Robot2022/src/main/deploy/paths/Unnamed.wpilib.json
-Robot2022/src/main/deploy/paths/ZeroBall.wpilib.json
-Robot2022/src/main/deploy/paths/ZeroBallLowTarmac.wpilib.json
