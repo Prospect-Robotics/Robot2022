@@ -23,6 +23,7 @@ public class Magazine extends Subsystem {
     
     public Magazine() {
         MAGAZINE = (TalonFXWrapper) MotorConfigs.talons.get("magazine");
+        MAGAZINE.setNeutralMode(NeutralMode.Brake);
 
         KICKER = (TalonFXWrapper) MotorConfigs.talons.get("kicker");
         KICKER.setNeutralMode(NeutralMode.Brake);
