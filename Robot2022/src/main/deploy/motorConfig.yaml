@@ -98,6 +98,7 @@ talons:
     type: BRUSHLESS
     subsystemName: Climber
     inverted: NONINVERTED
+    
     statusFrame: STATUS_2
     pidControllers:
       - p: 0
