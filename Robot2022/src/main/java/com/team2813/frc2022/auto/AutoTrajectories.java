@@ -2,57 +2,62 @@ package com.team2813.frc2022.auto;
 
 import com.team2813.lib.auto.*;
 
-import javax.annotation.processing.Generated;
-import java.security.PublicKey;
 import java.util.List;
 
 public enum AutoTrajectories {
-    Three_Ball_TerminalToTarmac(List.of(
-            new GeneratedTrajectory("ThreeBall(Term-Tarmac) Intake Tarmac",false,0),
-            new PauseTrajectory(1,1), // Shoot two balls
-            new GeneratedTrajectory("ThreeBall(Term-Tarmac) Tarmac to Terminal",false,2),
-            new PauseTrajectory(1,3), // Intake one Ball
-            new GeneratedTrajectory("ThreeBall(Term-Tarmac) Terminal to Tarmac",false,4),
-            new PauseTrajectory(1,5) // Shoot One Ball
+    THREE_BALL_TERMINAL(List.of(
+            new PauseTrajectory(1, 0), // Deploy and start intake
+            new GeneratedTrajectory("ThreeBall(Term-Tarmac) Intake Tarmac",false,1),
+            new PauseTrajectory(1,2), // Stop intake, shoot two balls
+            new GeneratedTrajectory("ThreeBall(Term-Tarmac) Tarmac to Terminal",false,3),
+            new PauseTrajectory(1,4), // Intake one ball
+            new GeneratedTrajectory("ThreeBall(Term-Tarmac) Terminal to Tarmac",false,5),
+            new PauseTrajectory(1,6) // Shoot one ball
     )),
-    Three_Ball_Tarmac(List.of(
-            new GeneratedTrajectory("ThreeBall Intake Tarmac",false,0),
-            new PauseTrajectory(1,1), // Shoot two balls
-            new GeneratedTrajectory("ThreeBall Tarmac Intake Tarmac", false, 2),
-            new PauseTrajectory(1,3) // Shoot One Balls
+    THREE_BALL_TARMAC(List.of(
+            new PauseTrajectory(1, 0), // Deploy and start intake
+            new GeneratedTrajectory("ThreeBall Intake Tarmac",false,1),
+            new PauseTrajectory(1,2), // stop intake, shoot two balls, start intake
+            new GeneratedTrajectory("ThreeBall Tarmac Intake Tarmac", false, 3),
+            new PauseTrajectory(1,4) // stop intake, shoot ball
     )),
-    Four_Ball_Normal(List.of(
-            new GeneratedTrajectory("FourBall Intake Shoot", false, 0),
-            new PauseTrajectory(1,1), // Shoot two balls
-            new GeneratedTrajectory("FourBall Tarmac to Terminal",false,2),
-            new PauseTrajectory(1,3), // Intake One Ball in Front of Terminal
-            new GeneratedTrajectory("FourBall Terminal to Tarmac", false, 4),
-            new PauseTrajectory(1,5) // Shoot Two Balls
+    FOUR_BALL(List.of(
+            new PauseTrajectory(1, 0), // Deploy and start intake
+            new GeneratedTrajectory("FourBall Intake Shoot", false, 1),
+            new PauseTrajectory(1,2), // Stop intake, shoot two balls
+            new GeneratedTrajectory("FourBall Tarmac to Terminal",false,3),
+            new PauseTrajectory(1,4), // Intake one ball in front of Terminal (keep intake running afterwards)
+            new GeneratedTrajectory("FourBall Terminal to Tarmac", false, 5),
+            new PauseTrajectory(1,6) // Stop intake, shoot two balls
     )),
     FIVE_BALL(List.of(
+            new PauseTrajectory(1, 0), // Deploy and start intake
             new GeneratedTrajectory("FiveBall Tarmac to Launch Pad", false, 0),
-            new PauseTrajectory(1,1), // Shoot Two Balls from Launch Pad
+            new PauseTrajectory(1,1), // Stop intake, shoot two balls from Launch Pad
             new GeneratedTrajectory("FiveBall Launch Pad to Terminal",false,2),
-            new PauseTrajectory(1,3), // Intake Terminal Ball
+            new PauseTrajectory(1,3), // Intake terminal ball (keep intake running afterwards)
             new GeneratedTrajectory("FiveBall Terminal to Tarmac",false,4),
-            new PauseTrajectory(1,5), // Shoot Two Balls
+            new PauseTrajectory(1,5), // Shoot two balls
             new GeneratedTrajectory("FiveBall Tarmac Intake Tarmac",false,6),
-            new PauseTrajectory(1,7) // Shoot Last Ball
+            new PauseTrajectory(1,7) // Stop intake, shoot last ball
     )),
-    ONE_BALL(List.of(
-            new GeneratedTrajectory("OneBall High",false,0),
-            new PauseTrajectory(1,1) //Intake Ball/Shoot
-    )),
-    ONE_BALL_MID(List.of(
-            new GeneratedTrajectory("OneBall Mid",false,0),
-            new PauseTrajectory(1,1)
+    TWO_BALL_SIMPLE(List.of(
+            new GeneratedTrajectory("ZeroBall",false,0),
+            new PauseTrajectory(1,1), // Intake ball
+            new RotateTrajectory(180, 2),
+            new PauseTrajectory(1, 3) // Shoot two balls
     )),
     TWO_BALL(List.of(
-            new GeneratedTrajectory("TwoBall Low",false,0),
-            new PauseTrajectory(1,1) // Shoot Two Balls
+            new PauseTrajectory(1, 0), // Deploy and start intake
+            new GeneratedTrajectory("TwoBall",false,1),
+            new PauseTrajectory(1,2) // Stop intake, shoot two balls
+    )),
+    ONE_BALL(List.of(
+            new GeneratedTrajectory("ZeroBall", true, 0),
+            new PauseTrajectory(1, 1) // Shoot ball
     )),
     ZERO_BALL(List.of(
-            new GeneratedTrajectory("ZeroBall High",false,0)
+            new GeneratedTrajectory("ZeroBall",false,0)
     ));
     
     private RamseteTrajectory trajectory;
