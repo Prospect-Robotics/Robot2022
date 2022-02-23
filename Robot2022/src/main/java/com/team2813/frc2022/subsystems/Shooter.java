@@ -27,7 +27,7 @@ public class Shooter extends Subsystem {
     private double demand = 0;
     private boolean isFullyRevvedUp;
 
-    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.6233, 0.16311, 0.037633); // gains in rotations
+    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.6471, 0.16488, 0.034638); // gains in rotations
 
     public Shooter() {
         FLYWHEEL = (TalonFXWrapper) MotorConfigs.talons.get("flywheel");
