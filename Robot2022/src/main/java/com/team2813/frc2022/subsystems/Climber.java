@@ -2,17 +2,24 @@ package com.team2813.frc2022.subsystems;
 
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
+import com.team2813.lib.solenoid.PistonSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 public class Climber extends Subsystem1d<Climber.Position> {
 
     // Controllers
     private static final Button EXTEND_BUTTON = SubsystemControlsConfig.getClimberExtendButton();
     private static final Button CLIMB_BUTTON = SubsystemControlsConfig.getClimbButton();
+    private static final Button SWIVEL_BUTTON = SubsystemControlsConfig.getClimbSwivelButton();
+
+    private final PistonSolenoid PISTONS;
 
     private Position currentPosition = Position.RETRACTED;
 
     public Climber() {
         super(MotorConfigs.talons.get("climber"));
+
+        PISTONS = new PistonSolenoid(PneumaticsModuleType.REVPH, 0, 1);
     }
 
     @Override
@@ -22,8 +29,10 @@ public class Climber extends Subsystem1d<Climber.Position> {
 
     @Override
     public void teleopControls() {
+        SWIVEL_BUTTON.whenPressed(PISTONS::toggle);
+
         EXTEND_BUTTON.whenPressed(() -> setNextPosition(Position.EXTENDED));
-        CLIMB_BUTTON.whenPressed(this::climb);
+        CLIMB_BUTTON.whenPressed(() -> setNextPosition(Position.RETRACTED));
     }
 
     @Override
@@ -38,9 +47,9 @@ public class Climber extends Subsystem1d<Climber.Position> {
         setPosition(currentPosition);
     }
 
-    public void climb() {
-        setPosition(Position.RETRACTED);
-        // TODO: add code to lock climber
+    @Override
+    public void onEnabledStop(double timestamp) {
+        PISTONS.set(PistonSolenoid.PistonState.RETRACTED);
     }
 
     public enum Position implements Subsystem1d.Position {

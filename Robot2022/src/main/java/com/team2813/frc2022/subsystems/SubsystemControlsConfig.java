@@ -34,6 +34,7 @@ public class SubsystemControlsConfig {
 	private static Button shooterButton = operatorJoystick.button(4);
     private static Button climberExtendButton = operatorJoystick.button(1);
     private static Button climbButton = operatorJoystick.button(2);
+    private static Button climbSwivelButton = operatorJoystick.button(8);
 
     static Button getPivotButton() {
       return pivotButton;
@@ -81,5 +82,9 @@ public class SubsystemControlsConfig {
 
     static Button getClimbButton() {
         return climbButton;
+    }
+
+    static Button getClimbSwivelButton() {
+        return climbSwivelButton;
     }
 }
