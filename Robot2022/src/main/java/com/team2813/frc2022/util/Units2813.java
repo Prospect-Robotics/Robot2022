@@ -41,12 +41,12 @@ public final class Units2813 {
     }
 
     // drivetrain velocity to motor rpms
-    public static double dtVelocityToMotorRpm(double speed) { // input m/s
+    public static double dtVelocityToMotorRpm(double speed) {
         return wheelRevsToMotorRevs(speed / Drive.WHEEL_CIRCUMFERENCE) * 60;
     }
 
-    public static double motorRpmToDtVelocity(double rpm) { // input rpm
-        return motorRevsToWheelRevs(rpm) * Drive.WHEEL_CIRCUMFERENCE / 60; // motor rpm -> wheel rpm -> distance/minutes -> distance/second
+    public static double motorRpmToDtVelocity(double rpm) {
+        return motorRevsToWheelRevs(rpm) * Drive.WHEEL_CIRCUMFERENCE / 60;
     }
 
     public static DriveDemand dtDemandToMotorDemand(DriveDemand demand) { // input in m/s output in motor rpm
