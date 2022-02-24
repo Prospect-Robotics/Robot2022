@@ -44,6 +44,13 @@ talons:
         maxIntegralAccumulator: 0
         integralZone: 0
         allowableClosedLoopError: 0
+  intake:
+    deviceNumber: 6
+    motorControllerType: TALON_FX
+    type: BRUSHLESS
+    subsystemName: Intake
+    inverted: NONINVERTED
+    statusFrame: STATUS_2
   magazine:
     deviceNumber: 9
     motorControllerType: TALON_FX
@@ -56,6 +63,13 @@ talons:
         motorControllerType: TALON_FX
         type: BRUSHLESS
         inverted: OpposeMaster
+  kicker:
+    deviceNumber: 11
+    motorControllerType: TALON_FX
+    type: BRUSHLESS
+    subsystemName: Magazine
+    inverted: NONINVERTED
+    statusFrame: STATUS_2
   climber:
     deviceNumber: 14
     motorControllerType: TALON_FX
