@@ -27,6 +27,7 @@ public class Drive extends Subsystem {
     public static final double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
 
     // Motor Controllers
+    // Initializing all the motors
     private final TalonFXWrapper LEFT;
     private final TalonFXWrapper RIGHT;
 
@@ -73,14 +74,17 @@ public class Drive extends Subsystem {
     }
 
     private static final double MAX_VELOCITY = 0; // max velocity of velocity drive in m/s
-    public double getMaxVelocity() {
+    
+     double getMaxVelocity() {
         return MAX_VELOCITY;
     }
+
 
     public VelocityDriveTalon velocityDrive = new VelocityDriveTalon(MAX_VELOCITY);
     public CurvatureDrive curvatureDrive = new CurvatureDrive(TELEOP_DEAD_ZONE);
     ArcadeDrive arcadeDrive = curvatureDrive.getArcadeDrive();
     DriveDemand driveDemand = new DriveDemand(0, 0);
+   
     public DriveDemand getDriveDemand() {
         return driveDemand;
     }
@@ -110,6 +114,7 @@ public class Drive extends Subsystem {
         if (driveType == TeleopDriveType.ARCADE) {
             driveDemand = arcadeDrive.getDemand(arcade_x.get(), arcade_y.get());
         }
+        
         else {
             double steer = CURVATURE_STEER.get();
             if (PIVOT_BUTTON.get()) steer *= .8; // cap it so it's not too sensitive
