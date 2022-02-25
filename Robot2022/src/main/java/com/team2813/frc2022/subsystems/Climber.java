@@ -22,7 +22,7 @@ public class Climber extends Subsystem1d<Climber.Position> {
     public Climber() {
         super(MotorConfigs.talons.get("climber"));
 
-        PISTONS = new PistonSolenoid(PneumaticsModuleType.REVPH, 0, 1);
+        PISTONS = new PistonSolenoid(1, PneumaticsModuleType.CTREPCM, 0, 1);
 //        getMotor().setSoftLimit(LimitDirection.REVERSE, 0);
 //        getMotor().setSoftLimit(LimitDirection.FORWARD, 81);
     }

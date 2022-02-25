@@ -27,7 +27,7 @@ public class Intake extends Subsystem {
 
     public Intake() {
         INTAKE_MOTOR = (TalonFXWrapper) MotorConfigs.talons.get("intake");
-        PISTONS = new PistonSolenoid(PneumaticsModuleType.REVPH, 2, 3);
+        PISTONS = new PistonSolenoid(1, PneumaticsModuleType.CTREPCM, 2, 3);
     }
 
     @Override
