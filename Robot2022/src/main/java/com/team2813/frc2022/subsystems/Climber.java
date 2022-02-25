@@ -2,6 +2,7 @@ package com.team2813.frc2022.subsystems;
 
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
+import com.team2813.lib.motors.interfaces.ControlMode;
 import com.team2813.lib.motors.interfaces.LimitDirection;
 import com.team2813.lib.solenoid.PistonSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -16,13 +17,14 @@ public class Climber extends Subsystem1d<Climber.Position> {
     private final PistonSolenoid PISTONS;
 
     private Position currentPosition = Position.RETRACTED;
+    private double demand = 0;
 
     public Climber() {
         super(MotorConfigs.talons.get("climber"));
 
         PISTONS = new PistonSolenoid(PneumaticsModuleType.REVPH, 0, 1);
-        getMotor().setSoftLimit(LimitDirection.REVERSE, 0);
-        getMotor().setSoftLimit(LimitDirection.FORWARD, 81);
+//        getMotor().setSoftLimit(LimitDirection.REVERSE, 0);
+//        getMotor().setSoftLimit(LimitDirection.FORWARD, 81);
     }
 
     @Override
@@ -34,8 +36,10 @@ public class Climber extends Subsystem1d<Climber.Position> {
     public void teleopControls() {
         SWIVEL_BUTTON.whenPressed(PISTONS::toggle);
 
-        EXTEND_BUTTON.whenPressed(() -> setNextPosition(Position.EXTENDED));
-        CLIMB_BUTTON.whenPressed(() -> setNextPosition(Position.RETRACTED));
+//        EXTEND_BUTTON.whenPressed(() -> setNextPosition(Position.EXTENDED));
+//        CLIMB_BUTTON.whenPressed(() -> setNextPosition(Position.RETRACTED));
+        EXTEND_BUTTON.whenPressedReleased(() -> demand = 0.05, () -> demand = 0);
+        CLIMB_BUTTON.whenPressedReleased(() -> demand = -0.95, () -> demand = 0);
     }
 
     @Override
@@ -53,6 +57,11 @@ public class Climber extends Subsystem1d<Climber.Position> {
     @Override
     public void onEnabledStop(double timestamp) {
         PISTONS.set(PistonSolenoid.PistonState.RETRACTED);
+    }
+
+    @Override
+    public void writePeriodicOutputs() {
+        getMotor().set(ControlMode.DUTY_CYCLE, demand);
     }
 
     public enum Position implements Subsystem1d.Position {
