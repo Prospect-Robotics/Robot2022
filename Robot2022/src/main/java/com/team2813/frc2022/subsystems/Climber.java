@@ -2,6 +2,7 @@ package com.team2813.frc2022.subsystems;
 
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
+import com.team2813.lib.motors.interfaces.LimitDirection;
 import com.team2813.lib.solenoid.PistonSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
@@ -20,6 +21,8 @@ public class Climber extends Subsystem1d<Climber.Position> {
         super(MotorConfigs.talons.get("climber"));
 
         PISTONS = new PistonSolenoid(PneumaticsModuleType.REVPH, 0, 1);
+        getMotor().setSoftLimit(LimitDirection.REVERSE, 0);
+        getMotor().setSoftLimit(LimitDirection.FORWARD, 81);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class Climber extends Subsystem1d<Climber.Position> {
     }
 
     public enum Position implements Subsystem1d.Position {
-        RETRACTED(0), EXTENDED(2048);
+        RETRACTED(0), EXTENDED(80);
 
         int encoderTicks;
 
