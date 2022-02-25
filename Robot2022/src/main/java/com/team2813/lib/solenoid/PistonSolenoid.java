@@ -14,11 +14,17 @@ public class PistonSolenoid {
 
     /**
      * Allows for multiple solenoids to be tied to the same piston in the code
-     * @param ids on PCM 0
+     * @param ids on module
      */
     public PistonSolenoid(PneumaticsModuleType moduleType, int... ids) {
         for (int id : ids) {
             solenoids.add(new Solenoid(moduleType, id));
+        }
+    }
+
+    public PistonSolenoid(int canId, PneumaticsModuleType moduleType, int... ids) {
+        for (int id : ids) {
+            solenoids.add(new Solenoid(canId, moduleType, id));
         }
     }
 
