@@ -1,6 +1,7 @@
 package com.team2813.frc2022.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.team2813.frc2022.util.Limelight;
 import com.team2813.frc2022.util.ShuffleboardData;
 import com.team2813.frc2022.util.Units2813;
@@ -98,6 +99,9 @@ public class Drive extends Subsystem {
         LEFT = (TalonFXWrapper) MotorConfigs.talons.get("driveLeft");
         RIGHT = (TalonFXWrapper) MotorConfigs.talons.get("driveRight");
 
+        LEFT.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 200);
+        RIGHT.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 200);
+
         DriveDemand.circumference = WHEEL_CIRCUMFERENCE;
 
 //        pigeon.setYawToCompass();
@@ -124,22 +128,20 @@ public class Drive extends Subsystem {
 
     @Override
     public void outputTelemetry() {
-        double leftEncoder = LEFT.getEncoderPosition();
-        double rightEncoder = RIGHT.getEncoderPosition();
-        double leftVelocity = Units2813.motorRpmToDtVelocity(LEFT.getVelocity()); // rpm to m/s
-        double rightVelocity = Units2813.motorRpmToDtVelocity(RIGHT.getVelocity());
-        SmartDashboard.putNumber("Left Encoder", leftEncoder);
-        SmartDashboard.putNumber("Right Encoder", rightEncoder);
-        SmartDashboard.putNumber("Left Velocity", leftVelocity);
-        SmartDashboard.putNumber("Right Velocity", rightVelocity);
-        SmartDashboard.putString("Control Drive Mode", driveMode.toString());
+//        double leftEncoder = LEFT.getEncoderPosition();
+//        double rightEncoder = RIGHT.getEncoderPosition();
+//        double leftVelocity = Units2813.motorRpmToDtVelocity(LEFT.getVelocity()); // rpm to m/s
+//        double rightVelocity = Units2813.motorRpmToDtVelocity(RIGHT.getVelocity());
+//        SmartDashboard.putNumber("Left Encoder", leftEncoder);
+//        SmartDashboard.putNumber("Right Encoder", rightEncoder);
+//        SmartDashboard.putNumber("Left Velocity", leftVelocity);
+//        SmartDashboard.putNumber("Right Velocity", rightVelocity);
+//        SmartDashboard.putString("Control Drive Mode", driveMode.toString());
 //        SmartDashboard.putNumber("Gyro", pigeon.getHeading());
 //        SmartDashboard.putString("Odometry", odometry.getPoseMeters().toString());
-
-        SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
-        SmartDashboard.putNumber("Right Demand", driveDemand.getRight());
-        SmartDashboard.putNumber("Left Temp", LEFT.controller.getTemperature());
-        SmartDashboard.putNumber("Right Temp", RIGHT.controller.getTemperature());
+//
+//        SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
+//        SmartDashboard.putNumber("Right Demand", driveDemand.getRight());
     }
 
     @Override

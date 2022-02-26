@@ -1,7 +1,9 @@
 package com.team2813.frc2022.subsystems;
 
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
+import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
 import com.team2813.lib.motors.interfaces.LimitDirection;
 import com.team2813.lib.solenoid.PistonSolenoid;
@@ -22,7 +24,8 @@ public class Climber extends Subsystem1d<Climber.Position> {
     public Climber() {
         super(MotorConfigs.talons.get("climber"));
 
-        PISTONS = new PistonSolenoid(1, PneumaticsModuleType.CTREPCM, 0, 1);
+        PISTONS = new PistonSolenoid(14, PneumaticsModuleType.CTREPCM, 0, 1);
+        ((TalonFXWrapper) getMotor()).setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 200);
 //        getMotor().setSoftLimit(LimitDirection.REVERSE, 0);
 //        getMotor().setSoftLimit(LimitDirection.FORWARD, 81);
     }

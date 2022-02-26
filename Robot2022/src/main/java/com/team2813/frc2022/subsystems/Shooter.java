@@ -1,5 +1,6 @@
 package com.team2813.frc2022.subsystems;
 
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.team2813.frc2022.util.Units2813;
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
@@ -31,6 +32,7 @@ public class Shooter extends Subsystem {
 
     public Shooter() {
         FLYWHEEL = (TalonFXWrapper) MotorConfigs.talons.get("flywheel");
+        FLYWHEEL.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 200);
     }
 
     public boolean isFlywheelReady() {
