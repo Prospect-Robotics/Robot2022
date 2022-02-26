@@ -93,7 +93,7 @@ talons:
     inverted: NONINVERTED
     statusFrame: STATUS_2
   climber:
-    deviceNumber: 14
+    deviceNumber: 12
     motorControllerType: TALON_FX
     type: BRUSHLESS
     subsystemName: Climber
