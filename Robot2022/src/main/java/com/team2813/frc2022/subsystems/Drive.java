@@ -128,20 +128,20 @@ public class Drive extends Subsystem {
 
     @Override
     public void outputTelemetry() {
-//        double leftEncoder = LEFT.getEncoderPosition();
-//        double rightEncoder = RIGHT.getEncoderPosition();
-//        double leftVelocity = Units2813.motorRpmToDtVelocity(LEFT.getVelocity()); // rpm to m/s
-//        double rightVelocity = Units2813.motorRpmToDtVelocity(RIGHT.getVelocity());
-//        SmartDashboard.putNumber("Left Encoder", leftEncoder);
-//        SmartDashboard.putNumber("Right Encoder", rightEncoder);
-//        SmartDashboard.putNumber("Left Velocity", leftVelocity);
-//        SmartDashboard.putNumber("Right Velocity", rightVelocity);
-//        SmartDashboard.putString("Control Drive Mode", driveMode.toString());
+        double leftEncoder = LEFT.getEncoderPosition();
+        double rightEncoder = RIGHT.getEncoderPosition();
+        double leftVelocity = Units2813.motorRpmToDtVelocity(LEFT.getVelocity()); // rpm to m/s
+        double rightVelocity = Units2813.motorRpmToDtVelocity(RIGHT.getVelocity());
+        SmartDashboard.putNumber("Left Encoder", leftEncoder);
+        SmartDashboard.putNumber("Right Encoder", rightEncoder);
+        SmartDashboard.putNumber("Left Velocity", leftVelocity);
+        SmartDashboard.putNumber("Right Velocity", rightVelocity);
+        SmartDashboard.putString("Control Drive Mode", driveMode.toString());
 //        SmartDashboard.putNumber("Gyro", pigeon.getHeading());
 //        SmartDashboard.putString("Odometry", odometry.getPoseMeters().toString());
 //
-//        SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
-//        SmartDashboard.putNumber("Right Demand", driveDemand.getRight());
+        SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
+        SmartDashboard.putNumber("Right Demand", driveDemand.getRight());
     }
 
     @Override
