@@ -4,6 +4,8 @@ import com.team2813.lib.controls.Axis;
 import com.team2813.lib.controls.Button;
 import com.team2813.lib.controls.Controller;
 
+import edu.wpi.first.wpilibj.Joystick;
+
 /**
  * Stores all of the controllers and their buttons and axes.
  * Controllers are private as they should never be accessed,
@@ -15,8 +17,7 @@ import com.team2813.lib.controls.Controller;
  * getter.
  */
 public class SubsystemControlsConfig {
-
-    // drive
+    // driver
     private static Controller driveJoystick = new Controller(0);
     private static Button pivotButton = driveJoystick.button(1);
     private static Axis driveX = driveJoystick.axis(0);
@@ -27,7 +28,14 @@ public class SubsystemControlsConfig {
 
     // operator
     private static Controller operatorJoystick = new Controller(1);
+    private static Button intakePistonsButton = operatorJoystick.button(2);
+    private static Button intakeInButton = operatorJoystick.button(6);
+    private static Button intakeOutButton = operatorJoystick.button(5);
     private static Button shooterButton = operatorJoystick.button(4);
+    private static Button spoolButton = operatorJoystick.button(9);
+    private static Button climberExtendButton = operatorJoystick.button(1);
+    private static Button climbButton = operatorJoystick.button(3);
+    private static Button climbSwivelButton = operatorJoystick.button(8);
 
     static Button getPivotButton() {
         return pivotButton;
@@ -53,7 +61,35 @@ public class SubsystemControlsConfig {
         return driveReverse;
     }
 
+    static Button getIntakePistonsButton() {
+        return intakePistonsButton;
+    }
+
+    static Button getIntakeInButton() {
+        return intakeInButton;
+    }
+
+    static Button getIntakeOutButton() {
+        return intakeOutButton;
+    }
+
     static Button getShooterButton() {
         return shooterButton;
+    }
+
+    static Button getSpoolButton() {
+        return spoolButton;
+    }
+
+    static Button getClimberExtendButton() {
+        return climberExtendButton;
+    }
+
+    static Button getClimbButton() {
+        return climbButton;
+    }
+
+    static Button getClimbSwivelButton() {
+        return climbSwivelButton;
     }
 }

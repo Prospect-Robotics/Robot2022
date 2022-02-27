@@ -22,6 +22,12 @@ public class PistonSolenoid {
         }
     }
 
+    public PistonSolenoid(int canId, PneumaticsModuleType moduleType, int... ids) {
+        for (int id : ids) {
+            solenoids.add(new Solenoid(canId, moduleType, id));
+        }
+    }
+
     public void set(PistonState state) {
         for (Solenoid solenoid : solenoids) {
             solenoid.set(state.value);
