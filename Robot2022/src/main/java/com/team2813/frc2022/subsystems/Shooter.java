@@ -16,8 +16,8 @@ import static com.team2813.frc2022.subsystems.Subsystems.MAGAZINE;
 public class Shooter extends Subsystem {
 
     // Physical Constants
-    private static final double FLYWHEEL_DIAMETER = Units.inchesToMeters(4);
-    private static final double FLYWHEEL_CIRCUMFERENCE = Math.PI * FLYWHEEL_DIAMETER;
+    public static final double FLYWHEEL_DIAMETER = Units.inchesToMeters(4);
+    public static final double FLYWHEEL_CIRCUMFERENCE = Math.PI * FLYWHEEL_DIAMETER;
     public static final double FLYWHEEL_UPDUCTION = 3.0 / 2.0;
 
     // Motor Controllers

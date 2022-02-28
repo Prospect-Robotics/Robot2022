@@ -33,6 +33,7 @@ public class Intake extends Subsystem {
     @Override
     public void outputTelemetry() {
         SmartDashboard.putBoolean("Intake Deployed", deployed);
+        SmartDashboard.putBoolean("Intake Deploy Button Pressed", INTAKE_PISTONS_BUTTON.get());
     }
 
     @Override
@@ -102,6 +103,7 @@ public class Intake extends Subsystem {
     }
 
     public void togglePistons() {
+        System.out.println("Toggling pistons...");
         PISTONS.toggle();
     }
 

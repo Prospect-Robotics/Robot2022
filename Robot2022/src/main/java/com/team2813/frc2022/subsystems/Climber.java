@@ -41,7 +41,7 @@ public class Climber extends Subsystem1d<Climber.Position> {
 
 //        EXTEND_BUTTON.whenPressed(() -> setNextPosition(Position.EXTENDED));
 //        CLIMB_BUTTON.whenPressed(() -> setNextPosition(Position.RETRACTED));
-        EXTEND_BUTTON.whenPressedReleased(() -> demand = 0.2, () -> demand = 0);
+        EXTEND_BUTTON.whenPressedReleased(() -> demand = 0.5, () -> demand = 0);
         CLIMB_BUTTON.whenPressedReleased(() -> demand = -0.95, () -> demand = 0);
     }
 
