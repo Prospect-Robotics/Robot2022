@@ -28,11 +28,9 @@ public class Shooter extends Subsystem {
     private double demand = 0;
     private boolean isFullyRevvedUp;
 
-    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.6471, 0.16488, 0.034638); // gains in rotations
-
     public Shooter() {
         FLYWHEEL = (TalonFXWrapper) MotorConfigs.talons.get("flywheel");
-        FLYWHEEL.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 200);
+        FLYWHEEL.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
     }
 
     public boolean isFlywheelReady() {
@@ -70,7 +68,7 @@ public class Shooter extends Subsystem {
 //        else {
 //            setShooter(0);
 //        }
-        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(5000), () -> setShooter(0));
+        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(3000), () -> setShooter(0));
 
         isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
     }
@@ -93,7 +91,7 @@ public class Shooter extends Subsystem {
     @Override
     protected void writePeriodicOutputs() {
         double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
-        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand, feedforward.calculate(motorDemand));
+        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
     }
 
     public void setShooter(double demand) {

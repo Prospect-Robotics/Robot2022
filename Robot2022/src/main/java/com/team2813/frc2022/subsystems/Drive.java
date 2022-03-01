@@ -99,8 +99,8 @@ public class Drive extends Subsystem {
         LEFT = (TalonFXWrapper) MotorConfigs.talons.get("driveLeft");
         RIGHT = (TalonFXWrapper) MotorConfigs.talons.get("driveRight");
 
-        LEFT.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 200);
-        RIGHT.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 200);
+        LEFT.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
+        RIGHT.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
 
         DriveDemand.circumference = WHEEL_CIRCUMFERENCE;
 
