@@ -26,7 +26,6 @@ public class SubsystemControlsConfig {
 
 	// operator
 	private static Controller operatorJoystick = new Controller(1);
-    private static Button intakePistonsButton = operatorJoystick.button(2);
 	private static Button intakeInButton = operatorJoystick.button(6);
 	private static Button intakeOutButton = operatorJoystick.button(5);
 	private static Button shooterButton = operatorJoystick.button(4);
@@ -53,10 +52,6 @@ public class SubsystemControlsConfig {
 
     static Axis getDriveReverse() {
         return driveReverse;
-    }
-
-    static Button getIntakePistonsButton() {
-        return intakePistonsButton;
     }
 
     static Button getShooterButton() {

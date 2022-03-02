@@ -16,7 +16,6 @@ public class Intake extends Subsystem {
     private final TalonFXWrapper INTAKE_MOTOR;
 
     // Controllers
-    private static final Button INTAKE_PISTONS_BUTTON = SubsystemControlsConfig.getIntakePistonsButton();
     private static final Button INTAKE_IN_BUTTON = SubsystemControlsConfig.getIntakeInButton();
     private static final Button INTAKE_OUT_BUTTON = SubsystemControlsConfig.getIntakeOutButton();
 
@@ -37,29 +36,25 @@ public class Intake extends Subsystem {
 
     @Override
     public void teleopControls() {
-        INTAKE_PISTONS_BUTTON.whenPressed(this::togglePistons);
+        INTAKE_IN_BUTTON.whenPressedReleased(() -> {
+            setDeployed(true);
+            setIntake(Demand.IN);
+            MAGAZINE.setMagDemand(Magazine.MagDemand.IN);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+        }, () -> {
+            setIntake(Demand.OFF);
+            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+            setDeployed(false);
+        });
 
-        if (deployed) {
-            INTAKE_IN_BUTTON.whenPressedReleased(() -> {
-                setIntake(Demand.IN);
-                MAGAZINE.setMagDemand(Magazine.MagDemand.IN);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
-            }, () -> {
-                setIntake(Demand.OFF);
-                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-            });
-
-            INTAKE_OUT_BUTTON.whenPressedReleased(() -> {
-                setIntake(Demand.OUT);
-                MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
-            }, () -> {
-                setIntake(Demand.OFF);
-                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-            });
-        }
+        INTAKE_OUT_BUTTON.whenPressedReleased(() -> {
+            MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+        }, () -> {
+            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+        });
     }
 
     @Override
@@ -83,7 +78,7 @@ public class Intake extends Subsystem {
     }
 
     public enum Demand {
-        IN(0.85), OFF(0), OUT(-0.4);
+        IN(0.85), OFF(0);
 
         double percent;
 
@@ -99,10 +94,6 @@ public class Intake extends Subsystem {
 
     public void setIntake(Demand demand) {
         this.demand = demand;
-    }
-
-    public void togglePistons() {
-        PISTONS.toggle();
     }
 
     public void setDeployed(boolean deployed) {
