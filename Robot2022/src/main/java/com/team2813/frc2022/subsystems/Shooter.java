@@ -1,6 +1,7 @@
 package com.team2813.frc2022.subsystems;
 
 import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.team2813.frc2022.util.Limelight;
 import com.team2813.frc2022.util.Units2813;
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
@@ -9,6 +10,7 @@ import com.team2813.lib.motors.interfaces.ControlMode;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import static com.team2813.frc2022.subsystems.Subsystems.DRIVE;
 import static com.team2813.frc2022.subsystems.Subsystems.MAGAZINE;
 
 public class Shooter extends Subsystem {
@@ -23,9 +25,14 @@ public class Shooter extends Subsystem {
 
     // Controllers
     private static final Button SHOOTER_BUTTON = SubsystemControlsConfig.getShooterButton();
+    private static final Button SPOOL_BUTTON = SubsystemControlsConfig.getSpoolButton();
+
+    private Limelight limelight = Limelight.getInstance();
 
     private double demand = 0;
+    private final double spoolDemand = 0;
     private boolean isFullyRevvedUp;
+    private boolean isShooting = false;
 
     public Shooter() {
         FLYWHEEL = (TalonFXWrapper) MotorConfigs.talons.get("flywheel");
@@ -33,7 +40,7 @@ public class Shooter extends Subsystem {
     }
 
     public boolean isFlywheelReady() {
-        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - demand) < 500;
+        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - demand) < 100;
     }
 
     boolean isFullyRevvedUp() {
@@ -52,22 +59,32 @@ public class Shooter extends Subsystem {
     }
 
     public void teleopControls() {
-//        if (SHOOTER_BUTTON.get()) {
-//            setShooter(5000);
-//
-//            if (isFullyRevvedUp && isFlywheelReady()) {
-//                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-//                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-//            }
-//            else {
-//                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-//                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-//            }
-//        }
-//        else {
-//            setShooter(0);
-//        }
-        SHOOTER_BUTTON.whenPressedReleased(() -> setShooter(3000), () -> setShooter(0));
+        SPOOL_BUTTON.whenPressed(() -> setShooter(spoolDemand));
+
+        if (SHOOTER_BUTTON.get()) {
+            if (DRIVE.getIsAimed()) {
+                if (!isShooting) {
+                    isShooting = true;
+                    setShooter(limelight.getShooterDemand());
+                }
+
+                if (isFlywheelReady()) {
+                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+                }
+                else {
+                    MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+                }
+            }
+        }
+
+        SHOOTER_BUTTON.whenReleased(() -> {
+            isShooting = false;
+            setShooter(0);
+            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+        });
 
         isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
     }
