@@ -1,6 +1,7 @@
 package com.team2813.frc2022.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.team2813.frc2022.util.Limelight;
 import com.team2813.frc2022.util.ShuffleboardData;
 import com.team2813.frc2022.util.Units2813;
@@ -23,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends Subsystem {
 
-    // physical constants
+    // Physical Constants
     public static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
     public static final double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
 
@@ -108,6 +109,9 @@ public class Drive extends Subsystem {
         LEFT = (TalonFXWrapper) MotorConfigs.talons.get("driveLeft");
         RIGHT = (TalonFXWrapper) MotorConfigs.talons.get("driveRight");
 
+        LEFT.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
+        RIGHT.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
+
         DriveDemand.circumference = WHEEL_CIRCUMFERENCE;
 
 //        pigeon.setYawToCompass();
@@ -170,8 +174,6 @@ public class Drive extends Subsystem {
 
         SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
         SmartDashboard.putNumber("Right Demand", driveDemand.getRight());
-        SmartDashboard.putNumber("Left Temp", LEFT.controller.getTemperature());
-        SmartDashboard.putNumber("Right Temp", RIGHT.controller.getTemperature());
     }
 
     @Override

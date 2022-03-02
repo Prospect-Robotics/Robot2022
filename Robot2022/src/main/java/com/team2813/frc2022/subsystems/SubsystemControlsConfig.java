@@ -15,19 +15,21 @@ import com.team2813.lib.controls.Controller;
  * getter.
  */
 public class SubsystemControlsConfig {
+    // driver
+	private static Controller driveJoystick = new Controller(0);
+	private static Button pivotButton = driveJoystick.button(1);
+	private static Axis driveX = driveJoystick.axis(0);
+	private static Axis driveY = driveJoystick.axis(3);
+	private static Axis driveSteer = driveJoystick.axis(0);
+	private static Axis driveForward = driveJoystick.axis(3);
+	private static Axis driveReverse = driveJoystick.axis(2);
 
-    // drive
-    private static Controller driveJoystick = new Controller(0);
-    private static Button pivotButton = driveJoystick.button(1);
-    private static Axis driveX = driveJoystick.axis(0);
-    private static Axis driveY = driveJoystick.axis(3);
-    private static Axis driveSteer = driveJoystick.axis(0);
-    private static Axis driveForward = driveJoystick.axis(3);
-    private static Axis driveReverse = driveJoystick.axis(2);
-
-    // operator
-    private static Controller operatorJoystick = new Controller(1);
-    private static Button shooterButton = operatorJoystick.button(4);
+	// operator
+	private static Controller operatorJoystick = new Controller(1);
+    private static Button intakePistonsButton = operatorJoystick.button(2);
+	private static Button intakeInButton = operatorJoystick.button(6);
+	private static Button intakeOutButton = operatorJoystick.button(5);
+	private static Button shooterButton = operatorJoystick.button(4);
 
     static Button getPivotButton() {
         return pivotButton;
@@ -53,7 +55,19 @@ public class SubsystemControlsConfig {
         return driveReverse;
     }
 
+    static Button getIntakePistonsButton() {
+        return intakePistonsButton;
+    }
+
     static Button getShooterButton() {
         return shooterButton;
+    }
+
+    static Button getIntakeInButton() {
+        return intakeInButton;
+    }
+
+    static Button getIntakeOutButton() {
+        return intakeOutButton;
     }
 }
