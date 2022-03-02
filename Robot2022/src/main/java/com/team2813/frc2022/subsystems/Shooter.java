@@ -6,7 +6,6 @@ import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,7 +15,7 @@ public class Shooter extends Subsystem {
 
     // Physical Constants
     private static final double FLYWHEEL_DIAMETER = Units.inchesToMeters(4);
-    private static final double FLYWHEEL_CIRCUMFERENCE = Math.PI * FLYWHEEL_DIAMETER;
+    public static final double FLYWHEEL_CIRCUMFERENCE = Math.PI * FLYWHEEL_DIAMETER;
     public static final double FLYWHEEL_UPDUCTION = 3.0 / 2.0;
 
     // Motor Controllers
