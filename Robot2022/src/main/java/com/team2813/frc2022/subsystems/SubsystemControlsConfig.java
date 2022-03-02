@@ -23,12 +23,12 @@ public class SubsystemControlsConfig {
 	private static Axis driveSteer = driveJoystick.axis(0);
 	private static Axis driveForward = driveJoystick.axis(3);
 	private static Axis driveReverse = driveJoystick.axis(2);
+    private static Button shooterButton = driveJoystick.button(4);
 
 	// operator
 	private static Controller operatorJoystick = new Controller(1);
 	private static Button intakeInButton = operatorJoystick.button(6);
 	private static Button intakeOutButton = operatorJoystick.button(5);
-	private static Button shooterButton = operatorJoystick.button(4);
 
     static Button getPivotButton() {
         return pivotButton;
