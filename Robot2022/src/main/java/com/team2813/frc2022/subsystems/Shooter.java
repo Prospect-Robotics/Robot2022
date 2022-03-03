@@ -25,12 +25,13 @@ public class Shooter extends Subsystem {
 
     // Controllers
     private static final Button SHOOTER_BUTTON = SubsystemControlsConfig.getShooterButton();
+    private static final Button MANUAL_SHOOT_BUTTON = SubsystemControlsConfig.getManualShootButton();
     private static final Button SPOOL_BUTTON = SubsystemControlsConfig.getSpoolButton();
 
     private Limelight limelight = Limelight.getInstance();
 
     private double demand = 0;
-    private final double spoolDemand = 0;
+    private final double spoolDemand = 3600;
     private boolean isFullyRevvedUp;
     private boolean isShooting = false;
 
@@ -81,6 +82,23 @@ public class Shooter extends Subsystem {
 
         SHOOTER_BUTTON.whenReleased(() -> {
             isShooting = false;
+            setShooter(0);
+            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+        });
+
+        if (MANUAL_SHOOT_BUTTON.get()) {
+            if (isFlywheelReady()) {
+                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+            }
+            else {
+                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+            }
+        }
+
+        MANUAL_SHOOT_BUTTON.whenReleased(() -> {
             setShooter(0);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
