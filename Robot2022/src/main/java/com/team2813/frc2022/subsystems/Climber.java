@@ -62,7 +62,7 @@ public class Climber extends Subsystem1d<Climber.Position> {
     }
 
     public boolean positionReached() {
-        return (getMotor()).getEncoderPosition() > currentPosition.getPos();
+        return Math.abs(currentPosition.getPos() - getMotor().getEncoderPosition()) < 0.05;
     }
 
     private void midClimb() {
