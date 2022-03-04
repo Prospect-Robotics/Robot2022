@@ -1,19 +1,22 @@
 package com.team2813.frc2022.subsystems;
 
 import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.team2813.lib.actions.*;
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
-import com.team2813.lib.motors.interfaces.ControlMode;
 import com.team2813.lib.motors.interfaces.LimitDirection;
 import com.team2813.lib.solenoid.PistonSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
+import static com.team2813.frc2022.subsystems.Subsystems.INTAKE;
+import static com.team2813.frc2022.subsystems.Subsystems.LOOPER;
+
 public class Climber extends Subsystem1d<Climber.Position> {
 
     // Controllers
-    private static final Button EXTEND_BUTTON = SubsystemControlsConfig.getClimberExtendButton();
-    private static final Button CLIMB_BUTTON = SubsystemControlsConfig.getClimbButton();
+    private static final Button MID_CLIMB_BUTTON = SubsystemControlsConfig.getMidClimbButton();
+    private static final Button RISE_BUTTON = SubsystemControlsConfig.getRiseButton();
     private static final Button SWIVEL_BUTTON = SubsystemControlsConfig.getClimbSwivelButton();
 
     private final PistonSolenoid PISTONS;
@@ -25,9 +28,9 @@ public class Climber extends Subsystem1d<Climber.Position> {
         super(MotorConfigs.talons.get("climber"));
 
         PISTONS = new PistonSolenoid(14, PneumaticsModuleType.CTREPCM, 0, 1);
-        ((TalonFXWrapper) getMotor()).setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 200);
-//        getMotor().setSoftLimit(LimitDirection.REVERSE, 0);
-//        getMotor().setSoftLimit(LimitDirection.FORWARD, 81);
+        ((TalonFXWrapper) getMotor()).setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
+        getMotor().setSoftLimit(LimitDirection.REVERSE, 0);
+        getMotor().setSoftLimit(LimitDirection.FORWARD, 81);
     }
 
     @Override
@@ -39,10 +42,8 @@ public class Climber extends Subsystem1d<Climber.Position> {
     public void teleopControls() {
         SWIVEL_BUTTON.whenPressed(PISTONS::toggle);
 
-//        EXTEND_BUTTON.whenPressed(() -> setNextPosition(Position.EXTENDED));
-//        CLIMB_BUTTON.whenPressed(() -> setNextPosition(Position.RETRACTED));
-        EXTEND_BUTTON.whenPressedReleased(() -> demand = 0.05, () -> demand = 0);
-        CLIMB_BUTTON.whenPressedReleased(() -> demand = -0.95, () -> demand = 0);
+        MID_CLIMB_BUTTON.whenPressed(this::midClimb);
+        RISE_BUTTON.whenPressed(this::riseUp);
     }
 
     @Override
@@ -62,9 +63,27 @@ public class Climber extends Subsystem1d<Climber.Position> {
         PISTONS.set(PistonSolenoid.PistonState.RETRACTED);
     }
 
-    @Override
-    public void writePeriodicOutputs() {
-        getMotor().set(ControlMode.DUTY_CYCLE, demand);
+    public boolean positionReached() {
+        return (getMotor()).getEncoderPosition() > currentPosition.getPos();
+    }
+
+    private void midClimb() {
+        Action midClimb = new SeriesAction(
+                new FunctionAction(() -> INTAKE.setDeployed(true), true),
+                new LockFunctionAction(() -> setNextPosition(Position.EXTENDED), this::positionReached, true),
+                new LockFunctionAction(() -> setNextPosition(Position.RETRACTED), this::positionReached, true)
+        );
+        LOOPER.addAction(midClimb);
+    }
+
+    private void riseUp() {
+        Action riseUp = new SeriesAction(
+                new FunctionAction(PISTONS::toggle, true),
+                new LockFunctionAction(() -> setNextPosition(Position.EXTENDED), this::positionReached, true),
+                new LockFunctionAction(() -> setNextPosition(Position.RETRACTED), this::positionReached, true),
+                new FunctionAction(PISTONS::toggle, true)
+        );
+        LOOPER.addAction(riseUp);
     }
 
     public enum Position implements Subsystem1d.Position {

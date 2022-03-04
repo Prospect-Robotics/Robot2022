@@ -4,8 +4,6 @@ import com.team2813.lib.controls.Axis;
 import com.team2813.lib.controls.Button;
 import com.team2813.lib.controls.Controller;
 
-import edu.wpi.first.wpilibj.Joystick;
-
 /**
  * Stores all of the controllers and their buttons and axes.
  * Controllers are private as they should never be accessed,
@@ -32,8 +30,8 @@ public class SubsystemControlsConfig {
 	private static Button intakeInButton = operatorJoystick.button(6);
 	private static Button intakeOutButton = operatorJoystick.button(5);
 	private static Button shooterButton = operatorJoystick.button(4);
-    private static Button climberExtendButton = operatorJoystick.button(1);
-    private static Button climbButton = operatorJoystick.button(3);
+    private static Button midClimbButton = operatorJoystick.button(1);
+    private static Button riseButton = operatorJoystick.button(3);
     private static Button climbSwivelButton = operatorJoystick.button(8);
 
     static Button getPivotButton() {
@@ -76,12 +74,12 @@ public class SubsystemControlsConfig {
         return shooterButton;
     }
 
-    static Button getClimberExtendButton() {
-        return climberExtendButton;
+    static Button getMidClimbButton() {
+        return midClimbButton;
     }
 
-    static Button getClimbButton() {
-        return climbButton;
+    static Button getRiseButton() {
+        return riseButton;
     }
 
     static Button getClimbSwivelButton() {

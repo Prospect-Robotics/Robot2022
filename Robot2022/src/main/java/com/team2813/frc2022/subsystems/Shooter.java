@@ -32,7 +32,7 @@ public class Shooter extends Subsystem {
 
     public Shooter() {
         FLYWHEEL = (TalonFXWrapper) MotorConfigs.talons.get("flywheel");
-        FLYWHEEL.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 200);
+        FLYWHEEL.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
     }
 
     public boolean isFlywheelReady() {
