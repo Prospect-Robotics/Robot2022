@@ -5,6 +5,7 @@
 
 package com.team2813.frc2022;
 
+import com.team2813.frc2022.auto.Autonomous;
 import com.team2813.frc2022.subsystems.Subsystem;
 import com.team2813.frc2022.subsystems.Subsystems;
 import com.team2813.frc2022.util.Limelight;
@@ -38,7 +39,10 @@ public class Robot extends TimedRobot
     private final double WHEEL_DIAMETER = 4; // inches
 
     public final LimelightValues limelightValues = new LimelightValues();
+    public static Autonomous autonomous;
+
     private Limelight limelight = Limelight.getInstance();
+    public static boolean isAuto = false;
 
     /**
      * This method is run when the robot is first started up and should be used for any
@@ -54,6 +58,7 @@ public class Robot extends TimedRobot
             Subsystems.initializeSubsystems();
             System.out.println("Subsystem Initialization Successful");
             System.out.println("Auto Constructed");
+            Autonomous.addRoutines();
             System.out.println("AutoRoutine Initialization Successful");
             ShuffleboardData.init();
 
@@ -63,8 +68,6 @@ public class Robot extends TimedRobot
                 subsystem.zeroSensors();
             }
             limelight.setLights(false);
-
-
         }
         catch (IOException e) {
             System.out.println("Something went wrong while reading config files!");
@@ -114,7 +117,22 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit()
     {
+        isAuto = true;
+        autonomous = new Autonomous();
+        limelight.setLights(true);
+        LOOPER.setMode(RobotMode.ENABLED);
 
+        try {
+            CrashTracker.logAutoInit();
+            for (Subsystem subsystem : allSubsystems) {
+                subsystem.zeroSensors();
+            }
+            autonomous.run();
+        }
+        catch (Throwable t) {
+            CrashTracker.logThrowableCrash(t);
+            throw t;
+        }
     }
     
     
@@ -122,7 +140,7 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousPeriodic()
     {
-
+        autonomous.periodic();
     }
     
     
@@ -131,6 +149,7 @@ public class Robot extends TimedRobot
     public void teleopInit() {
         try {
             System.out.println("teleopInit");
+            isAuto = false;
 
             CrashTracker.logTeleopInit();
             LOOPER.setMode(RobotMode.ENABLED);
