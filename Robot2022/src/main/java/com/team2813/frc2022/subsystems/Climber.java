@@ -16,9 +16,9 @@ import static com.team2813.frc2022.subsystems.Subsystems.LOOPER;
 public class Climber extends Subsystem1d<Climber.Position> {
 
     // Controllers
+    private static final Button EXTEND_BUTTON = SubsystemControlsConfig.getExtendButton();
     private static final Button MID_CLIMB_BUTTON = SubsystemControlsConfig.getMidClimbButton();
     private static final Button RISE_BUTTON = SubsystemControlsConfig.getRiseButton();
-    private static final Button SWIVEL_BUTTON = SubsystemControlsConfig.getClimbSwivelButton();
 
     private final PistonSolenoid PISTONS;
 
@@ -38,8 +38,7 @@ public class Climber extends Subsystem1d<Climber.Position> {
 
     @Override
     public void teleopControls() {
-        SWIVEL_BUTTON.whenPressed(PISTONS::toggle);
-
+        EXTEND_BUTTON.whenPressed(() -> setNextPosition(Position.EXTENDED));
         MID_CLIMB_BUTTON.whenPressed(this::midClimb);
         RISE_BUTTON.whenPressed(this::riseUp);
     }

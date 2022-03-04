@@ -16,7 +16,6 @@ public class Intake extends Subsystem {
     private final TalonFXWrapper INTAKE_MOTOR;
 
     // Controllers
-    private static final Button INTAKE_PISTONS_BUTTON = SubsystemControlsConfig.getIntakePistonsButton();
     private static final Button INTAKE_IN_BUTTON = SubsystemControlsConfig.getIntakeInButton();
     private static final Button INTAKE_OUT_BUTTON = SubsystemControlsConfig.getIntakeOutButton();
 
@@ -38,8 +37,6 @@ public class Intake extends Subsystem {
 
     @Override
     public void teleopControls() {
-        INTAKE_PISTONS_BUTTON.whenPressed(this::togglePistons);
-
         if (deployed) {
             INTAKE_IN_BUTTON.whenPressedReleased(() -> {
                 setIntake(Demand.IN);
@@ -100,11 +97,6 @@ public class Intake extends Subsystem {
 
     public void setIntake(Demand demand) {
         this.demand = demand;
-    }
-
-    public void togglePistons() {
-        System.out.println("Toggling pistons");
-        PISTONS.toggle();
     }
 
     public void setDeployed(boolean deployed) {

@@ -26,13 +26,12 @@ public class SubsystemControlsConfig {
 
 	// operator
 	private static Controller operatorJoystick = new Controller(1);
-    private static Button intakePistonsButton = operatorJoystick.button(2);
 	private static Button intakeInButton = operatorJoystick.button(6);
 	private static Button intakeOutButton = operatorJoystick.button(5);
 	private static Button shooterButton = operatorJoystick.button(4);
-    private static Button midClimbButton = operatorJoystick.button(1);
+    private static Button extendButton = operatorJoystick.button(1);
+    private static Button midClimbButton = operatorJoystick.button(2);
     private static Button riseButton = operatorJoystick.button(3);
-    private static Button climbSwivelButton = operatorJoystick.button(8);
 
     static Button getPivotButton() {
       return pivotButton;
@@ -58,10 +57,6 @@ public class SubsystemControlsConfig {
       return driveReverse;
     }
 
-    static Button getIntakePistonsButton() {
-      return intakePistonsButton;
-    }
-
     static Button getIntakeInButton() {
       return intakeInButton;
     }
@@ -74,15 +69,15 @@ public class SubsystemControlsConfig {
         return shooterButton;
     }
 
+    static Button getExtendButton() {
+        return extendButton;
+    }
+
     static Button getMidClimbButton() {
         return midClimbButton;
     }
 
     static Button getRiseButton() {
         return riseButton;
-    }
-
-    static Button getClimbSwivelButton() {
-        return climbSwivelButton;
     }
 }
