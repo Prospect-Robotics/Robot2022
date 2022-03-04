@@ -8,6 +8,7 @@ import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.LimitDirection;
 import com.team2813.lib.solenoid.PistonSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static com.team2813.frc2022.subsystems.Subsystems.INTAKE;
 import static com.team2813.frc2022.subsystems.Subsystems.LOOPER;
@@ -30,12 +31,12 @@ public class Climber extends Subsystem1d<Climber.Position> {
         PISTONS = new PistonSolenoid(14, PneumaticsModuleType.CTREPCM, 0, 1);
         ((TalonFXWrapper) getMotor()).setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
         getMotor().setSoftLimit(LimitDirection.REVERSE, 0);
-        getMotor().setSoftLimit(LimitDirection.FORWARD, 81);
+        getMotor().setSoftLimit(LimitDirection.FORWARD, 125);
     }
 
     @Override
     public void outputTelemetry() {
-
+        SmartDashboard.putNumber("Climber Encoder", getMotor().getEncoderPosition());
     }
 
     @Override
@@ -87,7 +88,7 @@ public class Climber extends Subsystem1d<Climber.Position> {
     }
 
     public enum Position implements Subsystem1d.Position {
-        RETRACTED(0), EXTENDED(80);
+        RETRACTED(0), EXTENDED(120);
 
         int encoderTicks;
 
