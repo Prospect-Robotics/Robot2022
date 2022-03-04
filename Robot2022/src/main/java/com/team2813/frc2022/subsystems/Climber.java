@@ -67,7 +67,6 @@ public class Climber extends Subsystem1d<Climber.Position> {
     private void midClimb() {
         Action midClimb = new SeriesAction(
                 new FunctionAction(() -> INTAKE.setDeployed(true), true),
-                new LockFunctionAction(() -> setNextPosition(Position.EXTENDED), this::positionReached, true),
                 new LockFunctionAction(() -> setNextPosition(Position.RETRACTED), this::positionReached, true)
         );
         LOOPER.addAction(midClimb);
@@ -76,15 +75,47 @@ public class Climber extends Subsystem1d<Climber.Position> {
     private void riseUp() {
         Action riseUp = new SeriesAction(
                 new FunctionAction(PISTONS::toggle, true),
-                new LockFunctionAction(() -> setNextPosition(Position.EXTENDED), this::positionReached, true),
-                new LockFunctionAction(() -> setNextPosition(Position.RETRACTED), this::positionReached, true),
-                new FunctionAction(PISTONS::toggle, true)
+                new LockFunctionAction(() -> setNextPosition(Position.RISE_POS), this::positionReached, true),
+                new ParallelAction(
+                        new FunctionAction(PISTONS::toggle, true),
+                        new LockFunctionAction(() -> setNextPosition(Position.RETRACTED), this::positionReached, true)
+                )
         );
         LOOPER.addAction(riseUp);
     }
 
     public enum Position implements Subsystem1d.Position {
-        RETRACTED(0), EXTENDED(120);
+        RETRACTED(0) {
+            @Override
+            public Object getNextClockwise() {
+                return RISE_POS;
+            }
+
+            @Override
+            public Object getNextCounter() {
+                return EXTENDED;
+            }
+        }, RISE_POS(80) {
+            @Override
+            public Object getNextClockwise() {
+                return EXTENDED;
+            }
+
+            @Override
+            public Object getNextCounter() {
+                return RETRACTED;
+            }
+        }, EXTENDED(120) {
+            @Override
+            public Object getNextClockwise() {
+                return RETRACTED;
+            }
+
+            @Override
+            public Object getNextCounter() {
+                return RISE_POS;
+            }
+        };
 
         int encoderTicks;
 
@@ -95,21 +126,6 @@ public class Climber extends Subsystem1d<Climber.Position> {
         @Override
         public double getPos() {
             return encoderTicks;
-        }
-
-        @Override
-        public Object getNextClockwise() {
-            if (this == RETRACTED) {
-                return EXTENDED;
-            }
-            else {
-                return RETRACTED;
-            }
-        }
-
-        @Override
-        public Object getNextCounter() {
-            return getNextClockwise();
         }
 
         @Override
