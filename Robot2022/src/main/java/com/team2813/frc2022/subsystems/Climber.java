@@ -23,15 +23,12 @@ public class Climber extends Subsystem1d<Climber.Position> {
     private final PistonSolenoid PISTONS;
 
     private Position currentPosition = Position.RETRACTED;
-    private double demand = 0;
 
     public Climber() {
         super(MotorConfigs.talons.get("climber"));
 
         PISTONS = new PistonSolenoid(14, PneumaticsModuleType.CTREPCM, 0, 1);
         ((TalonFXWrapper) getMotor()).setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
-        getMotor().setSoftLimit(LimitDirection.REVERSE, 0);
-        getMotor().setSoftLimit(LimitDirection.FORWARD, 125);
     }
 
     @Override
