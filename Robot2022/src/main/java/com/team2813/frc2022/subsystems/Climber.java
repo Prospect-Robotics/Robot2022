@@ -69,14 +69,15 @@ public class Climber extends Subsystem1d<Climber.Position> {
     }
 
     private void retract() {
-        setPower(-0.98);
+        disableMotionMagic(true);
+        getMotor().set(ControlMode.DUTY_CYCLE, -0.98);
         double timeStart = Timer.getFPGATimestamp();
         double dt = Timer.getFPGATimestamp() - timeStart;
         while ((dt < 0.25) || (Math.abs(getMotor().getVelocity()) > 0.5)) {
             dt = Timer.getFPGATimestamp() - timeStart;
             // wait...
         }
-        setPower(0);
+        getMotor().set(ControlMode.DUTY_CYCLE, 0);
         zeroSensors();
     }
 

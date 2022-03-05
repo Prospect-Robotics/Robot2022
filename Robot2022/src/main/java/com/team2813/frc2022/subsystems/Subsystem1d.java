@@ -64,10 +64,6 @@ public abstract class Subsystem1d<P extends Subsystem1d.Position> extends Subsys
             resetIfAtLimit();
             if (!periodicIO.openLoop && !motionMagicDisabled)
                 motor.set(ControlMode.MOTION_MAGIC, periodicIO.demand);
-            else if (periodicIO.openLoop && motionMagicDisabled)
-                motor.set(ControlMode.DUTY_CYCLE, periodicIO.velocity);
-            else if (!periodicIO.openLoop)
-                motor.set(ControlMode.VELOCITY, periodicIO.velocity);
         } catch (Exception e) {
             System.out.println("Subsystem initialization failed");
             e.printStackTrace();
@@ -104,8 +100,6 @@ public abstract class Subsystem1d<P extends Subsystem1d.Position> extends Subsys
         boolean limitSwitch;
 
         double positionTicks;
-
-        double velocity;
 
         boolean openLoop = false;
     }
@@ -147,19 +141,6 @@ public abstract class Subsystem1d<P extends Subsystem1d.Position> extends Subsys
     abstract void setNextPosition(boolean clockwise);
 
     abstract void setNextPosition(P position);
-
-    public void setVelocity(double velocity) {
-        periodicIO.velocity = velocity;
-        periodicIO.openLoop = false;
-        disableMotionMagic(true);
-    }
-
-    // Power is from 0 to 1 (percentage)
-    public void setPower(double power) {
-        periodicIO.velocity = power;
-        periodicIO.openLoop = true;
-        disableMotionMagic(true);
-    }
 
     public Motor getMotor() {
         return motor;
