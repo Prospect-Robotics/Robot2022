@@ -1,14 +1,14 @@
 package com.team2813.frc2022.subsystems;
 
-import com.team2813.lib.config.MotorConfigs;
+//import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
-import com.team2813.lib.motors.TalonFXWrapper;
-import com.team2813.lib.motors.interfaces.ControlMode;
-import com.team2813.lib.solenoid.PistonSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+//import com.team2813.lib.motors.TalonFXWrapper;
+//import com.team2813.lib.motors.interfaces.ControlMode;
+//import com.team2813.lib.solenoid.PistonSolenoid;
+//import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import static com.team2813.frc2022.subsystems.Subsystems.MAGAZINE;
+//import static com.team2813.frc2022.subsystems.Subsystems.MAGAZINE;
 
 public class Intake extends Subsystem {
 
