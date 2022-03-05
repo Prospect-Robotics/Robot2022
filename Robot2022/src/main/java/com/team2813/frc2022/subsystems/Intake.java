@@ -6,6 +6,7 @@ import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
 import com.team2813.lib.solenoid.PistonSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static com.team2813.frc2022.subsystems.Subsystems.MAGAZINE;
@@ -38,6 +39,13 @@ public class Intake extends Subsystem {
     public void teleopControls() {
         INTAKE_IN_BUTTON.whenPressedReleased(() -> {
             setDeployed(true);
+
+            double timeStart = Timer.getFPGATimestamp();
+            double dt = Timer.getFPGATimestamp() - timeStart;
+            while (dt < 0.4) {
+                dt = Timer.getFPGATimestamp() - timeStart;
+                // wait...
+            }
             setIntake(Demand.IN);
             MAGAZINE.setMagDemand(Magazine.MagDemand.IN);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
