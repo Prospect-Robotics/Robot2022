@@ -5,9 +5,10 @@ import com.team2813.lib.actions.*;
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
-import com.team2813.lib.motors.interfaces.LimitDirection;
+import com.team2813.lib.motors.interfaces.ControlMode;
 import com.team2813.lib.solenoid.PistonSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static com.team2813.frc2022.subsystems.Subsystems.INTAKE;
@@ -34,6 +35,7 @@ public class Climber extends Subsystem1d<Climber.Position> {
     @Override
     public void outputTelemetry() {
         SmartDashboard.putNumber("Climber Encoder", getMotor().getEncoderPosition());
+        SmartDashboard.putNumber("Climber Velocity", getMotor().getVelocity());
     }
 
     @Override
@@ -47,12 +49,14 @@ public class Climber extends Subsystem1d<Climber.Position> {
     void setNextPosition(boolean clockwise) {
         currentPosition = (Position) currentPosition.getClock(clockwise);
         setPosition(currentPosition);
+        disableMotionMagic(false);
     }
 
     @Override
     void setNextPosition(Position position) {
         currentPosition = position;
         setPosition(currentPosition);
+        disableMotionMagic(false);
     }
 
     @Override
@@ -64,10 +68,22 @@ public class Climber extends Subsystem1d<Climber.Position> {
         return Math.abs(currentPosition.getPos() - getMotor().getEncoderPosition()) < 0.05;
     }
 
+    private void retract() {
+        setPower(-0.98);
+        double timeStart = Timer.getFPGATimestamp();
+        double dt = Timer.getFPGATimestamp() - timeStart;
+        while ((dt < 0.25) || (Math.abs(getMotor().getVelocity()) > 0.5)) {
+            dt = Timer.getFPGATimestamp() - timeStart;
+            // wait...
+        }
+        setPower(0);
+        zeroSensors();
+    }
+
     private void midClimb() {
         Action midClimb = new SeriesAction(
                 new FunctionAction(() -> INTAKE.setDeployed(true), true),
-                new LockFunctionAction(() -> setNextPosition(Position.RETRACTED), this::positionReached, true)
+                new FunctionAction(this::retract, true)
         );
         LOOPER.addAction(midClimb);
     }
@@ -78,7 +94,7 @@ public class Climber extends Subsystem1d<Climber.Position> {
                 new LockFunctionAction(() -> setNextPosition(Position.RISE_POS), this::positionReached, true),
                 new ParallelAction(
                         new FunctionAction(PISTONS::toggle, true),
-                        new LockFunctionAction(() -> setNextPosition(Position.RETRACTED), this::positionReached, true)
+                        new FunctionAction(this::retract, true)
                 )
         );
         LOOPER.addAction(riseUp);
@@ -105,7 +121,7 @@ public class Climber extends Subsystem1d<Climber.Position> {
             public Object getNextCounter() {
                 return RETRACTED;
             }
-        }, EXTENDED(120) {
+        }, EXTENDED(122) {
             @Override
             public Object getNextClockwise() {
                 return RETRACTED;
