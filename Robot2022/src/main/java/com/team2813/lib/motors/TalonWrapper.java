@@ -186,6 +186,14 @@ public abstract class TalonWrapper<Controller extends BaseTalon> implements Moto
         return rpm * (2048.0 / 60);
     }
 
+    public double getStatorCurrent() {
+        return controller.getStatorCurrent();
+    }
+
+    public double getSupplyCurrent() {
+        return controller.getSupplyCurrent();
+    }
+
     public enum PIDProfile {
         PRIMARY(0),
         SECONDARY(1);

@@ -16,6 +16,7 @@ public abstract class Subsystem1d<P extends Subsystem1d.Position> extends Subsys
     private Motor motor;
     protected PeriodicIO periodicIO = new PeriodicIO();
     private boolean zeroed = false;
+    private boolean motionMagicDisabled = false;
 //	Mode mode = Mode.HOLDING;
 
     Subsystem1d(SparkMaxWrapper motor) {
@@ -61,10 +62,8 @@ public abstract class Subsystem1d<P extends Subsystem1d.Position> extends Subsys
     public void writePeriodicOutputs() {
         try {
             resetIfAtLimit();
-            if (!periodicIO.openLoop)
+            if (!periodicIO.openLoop && !motionMagicDisabled)
                 motor.set(ControlMode.MOTION_MAGIC, periodicIO.demand);
-            else
-                motor.set(ControlMode.VELOCITY, periodicIO.velocity);
         } catch (Exception e) {
             System.out.println("Subsystem initialization failed");
             e.printStackTrace();
@@ -101,8 +100,6 @@ public abstract class Subsystem1d<P extends Subsystem1d.Position> extends Subsys
         boolean limitSwitch;
 
         double positionTicks;
-
-        double velocity;
 
         boolean openLoop = false;
     }
@@ -147,5 +144,9 @@ public abstract class Subsystem1d<P extends Subsystem1d.Position> extends Subsys
 
     public Motor getMotor() {
         return motor;
+    }
+
+    public void disableMotionMagic(boolean disabled) {
+        motionMagicDisabled = disabled;
     }
 }

@@ -178,8 +178,6 @@ public class Drive extends Subsystem {
 
         SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
         SmartDashboard.putNumber("Right Demand", driveDemand.getRight());
-        SmartDashboard.putNumber("Left Temp", LEFT.controller.getTemperature());
-        SmartDashboard.putNumber("Right Temp", RIGHT.controller.getTemperature());
     }
 
     @Override
