@@ -91,12 +91,15 @@ public class Climber extends Subsystem1d<Climber.Position> {
 
     private void riseUp() {
         Action riseUp = new SeriesAction(
-                new FunctionAction(PISTONS::toggle, true),
-                new LockFunctionAction(() -> setNextPosition(Position.RISE_POS), this::positionReached, true),
                 new ParallelAction(
-                        new FunctionAction(PISTONS::toggle, true),
-                        new FunctionAction(this::retract, true)
-                )
+                        new LockFunctionAction(() -> setNextPosition(Position.RISE_POS), this::positionReached, true),
+                        new FunctionAction(PISTONS::toggle, true)
+
+                ),
+                new LockFunctionAction(() -> setNextPosition(Position.NEXT_BAR), this::positionReached, true),
+                new FunctionAction(PISTONS::toggle, true),
+                new WaitAction(0.75),
+                new FunctionAction(this::retract, true)
         );
         LOOPER.addAction(riseUp);
     }
@@ -115,12 +118,22 @@ public class Climber extends Subsystem1d<Climber.Position> {
         }, RISE_POS(80) {
             @Override
             public Object getNextClockwise() {
-                return EXTENDED;
+                return NEXT_BAR;
             }
 
             @Override
             public Object getNextCounter() {
                 return RETRACTED;
+            }
+        }, NEXT_BAR(105) {
+            @Override
+            public Object getNextClockwise() {
+                return EXTENDED;
+            }
+
+            @Override
+            public Object getNextCounter() {
+                return RISE_POS;
             }
         }, EXTENDED(122) {
             @Override
@@ -130,7 +143,7 @@ public class Climber extends Subsystem1d<Climber.Position> {
 
             @Override
             public Object getNextCounter() {
-                return RISE_POS;
+                return NEXT_BAR;
             }
         };
 
