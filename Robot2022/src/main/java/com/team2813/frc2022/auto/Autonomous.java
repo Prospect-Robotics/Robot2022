@@ -22,7 +22,7 @@ public class Autonomous {
 
     public void periodic() {
         // Testing auto - just drive forward, half speed
-        DriveDemand demand = halfForwardDemand; // ramseteAuto.getDemand(Su`bsystems.DRIVE.robotPosition);
+        DriveDemand demand = halfForwardDemand; // ramseteAuto.getDemand(Subsystems.DRIVE.robotPosition);
 //        DriveDemand demand = ramseteAuto.getDemand(Subsystems.DRIVE.robotPosition);   // FLAG - debug only, uncomment when Odometry and Pigeon gyro are turned on
 //        if (!demand.equals(prevDemand)) {
 //            Subsystems.DRIVE.setDemand(demand);
@@ -45,7 +45,7 @@ public class Autonomous {
         double backwardToTime = pauseToTime + moveTimeIncrment;   // Drive for 2 seconds        double stopTime = 2.0;   // Drive for 2 seconds
         double stopTime = backwardToTime;
 
-        System.out.println("Got to Autonomous.periodic(" + curTimeInMatch + ")");
+        System.out.println("Got to Autonomous.periodic(" + curTimeInMatch + ", " + matchTimer.getFPGATimestamp() + ", " + matchTimer.hasElapsed((2.0) ) + ")");
 
         if (curTimeInMatch >= stopTime) {
             Subsystems.DRIVE.setDemand(stopDemand);
@@ -67,6 +67,7 @@ public class Autonomous {
 //        Subsystems.DRIVE.initAutonomous(ramseteAuto.initialPose());
 //        Subsystems.LOOPER.addAction(routine.getAction());
         System.out.println("Got to Autonomous.run()");
+        matchTimer.start();
     }
 
     public static void addRoutines() {

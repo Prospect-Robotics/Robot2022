@@ -56,11 +56,11 @@ public class Drive extends Subsystem {
     private static TeleopDriveType teleopDriveType = TeleopDriveType.CURVATURE;
 
     // Gyro
-//    private final int pigeonID = 13;
-//    private PigeonWrapper pigeon = new PigeonWrapper(pigeonID, "Drive");
-//    public PigeonWrapper getPigeon() {
-//        return pigeon;
-//    }
+    private final int pigeonID = 13;
+    private PigeonWrapper pigeon = new PigeonWrapper(pigeonID, "Drive");
+    public PigeonWrapper getPigeon() {
+        return pigeon;
+    }
 
     // Autonomous
     private final double TRACK_WIDTH = 28.5; // inches
@@ -77,12 +77,12 @@ public class Drive extends Subsystem {
     }
 
     // Odometry
-//    private static DifferentialDriveOdometry odometry;
-//    public Pose2d robotPosition;
-//
-//    public static DifferentialDriveOdometry getOdometry() {
-//        return odometry;
-//    }
+    private static DifferentialDriveOdometry odometry;
+    public Pose2d robotPosition;
+
+    public static DifferentialDriveOdometry getOdometry() {
+        return odometry;
+    }
 
     public enum TeleopDriveType {
         ARCADE, CURVATURE
@@ -122,9 +122,9 @@ public class Drive extends Subsystem {
 
         DriveDemand.circumference = WHEEL_CIRCUMFERENCE;
 
-//        pigeon.setYawToCompass();
-//        pigeon.setHeading(0);
-//        odometry = new DifferentialDriveOdometry(new Rotation2d(pigeon.getHeading()));
+        pigeon.setYawToCompass();
+        pigeon.setHeading(0);
+        odometry = new DifferentialDriveOdometry(new Rotation2d(pigeon.getHeading()));
     }
 
     private void teleopDrive(TeleopDriveType driveType) {
@@ -177,8 +177,8 @@ public class Drive extends Subsystem {
         SmartDashboard.putNumber("Left Velocity", leftVelocity);
         SmartDashboard.putNumber("Right Velocity", rightVelocity);
         SmartDashboard.putString("Control Drive Mode", driveMode.toString());
-//        SmartDashboard.putNumber("Gyro", pigeon.getHeading());
-//        SmartDashboard.putString("Odometry", odometry.getPoseMeters().toString());
+        SmartDashboard.putNumber("Gyro", pigeon.getHeading());
+        SmartDashboard.putString("Odometry", odometry.getPoseMeters().toString());
         SmartDashboard.putNumber("Limelight Angle", limelight.getValues().getTx());
 
         SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
@@ -216,18 +216,24 @@ public class Drive extends Subsystem {
     public void zeroSensors() {
         LEFT.setEncoderPosition(0);
         RIGHT.setEncoderPosition(0);
-        //pigeon.setHeading(0);
+        pigeon.setHeading(0);
     }
 
     @Override
     protected void writePeriodicOutputs() {
 
-        if (driveMode == DriveMode.VELOCITY || Robot.isAuto) {
+        /*
+         * All the VELOCIY drive mode code requries PID tuning of the drivetrain, whjich is not yet done
+         * When complete, it should be used for both teleop and auto drive
+         * For now, using OPEN_LOOP for both teleop and auto
+         * FIX
+         */
+         if (driveMode == DriveMode.VELOCITY /* || Robot.isAuto */) {   // FLAG:  FIX
             DriveDemand demand = Units2813.dtDemandToMotorDemand(driveDemand); // converts m/s to rpm
             LEFT.set(ControlMode.VELOCITY, demand.getLeft(), feedforward.calculate(driveDemand.getLeft()) / 12);
             RIGHT.set(ControlMode.VELOCITY, demand.getRight(), feedforward.calculate(driveDemand.getRight()) / 12);
         }
-        else {
+        else {  // Now includes Auto  // FLAG:  FIX
             LEFT.set(driveMode.controlMode, driveDemand.getLeft());
             RIGHT.set(driveMode.controlMode, driveDemand.getRight());
         }
@@ -235,9 +241,9 @@ public class Drive extends Subsystem {
 
     @Override
     protected void readPeriodicInputs() {
-//        double leftDistance = Units2813.motorRevsToWheelRevs(LEFT.getEncoderPosition()) * WHEEL_CIRCUMFERENCE;
-//        double rightDistance = Units2813.motorRevsToWheelRevs(RIGHT.getEncoderPosition()) * WHEEL_CIRCUMFERENCE;
-//        robotPosition = odometry.update(Rotation2d.fromDegrees(pigeon.getHeading()), leftDistance, rightDistance);
+        double leftDistance = Units2813.motorRevsToWheelRevs(LEFT.getEncoderPosition()) * WHEEL_CIRCUMFERENCE;
+        double rightDistance = Units2813.motorRevsToWheelRevs(RIGHT.getEncoderPosition()) * WHEEL_CIRCUMFERENCE;
+        robotPosition = odometry.update(Rotation2d.fromDegrees(pigeon.getHeading()), leftDistance, rightDistance);
     }
 
     public synchronized void setBrakeMode(boolean brake) {
@@ -249,8 +255,8 @@ public class Drive extends Subsystem {
 
     public void initAutonomous(Pose2d initialPose) {
         System.out.println("Autonomous Initial Pose" + initialPose.toString());
-//        pigeon.setHeading(initialPose.getRotation().getDegrees());
-//        odometry.resetPosition(initialPose, initialPose.getRotation());
+        pigeon.setHeading(initialPose.getRotation().getDegrees());
+        odometry.resetPosition(initialPose, initialPose.getRotation());
     }
 
     public void setDemand(DriveDemand demand) {
