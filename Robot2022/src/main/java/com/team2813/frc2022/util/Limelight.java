@@ -2,6 +2,7 @@ package com.team2813.frc2022.util;
 
 import com.team2813.frc2022.subsystems.Shooter;
 import com.team2813.lib.util.LimelightValues;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -43,7 +44,7 @@ public class Limelight {
         double distance = calculateHorizontalDistance();
         double demand = 2 * Math.sqrt(4.9) * distance / Math.sqrt((distance * Math.sqrt(3)) - Units.inchesToMeters(TARGET_HEIGHT - MOUNT_HEIGHT));
         demand *= 60 / Shooter.FLYWHEEL_CIRCUMFERENCE; // convert to rpm
-        return demand;
+        return MathUtil.clamp(demand, 0, 3900);
     }
 
     public void setLights(boolean enable) {
