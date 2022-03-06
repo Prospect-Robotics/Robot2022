@@ -2,6 +2,7 @@ package com.team2813.frc2022.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.team2813.frc2022.Robot;
 import com.team2813.frc2022.util.Limelight;
 import com.team2813.frc2022.util.ShuffleboardData;
 import com.team2813.frc2022.util.Units2813;
@@ -17,6 +18,7 @@ import com.team2813.lib.motors.interfaces.ControlMode;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
@@ -60,7 +62,9 @@ public class Drive extends Subsystem {
 //    }
 
     // Autonomous
+    private final double TRACK_WIDTH = 28.5; // inches
     public static final double GEAR_RATIO = 1 / 7.64;
+    public DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(TRACK_WIDTH));
     private Limelight limelight = Limelight.getInstance();
     private double aimStart;
     private double aimingTime;
@@ -174,6 +178,8 @@ public class Drive extends Subsystem {
 
         SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
         SmartDashboard.putNumber("Right Demand", driveDemand.getRight());
+        SmartDashboard.putNumber("Left Temp", LEFT.controller.getTemperature());
+        SmartDashboard.putNumber("Right Temp", RIGHT.controller.getTemperature());
     }
 
     @Override
@@ -213,7 +219,7 @@ public class Drive extends Subsystem {
     @Override
     protected void writePeriodicOutputs() {
 
-        if (driveMode == DriveMode.VELOCITY) {
+        if (driveMode == DriveMode.VELOCITY || Robot.isAuto) {
             DriveDemand demand = Units2813.dtDemandToMotorDemand(driveDemand); // converts m/s to rpm
             LEFT.set(ControlMode.VELOCITY, demand.getLeft(), feedforward.calculate(driveDemand.getLeft()) / 12);
             RIGHT.set(ControlMode.VELOCITY, demand.getRight(), feedforward.calculate(driveDemand.getRight()) / 12);
@@ -236,6 +242,12 @@ public class Drive extends Subsystem {
         RIGHT.setNeutralMode(mode);
         LEFT.setNeutralMode(mode);
         System.out.println("Setting Brake Mode:" + brake);
+    }
+
+    public void initAutonomous(Pose2d initialPose) {
+        System.out.println("Autonomous Initial Pose" + initialPose.toString());
+//        pigeon.setHeading(initialPose.getRotation().getDegrees());
+//        odometry.resetPosition(initialPose, initialPose.getRotation());
     }
 
     public void setDemand(DriveDemand demand) {
