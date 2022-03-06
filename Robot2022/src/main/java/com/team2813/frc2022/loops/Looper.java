@@ -37,7 +37,7 @@ public class Looper {
             synchronized (taskRunningLock) {
                 if (running) {
                     double now = Timer.getFPGATimestamp();
-                    ;
+
                     Action.updateActions(actions, mode, now);
 
                     // Go thru each of the subsystem loops and run appropriate

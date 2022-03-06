@@ -2,7 +2,6 @@ package com.team2813.frc2022.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.team2813.lib.config.MotorConfigs;
-import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
 
@@ -19,13 +18,12 @@ public class Magazine extends Subsystem {
        Step 3: 
     */
 
-    private static final Button SHOOTER_BUTTON = SubsystemControlsConfig.getShooterButton();
-
     private MagDemand magDemand = MagDemand.OFF;
     private KickerDemand kickerDemand = KickerDemand.OFF;
     
     public Magazine() {
         MAGAZINE = (TalonFXWrapper) MotorConfigs.talons.get("magazine");
+        MAGAZINE.setNeutralMode(NeutralMode.Brake);
 
         KICKER = (TalonFXWrapper) MotorConfigs.talons.get("kicker");
         KICKER.setNeutralMode(NeutralMode.Brake);
@@ -33,19 +31,12 @@ public class Magazine extends Subsystem {
 
     @Override
     public void outputTelemetry() {
-
+        
     }
 
     @Override
     public void teleopControls() {
-        // here 
-        SHOOTER_BUTTON.whenPressedReleased(() -> {
-            setMagDemand(MagDemand.SHOOT);
-            setKickerDemand(KickerDemand.IN);
-        }, () -> {
-            setMagDemand(MagDemand.OFF);
-            setKickerDemand(KickerDemand.OFF);
-        });
+
     }
 
     @Override
@@ -64,7 +55,7 @@ public class Magazine extends Subsystem {
     }
 
     public enum MagDemand {
-        IN(0.25), OFF(0), OUT(-0.25), SHOOT(0.2);
+        IN(0.2), OFF(0), OUT(-0.2), SHOOT(0.2);
 
         double percent;
 

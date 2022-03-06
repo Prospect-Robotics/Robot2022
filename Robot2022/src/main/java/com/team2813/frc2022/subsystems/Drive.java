@@ -1,6 +1,8 @@
 package com.team2813.frc2022.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.team2813.frc2022.Robot;
 import com.team2813.frc2022.util.Limelight;
 import com.team2813.frc2022.util.ShuffleboardData;
 import com.team2813.frc2022.util.Units2813;
@@ -16,8 +18,10 @@ import com.team2813.lib.motors.interfaces.ControlMode;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends Subsystem {
@@ -39,6 +43,7 @@ public class Drive extends Subsystem {
     private static final Axis CURVATURE_FORWARD = SubsystemControlsConfig.getDriveForward();
     private static final Axis CURVATURE_REVERSE = SubsystemControlsConfig.getDriveReverse();
     private static final Button PIVOT_BUTTON = SubsystemControlsConfig.getPivotButton();
+    private static final Button SHOOTER_BUTTON = SubsystemControlsConfig.getShooterButton();
     private ControlInput arcade_x;
     private ControlInput arcade_y;
 
@@ -58,8 +63,18 @@ public class Drive extends Subsystem {
 //    }
 
     // Autonomous
+    private final double TRACK_WIDTH = 28.5; // inches
     public static final double GEAR_RATIO = 1 / 7.64;
+    public DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(TRACK_WIDTH));
     private Limelight limelight = Limelight.getInstance();
+    private double aimStart;
+    private double aimingTime;
+    private boolean isAiming = false;
+    private boolean isAimed = false;
+
+    public boolean getIsAimed() {
+        return isAimed;
+    }
 
     // Odometry
 //    private static DifferentialDriveOdometry odometry;
@@ -102,6 +117,9 @@ public class Drive extends Subsystem {
         LEFT = (TalonFXWrapper) MotorConfigs.talons.get("driveLeft");
         RIGHT = (TalonFXWrapper) MotorConfigs.talons.get("driveRight");
 
+        LEFT.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
+        RIGHT.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
+
         DriveDemand.circumference = WHEEL_CIRCUMFERENCE;
 
 //        pigeon.setYawToCompass();
@@ -111,15 +129,36 @@ public class Drive extends Subsystem {
 
     private void teleopDrive(TeleopDriveType driveType) {
         limelight.setLights(true); // permanently on because it's outside
-        if (driveType == TeleopDriveType.ARCADE) {
-            driveDemand = arcadeDrive.getDemand(arcade_x.get(), arcade_y.get());
+        if (SHOOTER_BUTTON.get()) {
+            if (!isAiming) {
+                isAiming = true;
+                aimingTime = (0.022 * Math.abs(limelight.getValues().getTx())) + 0.1;
+                aimStart = Timer.getFPGATimestamp();
+            }
+
+            double dt = Timer.getFPGATimestamp() - aimStart;
+            if (dt <= aimingTime) {
+                driveDemand = curvatureDrive.getDemand(0, 0, limelight.getSteer(), true);
+            }
+            else {
+                driveDemand = new DriveDemand(0, 0);
+                isAimed = true;
+            }
         }
         
         else {
-            double steer = CURVATURE_STEER.get();
-            if (PIVOT_BUTTON.get()) steer *= .8; // cap it so it's not too sensitive
+            isAiming = false;
+            isAimed = false;
 
-            driveDemand = curvatureDrive.getDemand(CURVATURE_FORWARD.get(), CURVATURE_REVERSE.get(), steer, PIVOT_BUTTON.get());
+            if (driveType == TeleopDriveType.ARCADE) {
+                driveDemand = arcadeDrive.getDemand(arcade_x.get(), arcade_y.get());
+            }
+            else {
+                double steer = CURVATURE_STEER.get();
+                if (PIVOT_BUTTON.get()) steer *= .8; // cap it so it's not too sensitive
+
+                driveDemand = curvatureDrive.getDemand(CURVATURE_FORWARD.get(), CURVATURE_REVERSE.get(), steer, PIVOT_BUTTON.get());
+            }
         }
 
         if (driveMode == DriveMode.VELOCITY) {
@@ -140,11 +179,10 @@ public class Drive extends Subsystem {
         SmartDashboard.putString("Control Drive Mode", driveMode.toString());
 //        SmartDashboard.putNumber("Gyro", pigeon.getHeading());
 //        SmartDashboard.putString("Odometry", odometry.getPoseMeters().toString());
+        SmartDashboard.putNumber("Limelight Angle", limelight.getValues().getTx());
 
         SmartDashboard.putNumber("Left Demand", driveDemand.getLeft());
         SmartDashboard.putNumber("Right Demand", driveDemand.getRight());
-        SmartDashboard.putNumber("Left Temp", LEFT.controller.getTemperature());
-        SmartDashboard.putNumber("Right Temp", RIGHT.controller.getTemperature());
     }
 
     @Override
@@ -184,7 +222,7 @@ public class Drive extends Subsystem {
     @Override
     protected void writePeriodicOutputs() {
 
-        if (driveMode == DriveMode.VELOCITY) {
+        if (driveMode == DriveMode.VELOCITY || Robot.isAuto) {
             DriveDemand demand = Units2813.dtDemandToMotorDemand(driveDemand); // converts m/s to rpm
             LEFT.set(ControlMode.VELOCITY, demand.getLeft(), feedforward.calculate(driveDemand.getLeft()) / 12);
             RIGHT.set(ControlMode.VELOCITY, demand.getRight(), feedforward.calculate(driveDemand.getRight()) / 12);
@@ -207,6 +245,12 @@ public class Drive extends Subsystem {
         RIGHT.setNeutralMode(mode);
         LEFT.setNeutralMode(mode);
         System.out.println("Setting Brake Mode:" + brake);
+    }
+
+    public void initAutonomous(Pose2d initialPose) {
+        System.out.println("Autonomous Initial Pose" + initialPose.toString());
+//        pigeon.setHeading(initialPose.getRotation().getDegrees());
+//        odometry.resetPosition(initialPose, initialPose.getRotation());
     }
 
     public void setDemand(DriveDemand demand) {

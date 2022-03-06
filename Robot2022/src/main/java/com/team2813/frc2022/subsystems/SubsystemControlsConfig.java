@@ -4,8 +4,6 @@ import com.team2813.lib.controls.Axis;
 import com.team2813.lib.controls.Button;
 import com.team2813.lib.controls.Controller;
 
-import edu.wpi.first.wpilibj.Joystick;
-
 /**
  * Stores all of the controllers and their buttons and axes.
  * Controllers are private as they should never be accessed,
@@ -25,51 +23,71 @@ public class SubsystemControlsConfig {
 	private static Axis driveSteer = driveJoystick.axis(0);
 	private static Axis driveForward = driveJoystick.axis(3);
 	private static Axis driveReverse = driveJoystick.axis(2);
-  
+    private static Button shooterButton = driveJoystick.button(4);
+    private static Button manualShootButton = driveJoystick.button(2);
+
 	// operator
 	private static Controller operatorJoystick = new Controller(1);
-    private static Button intakePistonsButton = operatorJoystick.button(3);
 	private static Button intakeInButton = operatorJoystick.button(6);
 	private static Button intakeOutButton = operatorJoystick.button(5);
-	private static Button shooterButton = operatorJoystick.button(4);
+    private static Button spoolButton = operatorJoystick.button(7);
+    private static Button extendButton = operatorJoystick.button(1);
+    private static Button midClimbButton = operatorJoystick.button(2);
+    private static Button riseButton = operatorJoystick.button(3);
 
-  static Button getPivotButton() {
+    static Button getPivotButton() {
       return pivotButton;
-  }
+    }
 
-  static Axis getDriveX() {
+    static Axis getDriveX() {
       return driveX;
-  }
+    }
 
-  static Axis getDriveY() {
+    static Axis getDriveY() {
       return driveY;
-  }
+    }
 
-  static Axis getDriveSteer() {
+    static Axis getDriveSteer() {
       return driveSteer;
-  }
+    }
 
-  static Axis getDriveForward() {
+    static Axis getDriveForward() {
       return driveForward;
-  }
+    }
 
-  static Axis getDriveReverse() {
+    static Axis getDriveReverse() {
       return driveReverse;
-  }
+    }
 
-  static Button getIntakePistonsButton() {
-      return intakePistonsButton;
-  }
-
-  static Button getIntakeInButton() {
+    static Button getIntakeInButton() {
       return intakeInButton;
-  }
+    }
 
-  static Button getIntakeOutButton() {
+    static Button getIntakeOutButton() {
       return intakeOutButton;
-  }
+    }
 
-  static Button getShooterButton() {
-      return shooterButton; 
-  }
+    static Button getShooterButton() {
+        return shooterButton;
+    }
+
+    static Button getManualShootButton() {
+        return manualShootButton;
+    }
+
+    static Button getMidClimbButton() {
+        return midClimbButton;
+    }
+
+    static Button getRiseButton() {
+        return riseButton;
+    }
+
+    static Button getSpoolButton() {
+        return spoolButton;
+    }
+
+    static Button getExtendButton() {
+        return extendButton;
+    }
 }
