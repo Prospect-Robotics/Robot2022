@@ -45,7 +45,7 @@ public class Autonomous {
         double backwardToTime = pauseToTime + moveTimeIncrment;   // Drive for 2 seconds        double stopTime = 2.0;   // Drive for 2 seconds
         double stopTime = backwardToTime;
 
-        System.out.println("Got to Autonomous.periodic(" + curTimeInMatch + ")");
+        System.out.println("Got to Autonomous.periodic(" + curTimeInMatch + ", " + matchTimer.getFPGATimestamp() + ", " + matchTimer.hasElapsed((2.0) ) + ")");
 
         if (curTimeInMatch >= stopTime) {
             Subsystems.DRIVE.setDemand(stopDemand);
@@ -67,6 +67,7 @@ public class Autonomous {
 //        Subsystems.DRIVE.initAutonomous(ramseteAuto.initialPose());
 //        Subsystems.LOOPER.addAction(routine.getAction());
         System.out.println("Got to Autonomous.run()");
+        matchTimer.start();
     }
 
     public static void addRoutines() {

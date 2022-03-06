@@ -222,12 +222,18 @@ public class Drive extends Subsystem {
     @Override
     protected void writePeriodicOutputs() {
 
-        if (driveMode == DriveMode.VELOCITY || Robot.isAuto) {
+        /*
+         * All the VELOCIY drive mode code requries PID tuning of the drivetrain, whjich is not yet done
+         * When complete, it should be used for both teleop and auto drive
+         * For now, using OPEN_LOOP for both teleop and auto
+         * FIX
+         */
+         if (driveMode == DriveMode.VELOCITY /* || Robot.isAuto */) {   // FLAG:  FIX
             DriveDemand demand = Units2813.dtDemandToMotorDemand(driveDemand); // converts m/s to rpm
             LEFT.set(ControlMode.VELOCITY, demand.getLeft(), feedforward.calculate(driveDemand.getLeft()) / 12);
             RIGHT.set(ControlMode.VELOCITY, demand.getRight(), feedforward.calculate(driveDemand.getRight()) / 12);
         }
-        else {
+        else {  // Now includes Auto  // FLAG:  FIX
             LEFT.set(driveMode.controlMode, driveDemand.getLeft());
             RIGHT.set(driveMode.controlMode, driveDemand.getRight());
         }
