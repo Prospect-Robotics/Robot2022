@@ -22,7 +22,7 @@ public class Autonomous {
 
     public void periodic() {
         // Testing auto - just drive forward, half speed
-        DriveDemand demand = halfForwardDemand; // ramseteAuto.getDemand(Su`bsystems.DRIVE.robotPosition);
+        DriveDemand demand = halfForwardDemand; // ramseteAuto.getDemand(Subsystems.DRIVE.robotPosition);
 //        DriveDemand demand = ramseteAuto.getDemand(Subsystems.DRIVE.robotPosition);   // FLAG - debug only, uncomment when Odometry and Pigeon gyro are turned on
 //        if (!demand.equals(prevDemand)) {
 //            Subsystems.DRIVE.setDemand(demand);
