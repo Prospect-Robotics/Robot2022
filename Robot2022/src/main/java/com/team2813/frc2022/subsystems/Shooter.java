@@ -31,7 +31,7 @@ public class Shooter extends Subsystem {
     private Limelight limelight = Limelight.getInstance();
 
     private double demand = 0;
-    private final double spoolDemand = 3600;
+    private final double spoolDemand = 0.4;
     private boolean isFullyRevvedUp;
     private boolean isShooting = false;
 
@@ -66,38 +66,42 @@ public class Shooter extends Subsystem {
 
         if (SHOOTER_BUTTON.get()) {
             if (DRIVE.getIsAimed()) {
-                if (!isShooting) {
-                    isShooting = true;
-                    setShooter(limelight.getShooterDemand());
-                }
-
-                if (isFlywheelReady()) {
-                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-                }
-                else {
-                    MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-                }
+//                if (!isShooting) {
+//                    isShooting = true;
+//                    setShooter(limelight.getShooterDemand());
+//                }
+//
+//                if (isFlywheelReady()) {
+//                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+//                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+//                }
+//                else {
+//                    MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+//                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+//                }
+                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
             }
         }
 
         SHOOTER_BUTTON.whenReleased(() -> {
-            isShooting = false;
+            //isShooting = false;
             setShooter(0);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
         });
 
         if (MANUAL_SHOOT_BUTTON.get()) {
-            if (isFlywheelReady()) {
-                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-            }
-            else {
-                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-            }
+//            if (isFlywheelReady()) {
+//                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+//                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+//            }
+//            else {
+//                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+//                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+//            }
+            MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
         }
 
         MANUAL_SHOOT_BUTTON.whenReleased(() -> {
@@ -126,19 +130,20 @@ public class Shooter extends Subsystem {
 
     @Override
     protected void writePeriodicOutputs() {
-        if (demand == 0) {
-            double error = Math.abs(demand - Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION));
-            if (error <= 250) {
-                FLYWHEEL.set(ControlMode.DUTY_CYCLE, 0);
-            }
-            else {
-                FLYWHEEL.set(ControlMode.VELOCITY, 0);
-            }
-        }
-        else {
-            double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
-            FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
-        }
+//        if (demand == 0) {
+//            double error = Math.abs(demand - Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION));
+//            if (error <= 250) {
+//                FLYWHEEL.set(ControlMode.DUTY_CYCLE, 0);
+//            }
+//            else {
+//                FLYWHEEL.set(ControlMode.VELOCITY, 0);
+//            }
+//        }
+//        else {
+//            double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
+//            FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
+//        }
+        FLYWHEEL.set(ControlMode.DUTY_CYCLE, demand);
     }
 
     public void setShooter(double demand) {
