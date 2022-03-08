@@ -1,6 +1,7 @@
 package com.team2813.frc2022.util;
 
 import com.team2813.lib.actions.*;
+import com.team2813.lib.drive.DriveDemand;
 import edu.wpi.first.wpilibj.Timer;
 
 import static com.team2813.frc2022.subsystems.Subsystems.*;
@@ -8,8 +9,8 @@ import static com.team2813.frc2022.subsystems.Subsystems.*;
 public class AutoShootAction extends SeriesAction {
     private static Limelight limelight = Limelight.getInstance();
     private static boolean isAiming = false;
-    private static double aimingTime;
-    private static double aimStart;
+    private static double aimingTime = 0;
+    private static double aimStart = 0;
 
     public AutoShootAction() {
         super(
@@ -25,6 +26,7 @@ public class AutoShootAction extends SeriesAction {
                    DRIVE.setDemand(DRIVE.curvatureDrive.getDemand(0, 0, limelight.getSteer(), true));
                    return dt >= aimingTime;
                }, true),
+               new FunctionAction(() -> DRIVE.setDemand(new DriveDemand(0, 0)), true),
                new FunctionAction(() -> SHOOTER.setShooter(0.4), true),
                new WaitAction(1),
                new FunctionAction(() -> MAGAZINE.autoShoot(true), true),

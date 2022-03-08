@@ -4,10 +4,7 @@ import com.team2813.frc2022.Robot;
 import com.team2813.frc2022.subsystems.Subsystems;
 import com.team2813.frc2022.util.AutoShootAction;
 import com.team2813.frc2022.util.ShuffleboardData;
-import com.team2813.lib.actions.Action;
-import com.team2813.lib.actions.FunctionAction;
-import com.team2813.lib.actions.LockFunctionAction;
-import com.team2813.lib.actions.SeriesAction;
+import com.team2813.lib.actions.*;
 import com.team2813.lib.auto.RamseteAuto;
 import com.team2813.lib.drive.DriveDemand;
 
@@ -26,8 +23,10 @@ public class Autonomous {
     private DriveDemand prevDemand = new DriveDemand(0, 0);
     private DriveDemand halfForwardDemand = new DriveDemand(0.5, 0.5);
     private DriveDemand halfBackwardDemand = new DriveDemand(-0.5, -0.5);
+    private DriveDemand rotateDemand = new DriveDemand(-0.25, 0.25);
     private DriveDemand stopDemand = new DriveDemand(0.0, 0.0);
     private double distanceTraveled = 0;
+    private double degreesRotated = 0;
     private Pose2d initialPose = new Pose2d(0, 0, new Rotation2d(0));
     Timer matchTimer = new Timer();
 
@@ -59,6 +58,9 @@ public class Autonomous {
         System.out.println("Got to Autonomous.periodic(" + curTimeInMatch + ", " + matchTimer.getFPGATimestamp() + ", " + matchTimer.hasElapsed((2.0) ) + ")");
 
         distanceTraveled = Subsystems.DRIVE.robotPosition.getTranslation().getDistance(initialPose.getTranslation());
+        degreesRotated = Subsystems.DRIVE.robotPosition.getRotation().getDegrees();
+
+        System.out.println("Rotation: " + degreesRotated + " Distance traveled: " + distanceTraveled);
 
 //        if (curTimeInMatch >= stopTime) {
 //            Subsystems.DRIVE.setDemand(stopDemand);
@@ -80,12 +82,28 @@ public class Autonomous {
 //        Subsystems.DRIVE.initAutonomous(ramseteAuto.initialPose());
 //        Subsystems.LOOPER.addAction(routine.getAction());
         Subsystems.DRIVE.initAutonomous(initialPose);
+        // One ball auto code
+//        Action autoAction = new SeriesAction(
+//                new FunctionAction(() -> Subsystems.INTAKE.autoIntake(true), true),
+//                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(halfBackwardDemand), () -> distanceTraveled > 1, true),
+//                new FunctionAction(() -> Subsystems.DRIVE.setDemand(stopDemand), true),
+//                new FunctionAction(() -> Subsystems.INTAKE.autoIntake(false), true),
+//                new AutoShootAction(),
+//                new FunctionAction(() -> Subsystems.SHOOTER.setShooter(0), true)
+//        );
+//        LOOPER.addAction(autoAction);
 
+        // Two ball auto code
         Action autoAction = new SeriesAction(
                 new FunctionAction(() -> Subsystems.INTAKE.autoIntake(true), true),
-                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(halfBackwardDemand), () -> distanceTraveled > 1, true),
+                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(halfForwardDemand), () -> distanceTraveled > 1.5, true),
                 new FunctionAction(() -> Subsystems.DRIVE.setDemand(stopDemand), true),
+                new WaitAction(1),
                 new FunctionAction(() -> Subsystems.INTAKE.autoIntake(false), true),
+                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(rotateDemand), () -> degreesRotated < 0, true),
+                new FunctionAction(() -> System.out.println("Finished rotating"), true),
+                new FunctionAction(() -> Subsystems.DRIVE.setDemand(stopDemand), true),
+                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(halfForwardDemand), () -> distanceTraveled < 0.5, true),
                 new AutoShootAction(),
                 new FunctionAction(() -> Subsystems.SHOOTER.setShooter(0), true)
         );
