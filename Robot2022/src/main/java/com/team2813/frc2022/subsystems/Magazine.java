@@ -54,6 +54,17 @@ public class Magazine extends Subsystem {
 
     }
 
+    public void autoShoot(boolean on) {
+        if (on) {
+            setMagDemand(MagDemand.SHOOT);
+            setKickerDemand(KickerDemand.IN);
+        }
+        else {
+            setMagDemand(MagDemand.OFF);
+            setKickerDemand(KickerDemand.OFF);
+        }
+    }
+
     public enum MagDemand {
         IN(0.2), OFF(0), OUT(-0.2), SHOOT(0.2);
 

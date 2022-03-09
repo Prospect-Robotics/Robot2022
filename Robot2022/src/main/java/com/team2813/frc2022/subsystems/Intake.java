@@ -65,6 +65,27 @@ public class Intake extends Subsystem {
         });
     }
 
+    public void autoIntake(boolean on) {
+        setDeployed(on);
+        if (on) {
+            double timeStart = Timer.getFPGATimestamp();
+            double dt = Timer.getFPGATimestamp() - timeStart;
+            while (dt < 0.4) {
+                dt = Timer.getFPGATimestamp() - timeStart;
+                // wait...
+            }
+            setIntake(Demand.IN);
+            MAGAZINE.setMagDemand(Magazine.MagDemand.IN);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+        }
+        else {
+            setIntake(Demand.OFF);
+            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+            setDeployed(false);
+        }
+    }
+
     @Override
     public void onEnabledStart(double timestamp) {
 
