@@ -21,8 +21,8 @@ public class Autonomous {
 
     private RamseteAuto ramseteAuto;
     private DriveDemand prevDemand = new DriveDemand(0, 0);
-    private DriveDemand halfForwardDemand = new DriveDemand(0.5, 0.5);
-    private DriveDemand halfBackwardDemand = new DriveDemand(-0.5, -0.5);
+    private DriveDemand forwardDemand = new DriveDemand(0.25, 0.25);
+    private DriveDemand backwardDemand = new DriveDemand(-0.25, -0.25);
     private DriveDemand rotateDemand = new DriveDemand(-0.25, 0.25);
     private DriveDemand stopDemand = new DriveDemand(0.0, 0.0);
     private double distanceTraveled = 0;
@@ -32,7 +32,7 @@ public class Autonomous {
 
     public void periodic() {
         // Testing auto - just drive forward, half speed
-        DriveDemand demand = halfForwardDemand; // ramseteAuto.getDemand(Subsystems.DRIVE.robotPosition);
+        DriveDemand demand = forwardDemand; // ramseteAuto.getDemand(Subsystems.DRIVE.robotPosition);
 //        DriveDemand demand = ramseteAuto.getDemand(Subsystems.DRIVE.robotPosition);   // FLAG - debug only, uncomment when Odometry and Pigeon gyro are turned on
 //        if (!demand.equals(prevDemand)) {
 //            Subsystems.DRIVE.setDemand(demand);
@@ -84,10 +84,8 @@ public class Autonomous {
         Subsystems.DRIVE.initAutonomous(initialPose);
         // One ball auto code
 //        Action autoAction = new SeriesAction(
-//                new FunctionAction(() -> Subsystems.INTAKE.autoIntake(true), true),
-//                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(halfBackwardDemand), () -> distanceTraveled > 1, true),
+//                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(backwardDemand), () -> distanceTraveled > 1, true),
 //                new FunctionAction(() -> Subsystems.DRIVE.setDemand(stopDemand), true),
-//                new FunctionAction(() -> Subsystems.INTAKE.autoIntake(false), true),
 //                new AutoShootAction(),
 //                new FunctionAction(() -> Subsystems.SHOOTER.setShooter(0), true)
 //        );
@@ -96,15 +94,16 @@ public class Autonomous {
         // Two ball auto code
         Action autoAction = new SeriesAction(
                 new FunctionAction(() -> Subsystems.INTAKE.autoIntake(true), true),
-                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(halfForwardDemand), () -> distanceTraveled > 1.5, true),
+                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(forwardDemand), () -> distanceTraveled > 1.5, true),
                 new FunctionAction(() -> Subsystems.DRIVE.setDemand(stopDemand), true),
                 new WaitAction(1),
                 new FunctionAction(() -> Subsystems.INTAKE.autoIntake(false), true),
-                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(rotateDemand), () -> degreesRotated < 0, true),
+                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(rotateDemand), () -> degreesRotated > 160, true),
                 new FunctionAction(() -> System.out.println("Finished rotating"), true),
                 new FunctionAction(() -> Subsystems.DRIVE.setDemand(stopDemand), true),
-                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(halfForwardDemand), () -> distanceTraveled < 0.5, true),
+                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(forwardDemand), () -> distanceTraveled < 1.25, true),
                 new AutoShootAction(),
+                new FunctionAction(() -> Subsystems.DRIVE.setDemand(stopDemand), true),
                 new FunctionAction(() -> Subsystems.SHOOTER.setShooter(0), true)
         );
         LOOPER.addAction(autoAction);
