@@ -31,7 +31,7 @@ public class Shooter extends Subsystem {
     private Limelight limelight = Limelight.getInstance();
 
     private double demand = 0;
-    private final double spoolDemand = 0.4;
+    private final double spoolDemand = 0.425;
     private boolean isFullyRevvedUp;
     private boolean isShooting = false;
 
@@ -52,7 +52,6 @@ public class Shooter extends Subsystem {
     public void outputTelemetry() {
         double flywheelVelocity = Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION);
         double error = demand - flywheelVelocity;
-        SmartDashboard.putNumber("Flywheel Demand", demand);
         SmartDashboard.putNumber("Flywheel Demand", demand);
         SmartDashboard.putNumber("Flywheel Velocity", flywheelVelocity);
         SmartDashboard.putNumber("Flywheel Error", error);

@@ -132,7 +132,7 @@ public class Drive extends Subsystem {
         if (SHOOTER_BUTTON.get()) {
             if (!isAiming) {
                 isAiming = true;
-                aimingTime = (0.022 * Math.abs(limelight.getValues().getTx())) + 0.1;
+                aimingTime = (0.022 * Math.abs(limelight.getValues().getTx())) + 0.2;
                 aimStart = Timer.getFPGATimestamp();
             }
 

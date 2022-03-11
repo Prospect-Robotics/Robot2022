@@ -135,7 +135,7 @@ public class Climber extends Subsystem1d<Climber.Position> {
             public Object getNextCounter() {
                 return RISE_POS;
             }
-        }, EXTENDED(122) {
+        }, EXTENDED(123) {
             @Override
             public Object getNextClockwise() {
                 return RETRACTED;
