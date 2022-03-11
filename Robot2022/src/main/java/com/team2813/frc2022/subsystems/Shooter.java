@@ -8,6 +8,7 @@ import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static com.team2813.frc2022.subsystems.Subsystems.DRIVE;
@@ -31,9 +32,10 @@ public class Shooter extends Subsystem {
     private Limelight limelight = Limelight.getInstance();
 
     private double demand = 0;
-    private final double spoolDemand = 0.425;
+    private final double spoolDemand = 0.435;
     private boolean isFullyRevvedUp;
     private boolean isShooting = false;
+    private double timeStart = 0;
 
     public Shooter() {
         FLYWHEEL = (TalonFXWrapper) MotorConfigs.talons.get("flywheel");
@@ -63,10 +65,11 @@ public class Shooter extends Subsystem {
 
         if (SHOOTER_BUTTON.get()) {
             if (DRIVE.getIsAimed()) {
-//                if (!isShooting) {
-//                    isShooting = true;
-//                    setShooter(limelight.getShooterDemand());
-//                }
+                if (!isShooting) {
+                    isShooting = true;
+                    //setShooter(limelight.getShooterDemand());
+                    timeStart = Timer.getFPGATimestamp();
+                }
 //
 //                if (isFlywheelReady()) {
 //                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
@@ -76,19 +79,30 @@ public class Shooter extends Subsystem {
 //                    MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
 //                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
 //                }
-                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+                double dt = Timer.getFPGATimestamp() - timeStart;
+                if (dt <= 0.1) {
+                    MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
+                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+                }
+                else {
+                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+                }
             }
         }
 
         SHOOTER_BUTTON.whenReleased(() -> {
-            //isShooting = false;
+            isShooting = false;
             setShooter(0);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
         });
 
         if (MANUAL_SHOOT_BUTTON.get()) {
+            if (!isShooting) {
+                isShooting = true;
+                timeStart = Timer.getFPGATimestamp();
+            }
 //            if (isFlywheelReady()) {
 //                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
 //                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
@@ -97,8 +111,15 @@ public class Shooter extends Subsystem {
 //                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
 //                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
 //            }
-            MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+            double dt = Timer.getFPGATimestamp() - timeStart;
+            if (dt <= 0.02) {
+                MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+            }
+            else {
+                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+            }
         }
 
         MANUAL_SHOOT_BUTTON.whenReleased(() -> {
