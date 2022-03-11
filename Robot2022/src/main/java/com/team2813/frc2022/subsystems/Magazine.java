@@ -66,7 +66,7 @@ public class Magazine extends Subsystem {
     }
 
     public enum MagDemand {
-        IN(0.2), OFF(0), OUT(-0.2), SHOOT(0.2);
+        IN(0.2), OFF(0), OUT(-0.2), SHOOT(0.125);
 
         double percent;
 
