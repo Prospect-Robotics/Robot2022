@@ -58,6 +58,7 @@ public class Shooter extends Subsystem {
         SmartDashboard.putNumber("Flywheel Velocity", flywheelVelocity);
         SmartDashboard.putNumber("Flywheel Error", error);
         SmartDashboard.putNumber("Flywheel Encoder", FLYWHEEL.getEncoderPosition());
+        SmartDashboard.putNumber("Distance to Target (in)", Units.metersToInches(limelight.calculateHorizontalDistance()));
     }
 
     public void teleopControls() {

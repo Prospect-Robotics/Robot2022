@@ -2,6 +2,7 @@ package com.team2813.frc2022.util;
 
 import com.team2813.frc2022.subsystems.Shooter;
 import com.team2813.lib.util.LimelightValues;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -12,8 +13,8 @@ public class Limelight {
     private final double kP = 0.875;
     private static final double MAX_CORRECTION_STEER_SPEED = 0.7;
     private static final double MIN_CORRECTION_STEER_SPEED = 0.05;
-    private static final double MOUNT_ANGLE = 52; // degrees
-    private static final double MOUNT_HEIGHT = 27.6; // inches
+    private static final double MOUNT_ANGLE = 38; // degrees (this is mount angle without washers)
+    private static final double MOUNT_HEIGHT = 27; // inches
     private static final double TARGET_HEIGHT = 104; // inches
 
     private Limelight() {
@@ -34,16 +35,16 @@ public class Limelight {
         return 0;
     }
 
-    private double calculateHorizontalDistance() {
-        double angle = Math.toRadians(MOUNT_ANGLE - values.getTy());
-        return (Units.inchesToMeters(TARGET_HEIGHT - MOUNT_HEIGHT) / Math.tan(angle)) + Units.inchesToMeters(24);
+    public double calculateHorizontalDistance() {
+        double angle = Math.toRadians(MOUNT_ANGLE + values.getTy() + 1); // adding offset for washers
+        return Units.inchesToMeters(((TARGET_HEIGHT - MOUNT_HEIGHT) / Math.tan(angle)) + 26.5);
     }
 
     public double getShooterDemand() { // returns in rpm
         double distance = calculateHorizontalDistance();
         double demand = 2 * Math.sqrt(4.9) * distance / Math.sqrt((distance * Math.sqrt(3)) - Units.inchesToMeters(TARGET_HEIGHT - MOUNT_HEIGHT));
         demand *= 60 / Shooter.FLYWHEEL_CIRCUMFERENCE; // convert to rpm
-        return demand;
+        return MathUtil.clamp(demand, 0, 3900);
     }
 
     public void setLights(boolean enable) {
