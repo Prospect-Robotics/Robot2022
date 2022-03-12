@@ -32,7 +32,10 @@ public class Shooter extends Subsystem {
     private Limelight limelight = Limelight.getInstance();
 
     private double demand = 0;
-    private final double spoolDemand = 0.435;
+    //private final double spoolDemand = 0.435;
+    //private final double spoolDemand = 0.38;
+    private final double spoolDemand = 0.385;
+
     private boolean isFullyRevvedUp;
     private boolean isShooting = false;
     private double timeStart = 0;
