@@ -4,6 +4,9 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
+import edu.wpi.first.wpilibj.Timer;
+
+import static com.team2813.frc2022.subsystems.Subsystems.MAGAZINE;
 
 public class Magazine extends Subsystem {
 
@@ -56,6 +59,13 @@ public class Magazine extends Subsystem {
 
     public void autoShoot(boolean on) {
         if (on) {
+            double timeStart = Timer.getFPGATimestamp();
+            double dt = Timer.getFPGATimestamp() - timeStart;
+            while (dt <= 0.1) {
+                dt = Timer.getFPGATimestamp() - timeStart;
+                setMagDemand(MagDemand.OUT);
+                setKickerDemand(KickerDemand.OUT);
+            }
             setMagDemand(MagDemand.SHOOT);
             setKickerDemand(KickerDemand.IN);
         }

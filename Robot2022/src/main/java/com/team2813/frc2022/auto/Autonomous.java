@@ -101,7 +101,7 @@ public class Autonomous {
                 new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(rotateDemand), () -> degreesRotated > 160, true),
                 new FunctionAction(() -> System.out.println("Finished rotating"), true),
                 new FunctionAction(() -> Subsystems.DRIVE.setDemand(stopDemand), true),
-                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(forwardDemand), () -> distanceTraveled < 1.25, true),
+                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(forwardDemand), () -> distanceTraveled < 1, true),
                 new AutoShootAction(),
                 new FunctionAction(() -> Subsystems.DRIVE.setDemand(stopDemand), true),
                 new FunctionAction(() -> Subsystems.SHOOTER.setShooter(0), true)
