@@ -83,7 +83,7 @@ public class Shooter extends Subsystem {
 //                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
 //                }
                 double dt = Timer.getFPGATimestamp() - timeStart;
-                if (dt <= 0.1) {
+                if (dt <= 0.02) {
                     MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
                     MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
                 }
