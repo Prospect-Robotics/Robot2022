@@ -104,7 +104,7 @@ public class Drive extends Subsystem {
         return driveDemand;
     }
 
-    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0); // gains in meters
+    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.70102, 0.044202, 0.006353); // gains in meters
 
     public Drive() {
         ShuffleboardData.driveModeChooser.addOption("Open Loop", DriveMode.OPEN_LOOP);
