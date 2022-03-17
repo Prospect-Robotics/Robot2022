@@ -88,7 +88,7 @@ public class Drive extends Subsystem {
         ARCADE, CURVATURE
     }
 
-    private static final double MAX_VELOCITY = 0; // max velocity of velocity drive in m/s
+    private static final double MAX_VELOCITY = 4.443984; // max velocity of velocity drive in m/s
     
      double getMaxVelocity() {
         return MAX_VELOCITY;

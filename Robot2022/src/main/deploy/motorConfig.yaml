@@ -13,9 +13,9 @@ talons:
         type: BRUSHLESS
         inverted: FollowMaster
     pidControllers:
-      - p: 0.16034
+      - p: 0.195
         i: 0
-        d: 0
+        d: 0.05
         f: 0
         maxVelocity: 18000
         maxAcceleration: 45000
@@ -35,9 +35,9 @@ talons:
         type: BRUSHLESS
         inverted: FollowMaster
     pidControllers:
-      - p: 0.16034
+      - p: 0.195
         i: 0
-        d: 0
+        d: 0.05
         f: 0
         maxVelocity: 18000
         maxAcceleration: 45000
