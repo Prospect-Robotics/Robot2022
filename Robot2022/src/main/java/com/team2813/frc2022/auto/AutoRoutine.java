@@ -1,9 +1,10 @@
 package com.team2813.frc2022.auto;
 
-import com.team2813.frc2022.subsystems.Subsystems;
 import com.team2813.frc2022.util.AutoShootAction;
 import com.team2813.lib.actions.*;
 import com.team2813.lib.auto.RamseteTrajectory;
+
+import static com.team2813.frc2022.subsystems.Subsystems.INTAKE;
 
 public enum AutoRoutine {
 //        TWO_BALL_SIMPLE(List.of(
@@ -33,11 +34,15 @@ public enum AutoRoutine {
 //                new FunctionAction(() -> Subsystems.DRIVE.setDemand(stopDemand), true),
 //                new FunctionAction(() -> Subsystems.SHOOTER.setShooter(0), true)
 //            ), AutoTrajectories.TWO_BALL_SIMPLE),
-
-    ONE_METER_TEST("One Meter Test",
-            new FunctionAction(() -> System.out.println("Testing One Meter"), true),
-            AutoTrajectories.ONE_METER_TEST
-    );
+    TWO_BALL_SIMPLE("Two Ball Simple",
+        new SeriesAction(
+                new LockAction(() -> AutoTrajectories.TWO_BALL_SIMPLE.getTrajectory().isCurrentTrajectory(1), true),
+                new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                new WaitAction(1),
+                new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                new LockAction(() -> AutoTrajectories.TWO_BALL_SIMPLE.getTrajectory().isCurrentTrajectory(3), true),
+                new AutoShootAction()
+        ), AutoTrajectories.TWO_BALL_SIMPLE);
 
 
     private Action action;
