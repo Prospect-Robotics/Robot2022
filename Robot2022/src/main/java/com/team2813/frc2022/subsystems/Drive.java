@@ -228,7 +228,7 @@ public class Drive extends Subsystem {
          * For now, using OPEN_LOOP for both teleop and auto
          * FIX
          */
-         if (driveMode == DriveMode.VELOCITY /* || Robot.isAuto */) {   // FLAG:  FIX
+         if (driveMode == DriveMode.VELOCITY  || Robot.isAuto ) {   // FLAG:  FIX
             DriveDemand demand = Units2813.dtDemandToMotorDemand(driveDemand); // converts m/s to rpm
             LEFT.set(ControlMode.VELOCITY, demand.getLeft(), feedforward.calculate(driveDemand.getLeft()) / 12);
             RIGHT.set(ControlMode.VELOCITY, demand.getRight(), feedforward.calculate(driveDemand.getRight()) / 12);

@@ -76,6 +76,10 @@ public enum AutoTrajectories {
     )),
     ZERO_BALL(List.of(
             new GeneratedTrajectory("ZeroBall",false,0)
+    )),
+    ONE_METER_TEST(List.of(
+            new PauseTrajectory(1, 0),
+            new GeneratedTrajectory("ZeroBall", true, 1)
     ));
     
     private RamseteTrajectory trajectory;
