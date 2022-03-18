@@ -64,9 +64,9 @@ talons:
         type: BRUSHLESS
         inverted: OpposeMaster
     pidControllers:
-      - p: 1.25
-        i: 0.0001125
-        d: 0.66675
+      - p: 0.019939
+        i: 0
+        d: 0
         f: 0
         maxVelocity: 18000
         maxAcceleration: 45000
