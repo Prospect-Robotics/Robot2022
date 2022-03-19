@@ -45,7 +45,7 @@ public class Shooter extends Subsystem {
     }
 
     public boolean isFlywheelReady() {
-        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - demand) < 100;
+        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - demand) < 175;
     }
 
     boolean isFullyRevvedUp() {
@@ -75,15 +75,17 @@ public class Shooter extends Subsystem {
                         timeStart = Timer.getFPGATimestamp();
                     }
 
-                    double dt = Timer.getFPGATimestamp() - timeStart;
-                    if (dt <= 0.02) {
-                        MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
-                        MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
-                    }
-                    else {
-                        MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-                        MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-                    }
+//                    double dt = Timer.getFPGATimestamp() - timeStart;
+//                    if (dt <= 0.02) {
+//                        MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
+//                        MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+//                    }
+//                    else {
+//                        MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+//                        MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+//                    }
+                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
                 }
                 else {
                     MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);

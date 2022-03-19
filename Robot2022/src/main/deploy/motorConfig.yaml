@@ -66,7 +66,7 @@ talons:
     pidControllers:
       - p: 0.625
         i: 0.00015
-        d: 3.5
+        d: 4.25
         f: 0
         maxVelocity: 18000
         maxAcceleration: 45000
