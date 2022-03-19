@@ -37,7 +37,8 @@ public enum AutoTrajectories {
             new PauseTrajectory(1, 3), // Shoot two balls
             new GeneratedTrajectory("FourBall(Alt) Tarmac to Terminal", false, 4),
             new PauseTrajectory(1, 5), // Intake ball (keep intake running afterwards)
-            new GeneratedTrajectory("FourBall(Alt) Terminal to Shoot (Near)", false, 6) // Stop intake, shoot two balls
+            new GeneratedTrajectory("FourBall(Alt) Terminal to Shoot (Near)", false, 6),
+            new PauseTrajectory(1, 7) // Stop intake, shoot two balls
     )),
     FOUR_BALL_ALT_SQUARED(List.of(
             new GeneratedTrajectory("FourBall(Alt) Tarmac Intake", false, 0),
@@ -46,18 +47,19 @@ public enum AutoTrajectories {
             new PauseTrajectory(1, 3), // Shoot two balls
             new GeneratedTrajectory("FourBall(Alt) Tarmac to Terminal", false, 4),
             new PauseTrajectory(1, 5), // Intake ball (keep intake running afterwards)
-            new GeneratedTrajectory("FourBall(Alt) Terminal to Shoot (Far)", false, 6) // Stop intake, shoot two balls
+            new GeneratedTrajectory("FourBall(Alt) Terminal to Shoot (Far)", false, 6),
+            new PauseTrajectory(1, 7) // Stop intake, shoot two balls
     )),
     FIVE_BALL(List.of(
             new PauseTrajectory(1, 0), // Deploy and start intake
-            new GeneratedTrajectory("FiveBall Tarmac to Launch Pad", false, 0),
-            new PauseTrajectory(1,1), // Stop intake, shoot two balls from Launch Pad
-            new GeneratedTrajectory("FiveBall Launch Pad to Terminal",false,2),
-            new PauseTrajectory(1,3), // Intake terminal ball (keep intake running afterwards)
-            new GeneratedTrajectory("FiveBall Terminal to Tarmac",false,4),
-            new PauseTrajectory(1,5), // Shoot two balls
-            new GeneratedTrajectory("FiveBall Tarmac Intake Tarmac",false,6),
-            new PauseTrajectory(1,7) // Stop intake, shoot last ball
+            new GeneratedTrajectory("FiveBall Tarmac to Launch Pad", false, 1),
+            new PauseTrajectory(1,2), // Stop intake, shoot two balls from Launch Pad
+            new GeneratedTrajectory("FiveBall Launch Pad to Terminal",false,3),
+            new PauseTrajectory(1,4), // Intake terminal ball (keep intake running afterwards)
+            new GeneratedTrajectory("FiveBall Terminal to Tarmac",false,5),
+            new PauseTrajectory(1,6), // Shoot two balls
+            new GeneratedTrajectory("FiveBall Tarmac Intake Tarmac",false,7),
+            new PauseTrajectory(1,8) // Stop intake, shoot last ball
     )),
     TWO_BALL_SIMPLE(List.of(
             new GeneratedTrajectory("ZeroBall",false,0),

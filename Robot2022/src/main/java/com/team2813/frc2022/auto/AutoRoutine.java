@@ -68,7 +68,98 @@ public enum AutoRoutine {
                 new FunctionAction(() -> INTAKE.autoIntake(false), true),
                 new LockAction(() -> AutoTrajectories.TWO_BALL_SIMPLE.getTrajectory().isCurrentTrajectory(3), true),    /* wait for the turn to complete, Pose 3 */
                 new AutoShootAction()       /* AutoShootAction spins up the shooter and Mag and then shoots - does it also turn off the shooter after? */
-        ), AutoTrajectories.TWO_BALL_SIMPLE);
+        ), AutoTrajectories.TWO_BALL_SIMPLE),
+    ZERO_BALL("Zero Ball", new WaitAction(1), AutoTrajectories.ZERO_BALL),
+    ONE_BALL("One Ball",
+            new SeriesAction(
+                    new LockAction(() -> AutoTrajectories.ONE_BALL.getTrajectory().isCurrentTrajectory(1), true),
+                    new AutoShootAction()
+            ), AutoTrajectories.ONE_BALL),
+    TWO_BALL("Two Ball",
+            new SeriesAction(
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new LockAction(() -> AutoTrajectories.TWO_BALL.getTrajectory().isCurrentTrajectory(2), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new AutoShootAction()
+            ), AutoTrajectories.TWO_BALL),
+    THREE_BALL_TERMINAL("Three Ball Terminal",
+            new SeriesAction(
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new LockAction(() -> AutoTrajectories.THREE_BALL_TERMINAL.getTrajectory().isCurrentTrajectory(2), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new AutoShootAction(),
+                    new LockAction(() -> AutoTrajectories.THREE_BALL_TERMINAL.getTrajectory().isCurrentTrajectory(4), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new WaitAction(1),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new LockAction(() -> AutoTrajectories.THREE_BALL_TERMINAL.getTrajectory().isCurrentTrajectory(6), true),
+                    new AutoShootAction()
+            ), AutoTrajectories.THREE_BALL_TERMINAL),
+    THREE_BALL_TARMAC("Three Ball Tarmac",
+            new SeriesAction(
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new LockAction(() -> AutoTrajectories.THREE_BALL_TARMAC.getTrajectory().isCurrentTrajectory(2), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new AutoShootAction(),
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new LockAction(() -> AutoTrajectories.THREE_BALL_TARMAC.getTrajectory().isCurrentTrajectory(4), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new AutoShootAction()
+            ), AutoTrajectories.THREE_BALL_TARMAC),
+    FOUR_BALL("Four Ball",
+            new SeriesAction(
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new LockAction(() -> AutoTrajectories.FOUR_BALL.getTrajectory().isCurrentTrajectory(2), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new AutoShootAction(),
+                    new LockAction(() -> AutoTrajectories.FOUR_BALL.getTrajectory().isCurrentTrajectory(4), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new LockAction(() -> AutoTrajectories.FOUR_BALL.getTrajectory().isCurrentTrajectory(6), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new AutoShootAction()
+            ), AutoTrajectories.FOUR_BALL),
+    FOUR_BALL_ALT("Four Ball Alt",
+            new SeriesAction(
+                    new LockAction(() -> AutoTrajectories.FOUR_BALL_ALT.getTrajectory().isCurrentTrajectory(1), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new WaitAction(1),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new LockAction(() -> AutoTrajectories.FOUR_BALL_ALT.getTrajectory().isCurrentTrajectory(3), true),
+                    new AutoShootAction(),
+                    new LockAction(() -> AutoTrajectories.FOUR_BALL_ALT.getTrajectory().isCurrentTrajectory(5), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new LockAction(() -> AutoTrajectories.FOUR_BALL_ALT.getTrajectory().isCurrentTrajectory(7), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new AutoShootAction()
+            ), AutoTrajectories.FOUR_BALL_ALT),
+    FOUR_BALL_ALT_SQUARED("Four Ball Alt Squared",
+            new SeriesAction(
+                    new LockAction(() -> AutoTrajectories.FOUR_BALL_ALT_SQUARED.getTrajectory().isCurrentTrajectory(1), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new WaitAction(1),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new LockAction(() -> AutoTrajectories.FOUR_BALL_ALT_SQUARED.getTrajectory().isCurrentTrajectory(3), true),
+                    new AutoShootAction(),
+                    new LockAction(() -> AutoTrajectories.FOUR_BALL_ALT_SQUARED.getTrajectory().isCurrentTrajectory(5), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new LockAction(() -> AutoTrajectories.FOUR_BALL_ALT_SQUARED.getTrajectory().isCurrentTrajectory(7), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new AutoShootAction()
+            ), AutoTrajectories.FOUR_BALL_ALT_SQUARED),
+    FIVE_BALL("Five Ball",
+            new SeriesAction(
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new LockAction(() -> AutoTrajectories.FIVE_BALL.getTrajectory().isCurrentTrajectory(2), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new AutoShootAction(),
+                    new LockAction(() -> AutoTrajectories.FIVE_BALL.getTrajectory().isCurrentTrajectory(4), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(true), true),
+                    new LockAction(() -> AutoTrajectories.FIVE_BALL.getTrajectory().isCurrentTrajectory(6), true),
+                    new AutoShootAction(),
+                    new LockAction(() -> AutoTrajectories.FIVE_BALL.getTrajectory().isCurrentTrajectory(8), true),
+                    new FunctionAction(() -> INTAKE.autoIntake(false), true),
+                    new AutoShootAction()
+            ), AutoTrajectories.FIVE_BALL);
 
 
     private Action action;
