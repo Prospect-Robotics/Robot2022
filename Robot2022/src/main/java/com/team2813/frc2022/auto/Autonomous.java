@@ -24,9 +24,9 @@ public class Autonomous {
 
     public void periodic() {
         // Testing auto - just drive forward, half speed
-        // DriveDemand demand = forwardDemand;
+        // DriveDemand demand = forwardDemand;      // FLAG - replaces getDemand, below, when Odometry is turned off
         ramseteAuto.getDemand(Subsystems.DRIVE.robotPosition);
-        DriveDemand demand = ramseteAuto.getDemand(Subsystems.DRIVE.robotPosition);   // FLAG - debug only, uncomment when Odometry and Pigeon gyro are turned on
+        DriveDemand demand = ramseteAuto.getDemand(Subsystems.DRIVE.robotPosition);   // FLAG - use when Odometry and Pigeon gyro are turned on; comment out if no Odometry
         if (!demand.equals(prevDemand)) {
             Subsystems.DRIVE.setDemand(demand);
         }
@@ -74,7 +74,8 @@ public class Autonomous {
 
         Subsystems.DRIVE.initAutonomous(ramseteAuto.initialPose());
         Subsystems.LOOPER.addAction(routine.getAction());
-        //Subsystems.DRIVE.initAutonomous(initialPose);
+//        Subsystems.DRIVE.initAutonomous(initialPose);     // FLAG - Believe this can be removed
+
         // One ball auto code
 //        Action autoAction = new SeriesAction(
 //                new LockFunctionAction(() -> Subsystems.DRIVE.setDemand(backwardDemand), () -> distanceTraveled > 1, true),
@@ -84,6 +85,11 @@ public class Autonomous {
 //        );
 //        LOOPER.addAction(autoAction);
 
+        /*
+         *  Below is the 2-ball Auto code we used successfully at Ventura Regional
+         *  Working now to integrate this SeriesAction into AutonomousRoutine with a corresponding
+         *  Trajectory in AutonomousTrajectories
+         */
         // Two ball auto code
 //        Action autoAction = new SeriesAction(
 //                new FunctionAction(() -> Subsystems.INTAKE.autoIntake(true), true),
