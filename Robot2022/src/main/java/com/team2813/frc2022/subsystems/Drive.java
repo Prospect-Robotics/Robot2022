@@ -88,7 +88,7 @@ public class Drive extends Subsystem {
         ARCADE, CURVATURE
     }
 
-    private static final double MAX_VELOCITY = 0; // max velocity of velocity drive in m/s
+    private static final double MAX_VELOCITY = 4.443984; // max velocity of velocity drive in m/s
     
      double getMaxVelocity() {
         return MAX_VELOCITY;
@@ -104,7 +104,7 @@ public class Drive extends Subsystem {
         return driveDemand;
     }
 
-    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0, 0, 0); // gains in meters
+    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.70102, 0.044202, 0.006353); // gains in meters
 
     public Drive() {
         ShuffleboardData.driveModeChooser.addOption("Open Loop", DriveMode.OPEN_LOOP);
@@ -117,8 +117,8 @@ public class Drive extends Subsystem {
         LEFT = (TalonFXWrapper) MotorConfigs.talons.get("driveLeft");
         RIGHT = (TalonFXWrapper) MotorConfigs.talons.get("driveRight");
 
-        LEFT.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
-        RIGHT.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 200);
+        LEFT.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 100);
+        RIGHT.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 100);
 
         DriveDemand.circumference = WHEEL_CIRCUMFERENCE;
 
@@ -228,7 +228,7 @@ public class Drive extends Subsystem {
          * For now, using OPEN_LOOP for both teleop and auto
          * FIX
          */
-         if (driveMode == DriveMode.VELOCITY /* || Robot.isAuto */) {   // FLAG:  FIX
+         if (driveMode == DriveMode.VELOCITY  || Robot.isAuto ) {   // FLAG:  FIX
             DriveDemand demand = Units2813.dtDemandToMotorDemand(driveDemand); // converts m/s to rpm
             LEFT.set(ControlMode.VELOCITY, demand.getLeft(), feedforward.calculate(driveDemand.getLeft()) / 12);
             RIGHT.set(ControlMode.VELOCITY, demand.getRight(), feedforward.calculate(driveDemand.getRight()) / 12);

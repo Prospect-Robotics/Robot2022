@@ -1,0 +1,42 @@
+{
+  "counts per rotation": 2048.0,
+  "encoder type": "Built-in",
+  "encoding": false,
+  "gearing denominator": 7.64,
+  "gearing numerator": 1.0,
+  "gyro": "Pigeon",
+  "gyro ctor": "13",
+  "is drivetrain": true,
+  "motor controllers": [
+    "TalonFX",
+    "TalonFX"
+  ],
+  "number of samples per average": 1,
+  "primary encoder inverted": true,
+  "primary encoder ports": [
+    0,
+    1
+  ],
+  "primary motor ports": [
+    2,
+    3
+  ],
+  "primary motors inverted": [
+    true,
+    true
+  ],
+  "secondary encoder inverted": false,
+  "secondary encoder ports": [
+    2,
+    3
+  ],
+  "secondary motor ports": [
+    4,
+    5
+  ],
+  "secondary motors inverted": [
+    false,
+    false
+  ],
+  "velocity measurement period": 100
+}
