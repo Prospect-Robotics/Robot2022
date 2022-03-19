@@ -60,7 +60,7 @@ public class Shooter extends Subsystem {
         SmartDashboard.putNumber("Flywheel Velocity", flywheelVelocity);
         SmartDashboard.putNumber("Flywheel Error", error);
         SmartDashboard.putNumber("Flywheel Encoder", FLYWHEEL.getEncoderPosition());
-        SmartDashboard.putNumber("Distance to Target (in)", Units.metersToInches(limelight.calculateHorizontalDistance()));
+        SmartDashboard.putNumber("Distance to Target", limelight.calculateHorizontalDistance());
     }
 
     public void teleopControls() {
@@ -68,28 +68,26 @@ public class Shooter extends Subsystem {
 
         if (SHOOTER_BUTTON.get()) {
             if (DRIVE.getIsAimed()) {
-                if (!isShooting) {
-                    isShooting = true;
-                    //setShooter(limelight.getShooterDemand());
-                    timeStart = Timer.getFPGATimestamp();
-                }
-//
-//                if (isFlywheelReady()) {
-//                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-//                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-//                }
-//                else {
-//                    MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-//                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-//                }
-                double dt = Timer.getFPGATimestamp() - timeStart;
-                if (dt <= 0.02) {
-                    MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
-                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+                //setShooter(limelight.getShooterDemand());
+                if (isFlywheelReady()) {
+                    if (!isShooting) {
+                        isShooting = true;
+                        timeStart = Timer.getFPGATimestamp();
+                    }
+
+                    double dt = Timer.getFPGATimestamp() - timeStart;
+                    if (dt <= 0.02) {
+                        MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
+                        MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+                    }
+                    else {
+                        MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+                        MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+                    }
                 }
                 else {
-                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+                    MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
                 }
             }
         }
@@ -102,26 +100,25 @@ public class Shooter extends Subsystem {
         });
 
         if (MANUAL_SHOOT_BUTTON.get()) {
-            if (!isShooting) {
-                isShooting = true;
-                timeStart = Timer.getFPGATimestamp();
-            }
-//            if (isFlywheelReady()) {
-//                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-//                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-//            }
-//            else {
-//                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-//                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-//            }
-            double dt = Timer.getFPGATimestamp() - timeStart;
-            if (dt <= 0.02) {
-                MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+            if (isFlywheelReady()) {
+                if (!isShooting) {
+                    isShooting = true;
+                    timeStart = Timer.getFPGATimestamp();
+                }
+
+                double dt = Timer.getFPGATimestamp() - timeStart;
+                if (dt <= 0.02) {
+                    MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
+                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
+                }
+                else {
+                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+                }
             }
             else {
-                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
             }
         }
 
