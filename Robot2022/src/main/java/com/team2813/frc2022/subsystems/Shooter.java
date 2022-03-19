@@ -7,7 +7,6 @@ import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,8 +34,6 @@ public class Shooter extends Subsystem {
     private double demand = 0;
     //private final double spoolDemand = 0.435;
     private final double spoolDemand = 3600;
-
-    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.72706, 0.16515, 0.026868); // gains in rotations
 
     private boolean isFullyRevvedUp;
     private boolean isShooting = false;
@@ -154,21 +151,19 @@ public class Shooter extends Subsystem {
 
     @Override
     protected void writePeriodicOutputs() {
-//        if (demand == 0) {
-//            double error = Math.abs(demand - Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION));
-//            if (error <= 250) {
-//                FLYWHEEL.set(ControlMode.DUTY_CYCLE, 0);
-//            }
-//            else {
-//                FLYWHEEL.set(ControlMode.VELOCITY, 0);
-//            }
-//        }
-//        else {
-//            double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
-//            FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
-//        }
-        double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
-        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand, feedforward.calculate(motorDemand));
+        if (demand == 0) {
+            double error = Math.abs(demand - Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION));
+            if (error <= 10) {
+                FLYWHEEL.set(ControlMode.DUTY_CYCLE, 0);
+            }
+            else {
+                FLYWHEEL.set(ControlMode.VELOCITY, 0);
+            }
+        }
+        else {
+            double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
+            FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
+        }
     }
 
     public void setShooter(double demand) {
