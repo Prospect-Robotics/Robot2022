@@ -36,8 +36,6 @@ public class Shooter extends Subsystem {
     private final double spoolDemand = 3600;
 
     private boolean isFullyRevvedUp;
-    private boolean isShooting = false;
-    private double timeStart = 0;
 
     public Shooter() {
         FLYWHEEL = (TalonFXWrapper) MotorConfigs.talons.get("flywheel");
@@ -68,22 +66,8 @@ public class Shooter extends Subsystem {
 
         if (SHOOTER_BUTTON.get()) {
             if (DRIVE.getIsAimed()) {
-                //setShooter(limelight.getShooterDemand());
+                setShooter(limelight.getShooterDemand());
                 if (isFlywheelReady()) {
-                    if (!isShooting) {
-                        isShooting = true;
-                        timeStart = Timer.getFPGATimestamp();
-                    }
-
-//                    double dt = Timer.getFPGATimestamp() - timeStart;
-//                    if (dt <= 0.02) {
-//                        MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
-//                        MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
-//                    }
-//                    else {
-//                        MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-//                        MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-//                    }
                     MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
                     MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
                 }
@@ -95,28 +79,16 @@ public class Shooter extends Subsystem {
         }
 
         SHOOTER_BUTTON.whenReleased(() -> {
-            isShooting = false;
             setShooter(0);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
         });
 
         if (MANUAL_SHOOT_BUTTON.get()) {
+            setShooter(limelight.getShooterDemand());
             if (isFlywheelReady()) {
-                if (!isShooting) {
-                    isShooting = true;
-                    timeStart = Timer.getFPGATimestamp();
-                }
-
-                double dt = Timer.getFPGATimestamp() - timeStart;
-                if (dt <= 0.02) {
-                    MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
-                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
-                }
-                else {
-                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-                }
+                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
             }
             else {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
