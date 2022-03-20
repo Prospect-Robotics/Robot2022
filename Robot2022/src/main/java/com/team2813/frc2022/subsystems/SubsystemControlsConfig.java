@@ -25,6 +25,7 @@ public class SubsystemControlsConfig {
 	private static Axis driveReverse = driveJoystick.axis(2);
     private static Button shooterButton = driveJoystick.button(4);
     private static Button manualShootButton = driveJoystick.button(2);
+    private static Button lowShootButton = driveJoystick.button(3);
 
 	// operator
 	private static Controller operatorJoystick = new Controller(1);
@@ -75,16 +76,20 @@ public class SubsystemControlsConfig {
         return manualShootButton;
     }
 
+    static Button getSpoolButton() {
+        return spoolButton;
+    }
+
+    static Button getLowShootButton() {
+        return lowShootButton;
+    }
+
     static Button getMidClimbButton() {
         return midClimbButton;
     }
 
     static Button getRiseButton() {
         return riseButton;
-    }
-
-    static Button getSpoolButton() {
-        return spoolButton;
     }
 
     static Button getExtendButton() {
