@@ -61,7 +61,7 @@ public class Magazine extends Subsystem {
         if (on) {
             double timeStart = Timer.getFPGATimestamp();
             double dt = Timer.getFPGATimestamp() - timeStart;
-            while (dt <= 0.1) {
+            while (dt <= 0.02) {
                 dt = Timer.getFPGATimestamp() - timeStart;
                 setMagDemand(MagDemand.OUT);
                 setKickerDemand(KickerDemand.OUT);
@@ -90,7 +90,7 @@ public class Magazine extends Subsystem {
     }
 
     public enum KickerDemand {
-        IN(0.7), OFF(0), OUT(-0.4);
+        IN(0.3), LOW(1), OFF(0), OUT(-0.4);
 
         double percent;
 
