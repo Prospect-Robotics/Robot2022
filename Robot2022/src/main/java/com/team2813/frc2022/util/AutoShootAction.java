@@ -27,8 +27,7 @@ public class AutoShootAction extends SeriesAction {
                    return dt >= aimingTime;
                }, true),
                new FunctionAction(() -> DRIVE.setDemand(new DriveDemand(0, 0)), true),
-               new FunctionAction(() -> SHOOTER.setShooter(0.38), true),
-               new WaitAction(1.5),
+               new LockFunctionAction(() -> SHOOTER.setShooter(limelight.getShooterDemand()), SHOOTER::isFlywheelReady,  true),
                new FunctionAction(() -> MAGAZINE.autoShoot(true), true),
                new WaitAction(2),
                new FunctionAction(() -> MAGAZINE.autoShoot(false), true)

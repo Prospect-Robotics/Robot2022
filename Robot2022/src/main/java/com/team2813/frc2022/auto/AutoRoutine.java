@@ -2,12 +2,7 @@ package com.team2813.frc2022.auto;
 
 import com.team2813.frc2022.util.AutoShootAction;
 import com.team2813.lib.actions.*;
-import com.team2813.lib.auto.GeneratedTrajectory;
-import com.team2813.lib.auto.PauseTrajectory;
 import com.team2813.lib.auto.RamseteTrajectory;
-import com.team2813.lib.auto.RotateTrajectory;
-
-import java.util.List;
 
 import static com.team2813.frc2022.subsystems.Subsystems.INTAKE;
 
