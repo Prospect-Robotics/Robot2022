@@ -27,17 +27,17 @@ public class Shooter extends Subsystem {
     // Controllers
     private static final Button SHOOTER_BUTTON = SubsystemControlsConfig.getShooterButton();
     private static final Button MANUAL_SHOOT_BUTTON = SubsystemControlsConfig.getManualShootButton();
+    private static final Button LOW_SHOOT_BUTTON = SubsystemControlsConfig.getLowShootButton();
     private static final Button SPOOL_BUTTON = SubsystemControlsConfig.getSpoolButton();
 
     private Limelight limelight = Limelight.getInstance();
 
     private double demand = 0;
     //private final double spoolDemand = 0.435;
-    private final double spoolDemand = 0.38;
+    private final double spoolDemand = 3600;
+    private final double lowDemand = 1500;
 
     private boolean isFullyRevvedUp;
-    private boolean isShooting = false;
-    private double timeStart = 0;
 
     public Shooter() {
         FLYWHEEL = (TalonFXWrapper) MotorConfigs.talons.get("flywheel");
@@ -45,7 +45,7 @@ public class Shooter extends Subsystem {
     }
 
     public boolean isFlywheelReady() {
-        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - demand) < 100;
+        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - demand) < 175;
     }
 
     boolean isFullyRevvedUp() {
@@ -60,7 +60,7 @@ public class Shooter extends Subsystem {
         SmartDashboard.putNumber("Flywheel Velocity", flywheelVelocity);
         SmartDashboard.putNumber("Flywheel Error", error);
         SmartDashboard.putNumber("Flywheel Encoder", FLYWHEEL.getEncoderPosition());
-        SmartDashboard.putNumber("Distance to Target (in)", Units.metersToInches(limelight.calculateHorizontalDistance()));
+        SmartDashboard.putNumber("Distance to Target", limelight.calculateHorizontalDistance());
     }
 
     public void teleopControls() {
@@ -68,64 +68,55 @@ public class Shooter extends Subsystem {
 
         if (SHOOTER_BUTTON.get()) {
             if (DRIVE.getIsAimed()) {
-                if (!isShooting) {
-                    isShooting = true;
-                    //setShooter(limelight.getShooterDemand());
-                    timeStart = Timer.getFPGATimestamp();
-                }
-//
-//                if (isFlywheelReady()) {
-//                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-//                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-//                }
-//                else {
-//                    MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-//                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-//                }
-                double dt = Timer.getFPGATimestamp() - timeStart;
-                if (dt <= 0.1) {
-                    MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
-                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
-                }
-                else {
+                setShooter(limelight.getShooterDemand());
+                if (isFlywheelReady()) {
                     MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
                     MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+                }
+                else {
+                    MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
                 }
             }
         }
 
         SHOOTER_BUTTON.whenReleased(() -> {
-            isShooting = false;
             setShooter(0);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
         });
 
         if (MANUAL_SHOOT_BUTTON.get()) {
-            if (!isShooting) {
-                isShooting = true;
-                timeStart = Timer.getFPGATimestamp();
-            }
-//            if (isFlywheelReady()) {
-//                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-//                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-//            }
-//            else {
-//                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-//                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-//            }
-            double dt = Timer.getFPGATimestamp() - timeStart;
-            if (dt <= 0.02) {
-                MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
-            }
-            else {
+            //setShooter(limelight.getShooterDemand());
+            if (isFlywheelReady()) {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+            }
+            else {
+                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
             }
         }
 
         MANUAL_SHOOT_BUTTON.whenReleased(() -> {
+            setShooter(0);
+            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+        });
+
+        if (LOW_SHOOT_BUTTON.get()) {
+            setShooter(lowDemand);
+            if (isFlywheelReady()) {
+                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.LOW);
+            }
+            else {
+                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+            }
+        }
+
+        LOW_SHOOT_BUTTON.whenReleased(() -> {
             setShooter(0);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
@@ -151,20 +142,19 @@ public class Shooter extends Subsystem {
 
     @Override
     protected void writePeriodicOutputs() {
-//        if (demand == 0) {
-//            double error = Math.abs(demand - Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION));
-//            if (error <= 250) {
-//                FLYWHEEL.set(ControlMode.DUTY_CYCLE, 0);
-//            }
-//            else {
-//                FLYWHEEL.set(ControlMode.VELOCITY, 0);
-//            }
-//        }
-//        else {
-//            double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
-//            FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
-//        }
-        FLYWHEEL.set(ControlMode.DUTY_CYCLE, demand);
+        if (demand == 0) {
+            double error = Math.abs(demand - Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION));
+            if (error <= 10) {
+                FLYWHEEL.set(ControlMode.DUTY_CYCLE, 0);
+            }
+            else {
+                FLYWHEEL.set(ControlMode.VELOCITY, 0);
+            }
+        }
+        else {
+            double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
+            FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
+        }
     }
 
     public void setShooter(double demand) {

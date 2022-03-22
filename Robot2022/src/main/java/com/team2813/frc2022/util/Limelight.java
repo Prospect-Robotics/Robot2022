@@ -42,9 +42,7 @@ public class Limelight {
 
     public double getShooterDemand() { // returns in rpm
         double distance = calculateHorizontalDistance();
-        double demand = 2 * Math.sqrt(4.9) * distance / Math.sqrt((distance * Math.sqrt(3)) - Units.inchesToMeters(TARGET_HEIGHT - MOUNT_HEIGHT));
-        demand *= 60 / Shooter.FLYWHEEL_CIRCUMFERENCE; // convert to rpm
-        return MathUtil.clamp(demand, 0, 3900);
+        return -5444.444 + (6602.661 * distance) - (1606.313 * Math.pow(distance, 2)) + (134.8647 * Math.pow(distance, 3));
     }
 
     public void setLights(boolean enable) {
