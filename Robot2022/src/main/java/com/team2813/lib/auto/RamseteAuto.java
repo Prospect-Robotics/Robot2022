@@ -73,7 +73,7 @@ public class RamseteAuto {
     public DriveDemand followPath(Pose2d currentRobotPose, TrajectorySample goal) {
         Pose2d robotPose = goal.isReversed() ? new Pose2d(currentRobotPose.getTranslation(), currentRobotPose.getRotation().rotateBy(Rotation2d.fromDegrees(180))) : currentRobotPose;
         ChassisSpeeds adjustedSpeeds = controller.calculate(robotPose, goal.getState());
-        DriveDemand demand = new DriveDemand(kinematics.toWheelSpeeds(adjustedSpeeds)).flip();
+        DriveDemand demand = new DriveDemand(kinematics.toWheelSpeeds(adjustedSpeeds));
 
         return goal.isReversed() ? demand.reverse() : demand;
     }

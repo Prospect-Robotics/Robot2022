@@ -78,6 +78,9 @@ public enum AutoTrajectories {
     )),
     ZERO_BALL(List.of(
             new GeneratedTrajectory("ZeroBall",false,0)
+    )),
+    TEST_ROUTINE(List.of(
+            new GeneratedTrajectory("test", false, 0)
     ));
     
     private RamseteTrajectory trajectory;

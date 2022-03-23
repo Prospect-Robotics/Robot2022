@@ -154,7 +154,8 @@ public enum AutoRoutine {
                     new LockAction(() -> AutoTrajectories.FIVE_BALL.getTrajectory().isCurrentTrajectory(8), true),
                     new FunctionAction(() -> INTAKE.autoIntake(false), true),
                     new AutoShootAction()
-            ), AutoTrajectories.FIVE_BALL);
+            ), AutoTrajectories.FIVE_BALL),
+    TEST_ROUTINE("Test Routine", new WaitAction(1), AutoTrajectories.TEST_ROUTINE);
 
 
     private Action action;
