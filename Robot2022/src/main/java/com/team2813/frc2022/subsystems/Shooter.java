@@ -107,8 +107,8 @@ public class Shooter extends Subsystem {
         if (LOW_SHOOT_BUTTON.get()) {
             setShooter(lowDemand);
             if (isFlywheelReady()) {
-                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.LOW);
+                MAGAZINE.setMagDemand(Magazine.MagDemand.LOW);
+                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
             }
             else {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
