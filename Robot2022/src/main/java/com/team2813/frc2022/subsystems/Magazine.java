@@ -11,7 +11,7 @@ public class Magazine extends Subsystem {
     // mag should spin forward when shooter is being run, forward when intake is running forward, and backwards when intake is being run backwards.
     // motor controllers
     private final TalonFXWrapper MAGAZINE;
-    //private final TalonFXWrapper KICKER;
+    private final TalonFXWrapper KICKER;
     
     // controllers
     /* Step 1: set the demand, teloep controls
@@ -26,8 +26,8 @@ public class Magazine extends Subsystem {
         MAGAZINE = (TalonFXWrapper) MotorConfigs.talons.get("magazine");
         MAGAZINE.setNeutralMode(NeutralMode.Brake);
 
-//        KICKER = (TalonFXWrapper) MotorConfigs.talons.get("kicker");
-//        KICKER.setNeutralMode(NeutralMode.Brake);
+        KICKER = (TalonFXWrapper) MotorConfigs.talons.get("kicker");
+        KICKER.setNeutralMode(NeutralMode.Brake);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class Magazine extends Subsystem {
     }
 
     public enum MagDemand {
-        IN(0.2), LOW(1), OFF(0), OUT(-0.2), SHOOT(0.125);
+        IN(0.2), LOW(0.5), OFF(0), OUT(-0.2), SHOOT(0.125);
 
         double percent;
 
@@ -103,6 +103,6 @@ public class Magazine extends Subsystem {
 
     protected void writePeriodicOutputs() {
         MAGAZINE.set(ControlMode.DUTY_CYCLE, magDemand.percent);
-        //KICKER.set(ControlMode.DUTY_CYCLE, kickerDemand.percent);
+        KICKER.set(ControlMode.DUTY_CYCLE, kickerDemand.percent);
     }
 }
