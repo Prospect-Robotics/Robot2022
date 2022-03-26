@@ -48,7 +48,7 @@ public class Intake extends Subsystem {
                     new WaitAction(0.4),
                     new FunctionAction(() ->setIntake(Demand.IN), true),
                     new FunctionAction(() -> MAGAZINE.setMagDemand(Magazine.MagDemand.IN), true),
-                    new FunctionAction(() -> MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN), true)
+                    new FunctionAction(() -> MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT), true)
             );
             LOOPER.addAction(intakeAction);
         }, () -> {

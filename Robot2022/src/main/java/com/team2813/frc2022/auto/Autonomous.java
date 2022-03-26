@@ -9,6 +9,7 @@ import com.team2813.lib.auto.RamseteAuto;
 import com.team2813.lib.drive.DriveDemand;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static com.team2813.frc2022.subsystems.Subsystems.LOOPER;
 
@@ -59,6 +60,7 @@ public class Autonomous {
 //        System.out.println("Got to Autonomous.periodic(" + curTimeInMatch + ", " + matchTimer.getFPGATimestamp() + ", " + matchTimer.hasElapsed((2.0) ) + ")");
 //
         distanceTraveled = Subsystems.DRIVE.robotPosition.getTranslation().getDistance(initialPose.getTranslation());
+        SmartDashboard.putNumber("Distance Traveled", distanceTraveled);
         degreesRotated = Subsystems.DRIVE.robotPosition.getRotation().getDegrees();
 //
 //        System.out.println("Rotation: " + degreesRotated + " Distance traveled: " + distanceTraveled);

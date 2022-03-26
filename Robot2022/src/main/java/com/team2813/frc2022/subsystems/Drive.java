@@ -257,6 +257,8 @@ public class Drive extends Subsystem {
         System.out.println("Autonomous Initial Pose" + initialPose.toString());
         pigeon.setHeading(initialPose.getRotation().getDegrees());
         odometry.resetPosition(initialPose, initialPose.getRotation());
+        System.out.println("Left encoder: " + LEFT.getEncoderPosition() + " " + "Right encoder: " + RIGHT.getEncoderPosition());
+        zeroSensors();
     }
 
     public void setDemand(DriveDemand demand) {
