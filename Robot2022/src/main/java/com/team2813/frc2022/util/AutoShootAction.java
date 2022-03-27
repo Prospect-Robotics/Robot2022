@@ -18,7 +18,7 @@ public class AutoShootAction extends SeriesAction {
                    if (!isAiming) {
                        isAiming = true;
                        limelight.setLights(true);
-                       aimingTime = (0.022 * Math.abs(limelight.getValues().getTx())) + 0.2;
+                       aimingTime = (0.022 * Math.abs(limelight.getValues().getTx())) + 0.5;
                        aimStart = Timer.getFPGATimestamp();
                    }
 
