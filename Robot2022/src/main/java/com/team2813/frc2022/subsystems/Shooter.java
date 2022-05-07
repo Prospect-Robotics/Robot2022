@@ -64,45 +64,45 @@ public class Shooter extends Subsystem {
     }
 
     public void teleopControls() {
-        SPOOL_BUTTON.whenPressed(() -> setShooter(spoolDemand));
-
-        if (SHOOTER_BUTTON.get()) {
-            if (DRIVE.getIsAimed()) {
-                setShooter(limelight.getShooterDemand());
-                if (isFlywheelReady()) {
-                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-                }
-                else {
-                    MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-                }
-            }
-        }
-
-        SHOOTER_BUTTON.whenReleased(() -> {
-            setShooter(0);
-            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-        });
-
-        if (MANUAL_SHOOT_BUTTON.get()) {
-            //setShooter(limelight.getShooterDemand());
-            if (isFlywheelReady()) {
-                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-            }
-            else {
-                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-            }
-        }
-
-        MANUAL_SHOOT_BUTTON.whenReleased(() -> {
-            setShooter(0);
-            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
-            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-        });
+//        SPOOL_BUTTON.whenPressed(() -> setShooter(spoolDemand));
+//
+//        if (SHOOTER_BUTTON.get()) {
+//            if (DRIVE.getIsAimed()) {
+//                setShooter(limelight.getShooterDemand());
+//                if (isFlywheelReady()) {
+//                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+//                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+//                }
+//                else {
+//                    MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+//                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+//                }
+//            }
+//        }
+//
+//        SHOOTER_BUTTON.whenReleased(() -> {
+//            setShooter(0);
+//            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+//            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+//        });
+//
+//        if (MANUAL_SHOOT_BUTTON.get()) {
+//            //setShooter(limelight.getShooterDemand());
+//            if (isFlywheelReady()) {
+//                MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
+//                MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+//            }
+//            else {
+//                MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+//                MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+//            }
+//        }
+//
+//        MANUAL_SHOOT_BUTTON.whenReleased(() -> {
+//            setShooter(0);
+//            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
+//            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+//        });
 
         if (LOW_SHOOT_BUTTON.get()) {
             setShooter(lowDemand);
