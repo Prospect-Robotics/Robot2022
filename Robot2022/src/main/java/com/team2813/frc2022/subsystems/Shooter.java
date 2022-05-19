@@ -34,7 +34,8 @@ public class Shooter extends Subsystem {
 
     private double demand = 0;
     //private final double spoolDemand = 0.435;
-    private final double spoolDemand = 3600;
+    //private final double spoolDemand = 3600;
+    private final double spoolDemand = 4250;
     private final double lowDemand = 1500;
 
     private boolean isFullyRevvedUp;
