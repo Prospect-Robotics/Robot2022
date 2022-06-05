@@ -143,19 +143,22 @@ public class Shooter extends Subsystem {
 
     @Override
     protected void writePeriodicOutputs() {
-        if (demand == 0) {
-            double error = Math.abs(demand - Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION));
-            if (error <= 10) {
-                FLYWHEEL.set(ControlMode.DUTY_CYCLE, 0);
-            }
-            else {
-                FLYWHEEL.set(ControlMode.VELOCITY, 0);
-            }
-        }
-        else {
-            double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
-            FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
-        }
+        // if (demand == 0) {
+        //     double error = Math.abs(demand - Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION));
+        //     if (error <= 10) {
+        //         FLYWHEEL.set(ControlMode.DUTY_CYCLE, 0);
+        //     }
+        //     else {
+        //         FLYWHEEL.set(ControlMode.VELOCITY, 0);
+        //     }
+        // }
+        // else {
+        //     double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
+        //     FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
+        // }
+        
+        double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
+        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
     }
 
     public void setShooter(double demand) {
