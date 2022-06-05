@@ -68,9 +68,9 @@ talons:
       #   i: 0.00015
       #   d: 4.25
       #   f: 0
-        p: 5
-        i: 1
-        d: 1
+        p: 0.1
+        i: 0
+        d: 0
         f: 0
         maxVelocity: 18000
         maxAcceleration: 45000
