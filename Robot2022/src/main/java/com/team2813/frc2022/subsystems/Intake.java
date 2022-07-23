@@ -22,6 +22,7 @@ public class Intake extends Subsystem {
     private final TalonFXWrapper INTAKE_MOTOR;
 
     // Controllers
+    private static final Button INTAKE_PISTONS_BUTTON = SubsystemControlsConfig.getIntakePistonsButton();
     private static final Button INTAKE_IN_BUTTON = SubsystemControlsConfig.getIntakeInButton();
     private static final Button INTAKE_OUT_BUTTON = SubsystemControlsConfig.getIntakeOutButton();
 
@@ -42,10 +43,10 @@ public class Intake extends Subsystem {
 
     @Override
     public void teleopControls() {
+        INTAKE_PISTONS_BUTTON.whenPressed(PISTONS::toggle);
+
         INTAKE_IN_BUTTON.whenPressedReleased(() -> {
             Action intakeAction = new SeriesAction(
-                    new FunctionAction(() -> setDeployed(true), true),
-                    new WaitAction(0.4),
                     new FunctionAction(() ->setIntake(Demand.IN), true),
                     new FunctionAction(() -> MAGAZINE.setMagDemand(Magazine.MagDemand.IN), true),
                     new FunctionAction(() -> MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT), true)
@@ -55,13 +56,14 @@ public class Intake extends Subsystem {
             setIntake(Demand.OFF);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-            setDeployed(false);
         });
 
         INTAKE_OUT_BUTTON.whenPressedReleased(() -> {
+            setIntake(Demand.OUT);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OUT);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OUT);
         }, () -> {
+            setIntake(Demand.OFF);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
         });
@@ -109,7 +111,7 @@ public class Intake extends Subsystem {
     }
 
     public enum Demand {
-        IN(0.85), OFF(0);
+        IN(0.85), OFF(0), OUT(-0.85);
 
         double percent;
 
