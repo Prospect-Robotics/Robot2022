@@ -7,6 +7,7 @@ import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,6 +30,8 @@ public class Shooter extends Subsystem {
     private static final Button MANUAL_SHOOT_BUTTON = SubsystemControlsConfig.getManualShootButton();
     private static final Button LOW_SHOOT_BUTTON = SubsystemControlsConfig.getLowShootButton();
     private static final Button SPOOL_BUTTON = SubsystemControlsConfig.getSpoolButton();
+
+    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(1.2795, 0.18545, 0.081586);
 
     private Limelight limelight = Limelight.getInstance();
 
@@ -158,7 +161,7 @@ public class Shooter extends Subsystem {
         // }
         
         double motorDemand = Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
-        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand);
+        FLYWHEEL.set(ControlMode.VELOCITY, motorDemand, feedforward.calculate(motorDemand / 60));
     }
 
     public void setShooter(double demand) {
