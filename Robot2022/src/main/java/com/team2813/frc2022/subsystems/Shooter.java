@@ -38,8 +38,9 @@ public class Shooter extends Subsystem {
     private double demand = 0;
     //private final double spoolDemand = 0.435;
     //private final double spoolDemand = 3600;
-    private final double spoolDemand = 2250;
+    private final double spoolDemand = 2000;
     private final double lowDemand = 1500;
+    private final double defaultDemand = 250;
 
     private boolean isFullyRevvedUp;
 
@@ -49,7 +50,7 @@ public class Shooter extends Subsystem {
     }
 
     public boolean isFlywheelReady() {
-        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - demand) < 140;
+        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - demand) < 25;
     }
 
     boolean isFullyRevvedUp() {
@@ -68,8 +69,6 @@ public class Shooter extends Subsystem {
     }
 
     public void teleopControls() {
-        SPOOL_BUTTON.whenPressed(() -> setShooter(spoolDemand));
-//
 //        if (SHOOTER_BUTTON.get()) {
 //            if (DRIVE.getIsAimed()) {
 //                setShooter(limelight.getShooterDemand());
@@ -91,6 +90,7 @@ public class Shooter extends Subsystem {
 //        });
 //
         if (MANUAL_SHOOT_BUTTON.get()) {
+            setShooter(spoolDemand);
             //setShooter(limelight.getShooterDemand());
             if (isFlywheelReady()) {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
@@ -101,9 +101,12 @@ public class Shooter extends Subsystem {
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
             }
         }
+        else {
+            setShooter(defaultDemand);
+        }
 
         MANUAL_SHOOT_BUTTON.whenReleased(() -> {
-            setShooter(0);
+            setShooter(defaultDemand);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
         });
