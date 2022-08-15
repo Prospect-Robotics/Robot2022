@@ -50,7 +50,7 @@ public class Shooter extends Subsystem {
     }
 
     public boolean isFlywheelReady() {
-        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - demand) < 25;
+        return Math.abs(Units2813.motorRevsToWheelRevs(FLYWHEEL.getVelocity(), FLYWHEEL_UPDUCTION) - demand) < 100;
     }
 
     boolean isFullyRevvedUp() {
