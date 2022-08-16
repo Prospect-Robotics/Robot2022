@@ -74,7 +74,7 @@ public class Robot extends TimedRobot
                 subsystem.zeroSensors();
             }
             limelight.setLights(false);
-            Robot.lightshow.setLight(Lightshow.Light.DISABLED);
+            Robot.lightshow.setLight(Lightshow.Light.DEFAULT);
         }
         catch (IOException e) {
             System.out.println("Something went wrong while reading config files!");
