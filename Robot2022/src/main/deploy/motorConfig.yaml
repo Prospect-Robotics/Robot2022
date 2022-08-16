@@ -97,7 +97,7 @@ talons:
     motorControllerType: TALON_FX
     type: BRUSHLESS
     subsystemName: Climber
-    inverted: NONINVERTED
+    inverted: INVERTED
     statusFrame: STATUS_2
     pidControllers:
       - p: 0.4
