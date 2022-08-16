@@ -2,6 +2,8 @@ package com.team2813.frc2022.subsystems;
 
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.team2813.frc2022.util.Limelight;
+import com.team2813.frc2022.util.Lightshow;
+import com.team2813.frc2022.Robot;
 import com.team2813.frc2022.util.Units2813;
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.controls.Button;
@@ -9,7 +11,6 @@ import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static com.team2813.frc2022.subsystems.Subsystems.DRIVE;
@@ -68,6 +69,15 @@ public class Shooter extends Subsystem {
         SmartDashboard.putNumber("Distance to Target", limelight.calculateHorizontalDistance());
     }
 
+    private void shooterLights(boolean spooling){
+        if (spooling){
+            Robot.lightshow.setLight(Lightshow.Light.SPOOLING);
+        }
+        else {
+            Robot.lightshow.setLight(Lightshow.Light.READY_TO_SHOOT);
+        }
+    }
+
     public void teleopControls() {
 //        if (SHOOTER_BUTTON.get()) {
 //            if (DRIVE.getIsAimed()) {
@@ -95,10 +105,12 @@ public class Shooter extends Subsystem {
             if (isFlywheelReady()) {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+                shooterLights(false);
             }
             else {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+                shooterLights(true);
             }
         }
         else {
@@ -109,6 +121,7 @@ public class Shooter extends Subsystem {
             setShooter(defaultDemand);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+            Robot.lightshow.setLight(Lightshow.Light.ENABLED);
         });
 
         if (LOW_SHOOT_BUTTON.get()) {
@@ -116,10 +129,12 @@ public class Shooter extends Subsystem {
             if (isFlywheelReady()) {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.LOW);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+                shooterLights(false);
             }
             else {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+                shooterLights(true);
             }
         }
 
@@ -127,6 +142,7 @@ public class Shooter extends Subsystem {
             setShooter(0);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+            Robot.lightshow.setLight(Lightshow.Light.ENABLED);
         });
 
         isFullyRevvedUp = FLYWHEEL.getVelocity() >= Units2813.wheelRevsToMotorRevs(demand, FLYWHEEL_UPDUCTION);
