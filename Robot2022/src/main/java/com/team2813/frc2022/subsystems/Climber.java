@@ -7,6 +7,8 @@ import com.team2813.lib.controls.Button;
 import com.team2813.lib.motors.TalonFXWrapper;
 import com.team2813.lib.motors.interfaces.ControlMode;
 import com.team2813.lib.solenoid.PistonSolenoid;
+import com.team2813.frc2022.Robot;
+import com.team2813.frc2022.util.Lightshow;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -86,6 +88,7 @@ public class Climber extends Subsystem1d<Climber.Position> {
                 new FunctionAction(() -> INTAKE.setDeployed(true), true),
                 new FunctionAction(this::retract, true)
         );
+        Robot.lightshow.setLight(Lightshow.Light.CLIMBING);
         LOOPER.addAction(midClimb);
     }
 

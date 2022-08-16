@@ -8,7 +8,9 @@ package com.team2813.frc2022;
 import com.team2813.frc2022.auto.Autonomous;
 import com.team2813.frc2022.subsystems.Subsystem;
 import com.team2813.frc2022.subsystems.Subsystems;
+import com.ctre.phoenix.CANifier;
 import com.team2813.frc2022.util.Limelight;
+import com.team2813.frc2022.util.Lightshow;
 import com.team2813.frc2022.util.ShuffleboardData;
 import com.team2813.lib.config.MotorConfigs;
 import com.team2813.lib.drive.DriveDemand;
@@ -41,7 +43,11 @@ public class Robot extends TimedRobot
     public final LimelightValues limelightValues = new LimelightValues();
     public static Autonomous autonomous;
 
+    private static CANifier canifier = new CANifier(14);
     private Limelight limelight = Limelight.getInstance();
+
+    public static Lightshow lightshow = new Lightshow(canifier);
+
     public static boolean isAuto = false;
 
     /**
@@ -68,6 +74,7 @@ public class Robot extends TimedRobot
                 subsystem.zeroSensors();
             }
             limelight.setLights(false);
+            Robot.lightshow.setLight(Lightshow.Light.DISABLED);
         }
         catch (IOException e) {
             System.out.println("Something went wrong while reading config files!");
@@ -120,6 +127,7 @@ public class Robot extends TimedRobot
         isAuto = true;
         autonomous = new Autonomous();
         limelight.setLights(true);
+        Robot.lightshow.setLight(Lightshow.Light.AUTONOMOUS);
         LOOPER.setMode(RobotMode.ENABLED);
 
         try {
@@ -156,6 +164,7 @@ public class Robot extends TimedRobot
             LOOPER.start();
             limelight.setLights(false);
             limelight.setStream(0);
+            Robot.lightshow.setLight(Lightshow.Light.ENABLED);
         }
         catch (Throwable t) {
             CrashTracker.logThrowableCrash(t);
@@ -183,6 +192,7 @@ public class Robot extends TimedRobot
             CrashTracker.logDisabledInit();
             LOOPER.setMode(RobotMode.DISABLED);
             LOOPER.start();
+            Robot.lightshow.setLight(Lightshow.Light.DISABLED);
         }
         catch (Throwable t) {
             CrashTracker.logThrowableCrash(t);
