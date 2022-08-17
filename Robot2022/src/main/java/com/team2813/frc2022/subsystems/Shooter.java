@@ -85,6 +85,7 @@ public class Shooter extends Subsystem {
 //                if (isFlywheelReady()) {
 //                    MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
 //                    MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
+//                    shooterLights(false);
 //                }
 //                else {
 //                    MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
@@ -97,8 +98,9 @@ public class Shooter extends Subsystem {
 //            setShooter(0);
 //            MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
 //            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+//            Robot.lightshow.setLight(Lightshow.Light.ENABLED);
 //        });
-//
+
         if (MANUAL_SHOOT_BUTTON.get()) {
             setShooter(spoolDemand);
             //setShooter(limelight.getShooterDemand());
@@ -110,7 +112,6 @@ public class Shooter extends Subsystem {
             else {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-                shooterLights(true);
             }
         }
         else {
@@ -185,5 +186,6 @@ public class Shooter extends Subsystem {
 
     public void setShooter(double demand) {
         this.demand = demand;
+        shooterLights(true);
     }
 }
