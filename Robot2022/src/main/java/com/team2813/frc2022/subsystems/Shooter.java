@@ -88,7 +88,6 @@ public class Shooter extends Subsystem {
                 else {
                     MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
                     MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-                    shooterLights(true);
                 }
             }
         }
@@ -110,7 +109,6 @@ public class Shooter extends Subsystem {
             else {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-                shooterLights(true);
             }
         }
 
@@ -179,5 +177,6 @@ public class Shooter extends Subsystem {
 
     public void setShooter(double demand) {
         this.demand = demand;
+        shooterLights(true);
     }
 }
