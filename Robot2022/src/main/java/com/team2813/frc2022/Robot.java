@@ -43,7 +43,7 @@ public class Robot extends TimedRobot
     public final LimelightValues limelightValues = new LimelightValues();
     public static Autonomous autonomous;
 
-    private static final CANifier canifier = new CANifier(14);
+    private static final CANifier canifier = new CANifier(15);
     private final Limelight limelight = Limelight.getInstance();
 
     public static final Lightshow lightshow = new Lightshow(canifier);

@@ -100,9 +100,9 @@ public class Shooter extends Subsystem {
 //            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
 //            Robot.lightshow.setLight(Lightshow.Light.ENABLED);
 //        });
+        SPOOL_BUTTON.whenPressed(() -> setShooter(spoolDemand));
 
         if (MANUAL_SHOOT_BUTTON.get()) {
-            setShooter(spoolDemand);
             //setShooter(limelight.getShooterDemand());
             if (isFlywheelReady()) {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
