@@ -186,6 +186,8 @@ public class Shooter extends Subsystem {
 
     public void setShooter(double demand) {
         this.demand = demand;
-        shooterLights(true);
+        if (demand != defaultDemand){
+            shooterLights(true);
+        }
     }
 }
