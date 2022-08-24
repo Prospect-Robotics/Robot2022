@@ -140,7 +140,7 @@ public class Shooter extends Subsystem {
         }
 
         LOW_SHOOT_BUTTON.whenReleased(() -> {
-            setShooter(0);
+            setShooter(defaultDemand);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
             Robot.lightshow.setLight(Lightshow.Light.ENABLED);
