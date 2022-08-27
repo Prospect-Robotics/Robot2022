@@ -41,7 +41,7 @@ public class Shooter extends Subsystem {
     //private final double spoolDemand = 3600;
     private final double spoolDemand = 2100;
     private final double lowDemand = 1000;
-    private final double defaultDemand = 250;
+    private double defaultDemand = 250;
 
     private boolean isFullyRevvedUp;
 
@@ -100,7 +100,9 @@ public class Shooter extends Subsystem {
 //            MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
 //            Robot.lightshow.setLight(Lightshow.Light.ENABLED);
 //        });
-        SPOOL_BUTTON.whenPressed(() -> setShooter(spoolDemand));
+        SPOOL_BUTTON.whenPressed(() -> {
+            defaultDemand = 2100;
+        });
 
         if (MANUAL_SHOOT_BUTTON.get()) {
             //setShooter(limelight.getShooterDemand());
@@ -112,6 +114,7 @@ public class Shooter extends Subsystem {
             else {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+                defaultDemand = 250;
             }
         }
         else {
