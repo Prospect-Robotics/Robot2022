@@ -138,6 +138,7 @@ public class Shooter extends Subsystem {
             else {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
+                defaultDemand = 250;
                 shooterLights(true);
             }
         }
