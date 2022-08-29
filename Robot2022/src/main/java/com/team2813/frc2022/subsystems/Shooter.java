@@ -114,7 +114,6 @@ public class Shooter extends Subsystem {
             else {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-                defaultDemand = 250;
             }
         }
         else {
@@ -122,6 +121,7 @@ public class Shooter extends Subsystem {
         }
 
         MANUAL_SHOOT_BUTTON.whenReleased(() -> {
+            defaultDemand = 250;
             setShooter(defaultDemand);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
@@ -138,12 +138,12 @@ public class Shooter extends Subsystem {
             else {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-                defaultDemand = 250;
                 shooterLights(true);
             }
         }
 
         LOW_SHOOT_BUTTON.whenReleased(() -> {
+            defaultDemand = 250;
             setShooter(defaultDemand);
             MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
             MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
