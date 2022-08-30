@@ -79,6 +79,10 @@ public class Shooter extends Subsystem {
     }
 
     public void teleopControls() {
+
+        if(isFlywheelReady()){
+            shooterLights(false);
+        }
 //        if (SHOOTER_BUTTON.get()) {
 //            if (DRIVE.getIsAimed()) {
 //                setShooter(limelight.getShooterDemand());
@@ -102,6 +106,7 @@ public class Shooter extends Subsystem {
 //        });
         SPOOL_BUTTON.whenPressed(() -> {
             defaultDemand = 2100;
+            Robot.lightshow.setLight(Lightshow.Light.SPOOLING);
         });
 
         if (MANUAL_SHOOT_BUTTON.get()) {
