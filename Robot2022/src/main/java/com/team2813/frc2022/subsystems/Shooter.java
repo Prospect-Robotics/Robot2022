@@ -80,7 +80,7 @@ public class Shooter extends Subsystem {
 
     public void teleopControls() {
 
-        if(isFlywheelReady()){
+        if(isFlywheelReady() && defaultDemand != 250){
             shooterLights(false);
         }
 //        if (SHOOTER_BUTTON.get()) {
