@@ -106,7 +106,7 @@ public class Shooter extends Subsystem {
 //        });
         SPOOL_BUTTON.whenPressed(() -> {
             defaultDemand = 2100;
-            Robot.lightshow.setLight(Lightshow.Light.SPOOLING);
+            shooterLights(true);
         });
 
         if (MANUAL_SHOOT_BUTTON.get()) {
@@ -114,7 +114,6 @@ public class Shooter extends Subsystem {
             if (isFlywheelReady()) {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.SHOOT);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-                shooterLights(false);
             }
             else {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
@@ -138,12 +137,10 @@ public class Shooter extends Subsystem {
             if (isFlywheelReady()) {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.LOW);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.IN);
-                shooterLights(false);
             }
             else {
                 MAGAZINE.setMagDemand(Magazine.MagDemand.OFF);
                 MAGAZINE.setKickerDemand(Magazine.KickerDemand.OFF);
-                shooterLights(true);
             }
         }
 
@@ -195,7 +192,7 @@ public class Shooter extends Subsystem {
 
     public void setShooter(double demand) {
         this.demand = demand;
-        if (demand != defaultDemand){
+        if (demand != 250){
             shooterLights(true);
         }
     }
